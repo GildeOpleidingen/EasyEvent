@@ -3,8 +3,11 @@
 Database credentials:
 
 host: phpmyadmin.gdcs.gildedevops.it
+
 username: easyevent
+
 wachtwoord: a[ez-4.wBhai48M8
+
 
 ## Getting started
 
