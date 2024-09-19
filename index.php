@@ -1,6 +1,6 @@
 <?php
-  require_once("./DB_connection.php");
-  require_once("./functions/.");
+  require_once("./functions/DB_connection.php");
+  require_once("./functions/functions.php");  
 ?>
 <!DOCTYPE html>
 <html lang="en">
