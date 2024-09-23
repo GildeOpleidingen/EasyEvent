@@ -12,17 +12,11 @@
   <title>EasyEvents</title>
 </head>
 <body>
-	<?php require_once("./parts/nav.html"); ?>
-	<div class="main-container">
-		test content
-	</div>
-	<?php require_once("./parts/footer.html"); ?>
-  
-  <?php require_once("./parts/nav.html"); ?>
-  <div class="main-container">
-    <a href="login.php" class="redirect-button">Login</a>
-  </div>
-  <?php require_once("./parts/footer.html"); ?>
 
+  <div class="welcome-container">
+    <h1>Welcome to EasyEvents!</h1>
+    <p>Your one-stop solution for all your event planning needs.</p>
+    <a href="login.php" class="btn">Login</a>
+  </div>
 </body>
 </html>
