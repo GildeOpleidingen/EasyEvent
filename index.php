@@ -17,5 +17,12 @@
 		test content
 	</div>
 	<?php require_once("./parts/footer.html"); ?>
+  
+  <?php require_once("./parts/nav.html"); ?>
+  <div class="main-container">
+    <a href="login.php" class="redirect-button">Login</a>
+  </div>
+  <?php require_once("./parts/footer.html"); ?>
+
 </body>
 </html>
