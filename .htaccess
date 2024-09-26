@@ -1,0 +1,10 @@
+RewriteEngine On
+
+DirectoryIndex home.php
+
+Options -Indexes
+ErrorDocument 403 403.php
+ErrorDocument 404 404.php
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
