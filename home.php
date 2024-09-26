@@ -20,17 +20,18 @@ require_once "./config/conn.php";
 </head>
 <body>
     <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a href="#" class="navbar-brand">
-                <img src="./images/logo.png" alt="Logo" width="100" height="100">
-            </a>
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand ms-5"><img src="./images/logo.png" alt="EasyEvents Logo" width="125" height="125"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active">Home</a>
+                        <a href="#" class="nav-link active">NEWS & UPDATES</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><button class="btn btn-primary">LOGIN</button></a>
                     </li>
                 </ul>
             </div>
@@ -39,5 +40,6 @@ require_once "./config/conn.php";
 
     <script src="./js/bootstrap.bundle.js"></script>
     <script src="./js/script.js"></script>
+    <script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
 </body>
 </html>
