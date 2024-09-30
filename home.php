@@ -19,7 +19,9 @@ require_once "./config/conn.php";
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <span class="loader" id="loader"></span>
+    <div class="preloader">
+        <span class="loader" id="loader"></span>
+    </div>
 
     <div id="content">
         <nav class="navbar navbar-expand-lg">
