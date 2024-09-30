@@ -13,6 +13,18 @@ body {
 }
 
 /* preloader */
+.preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+}
+
 .loader {
     width: 48px;
     height: 48px;
@@ -22,8 +34,9 @@ body {
     position: relative;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
-  } 
-  .loader::after {
+} 
+
+.loader::after {
     content: '';  
     box-sizing: border-box;
     position: absolute;
@@ -35,16 +48,17 @@ body {
     border-radius: 50%;
     border: 3px solid transparent;
     border-bottom-color: #ff3921;
-  }
-  
-  @keyframes rotation {
+}
+
+@keyframes rotation {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
     100% {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  } 
+}
+
 .navbar-brand.ms-5 {
     margin-left: 150px !important;
 }
