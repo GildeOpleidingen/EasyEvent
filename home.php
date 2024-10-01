@@ -20,7 +20,7 @@ require_once "./config/conn.php";
 </head>
 <body>
     <div class="preloader">
-        <span class="loader" id="loader"></span>
+        <img src="./images/logo.png" alt="" id="loader" class="loader">
     </div>
 
     <div id="content">
