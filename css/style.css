@@ -10,6 +10,7 @@
 body {
     background-color: #E3E5DD;
     color: #0E3D56 !important;
+    display: grid;
 }
 
 /* preloader */
@@ -45,7 +46,7 @@ body {
 }
 
 .navbar-brand.ms-5 {
-    margin-left: 150px !important;
+    margin-left: 80px !important;
 }
 
 .nav-link.active {
@@ -74,11 +75,11 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     transition: background-color 0.3s ease;
+    cursor: pointer !important;
 }
 
 .btn.btn-primary:hover {
     background-color: #ff3921;
-    cursor: pointer;
 }
 
 .navbar-toggler {
@@ -91,4 +92,38 @@ body {
 
 .navbar-nav.me-5 {
     margin-right: 150px !important;
+}
+
+/* hero section */
+.hero .container .col-lg-6 h1{
+    font-weight: 800 !important;
+    filter: drop-shadow(0 4px 6px #0e3d56);
+    letter-spacing: 8px;
+}
+
+::selection {
+    background-color: #0E3D56;
+    color: #E3E5DD;
+}
+
+/* login */
+.login .row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+}
+
+.login .row .col-md-6:first-child {
+    background-color: #0E3D56;
+    width: auto;
+    border-radius: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-img {
+    max-width: 100%;
+    height: auto;
 }
