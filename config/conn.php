@@ -18,6 +18,7 @@ class Conn {
         } catch (PDOException $e) {
             $this->conn = null;
             echo "Connection failed: " . $e->getMessage();
+            error_log($e, 3, 'error.log');
         }
     }
 
@@ -30,16 +31,10 @@ class Conn {
     }
 }
 
-$server = "phpmyadmin.gdcs.gildedevops.it";
-$username = "easyevent";
-$password = "a[ez-4.wBhai48M8";
-$dbname = "easyevent";
+$server = "localhost";
+$username = "root";
+$password = "";
+$dbname = "easyevents";
 
 $database = new Conn($server, $username, $password, $dbname);
 $conn = $database->getConnection();
-
-if ($conn) {
-    echo "Connected successfully!";
-} else {
-    echo "Connection failed!";
-}
