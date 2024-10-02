@@ -8,6 +8,20 @@ setTimeout(() => {
     loader.style.display = "none";
     content.style.display = "block";
 
+    // GSAP Animations
     gsap.from("#content", { opacity: 0, duration: 1.5, ease: "power2.out"});
     gsap.from("nav", { opacity: 0, y: -50, duration: 1, ease: "power2.out", delay: 0.5 });
+
+    // Hero section animations
+    gsap.from(".hero .col-lg-6:first-child h1", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.8 });
+    gsap.from(".hero .col-lg-6:first-child a", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 1 });
+    gsap.from(".hero .col-lg-6:last-child p", { opacity: 0, y: 50, duration: 1, ease: "power2.out", stagger: 0.2, delay: 1.2 });
 }, 3000);
+
+
+window.addEventListener('load', function() {
+    const preloader = document.querySelector('.preloader');
+    this.setTimeout(function() {
+        preloader.style.display = "none";
+    }, 3000)
+});

@@ -36,12 +36,28 @@ require_once "./config/conn.php";
                             <a href="#" class="nav-link active">NEWS & UPDATES</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link"><button class="btn btn-primary">LOGIN</button></a>
+                            <a href="./login" class="nav-link"><button class="btn btn-primary">LOGIN</button></a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
+
+        <section class="hero d-flex align-items-center justify-content-center" style="min-height: 75vh;">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-lg-6 text-lg-start text-center mb-5 mb-lg-0">
+                        <h1 class="display-4 fw-bold">PLAN <br> WITH <br> EASY <br> EVENTS</h1>
+                        <a href="#" class="btn btn-primary text-white mt-3">Installeer als app</a>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <p class="lead text-start">Welkom op ons evenementenplatform! Hier kun je eenvoudig solliciteren voor allerlei soorten evenementen, van concerten en festivals tot workshops en conferenties. Blader door ons aanbod, kies de evenementen die jou interesseren en dien je aanmelding in met slechts een paar klikken. Het is jouw alles-in-één oplossing om nieuwe en spannende evenementen te ontdekken en mee te doen!</p>
+                        <p class="lead text-start">Of je nu op zoek bent naar een grote conferentie of een intieme workshop, ons platform maakt het aanmelden makkelijk en snel.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script src="./js/bootstrap.bundle.js"></script>
