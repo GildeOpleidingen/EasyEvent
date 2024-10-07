@@ -35,6 +35,8 @@ require_once './config/conn.php';
                     <div class="form-floating mb-3">
                         <input type="password" id="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord">
                         <label for="wachtwoord">Wachtwoord</label>
+                        <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
+
                     </div>
                     <button class="btn btn-primary w-100" type="submit">Login</button>
                 </form>
