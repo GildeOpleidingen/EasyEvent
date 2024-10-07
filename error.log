@@ -1,0 +1,46 @@
+PDOException: SQLSTATE[HY000] [2002] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\easyevents\config\conn.php:16
+Stack trace:
+#0 C:\xampp\htdocs\easyevents\config\conn.php(16): PDO->__construct('mysql:host=phpm...', 'easyevent', 'a[ez-4.wBhai48M...')
+#1 C:\xampp\htdocs\easyevents\config\conn.php(39): Conn->__construct('phpmyadmin.gdcs...', 'easyevent', 'a[ez-4.wBhai48M...', 'easyevent')
+#2 C:\xampp\htdocs\easyevents\home.php(2): require_once('C:\\xampp\\htdocs...')
+#3 {main}PDOException: SQLSTATE[HY000] [2002] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\easyevents\config\conn.php:16
+Stack trace:
+#0 C:\xampp\htdocs\easyevents\config\conn.php(16): PDO->__construct('mysql:host=phpm...', 'easyevent', 'a[ez-4.wBhai48M...')
+#1 C:\xampp\htdocs\easyevents\config\conn.php(39): Conn->__construct('phpmyadmin.gdcs...', 'easyevent', 'a[ez-4.wBhai48M...', 'easyevent')
+#2 C:\xampp\htdocs\easyevents\home.php(2): require_once('C:\\xampp\\htdocs...')
+#3 {main}PDOException: SQLSTATE[HY000] [2002] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\easyevents\config\conn.php:16
+Stack trace:
+#0 C:\xampp\htdocs\easyevents\config\conn.php(16): PDO->__construct('mysql:host=phpm...', 'easyevent', 'a[ez-4.wBhai48M...')
+#1 C:\xampp\htdocs\easyevents\config\conn.php(39): Conn->__construct('phpmyadmin.gdcs...', 'easyevent', 'a[ez-4.wBhai48M...', 'easyevent')
+#2 C:\xampp\htdocs\easyevents\home.php(2): require_once('C:\\xampp\\htdocs...')
+#3 {main}PDOException: SQLSTATE[HY000] [2002] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\easyevents\config\conn.php:16
+Stack trace:
+#0 C:\xampp\htdocs\easyevents\config\conn.php(16): PDO->__construct('mysql:host=phpm...', 'easyevent', 'a[ez-4.wBhai48M...')
+#1 C:\xampp\htdocs\easyevents\config\conn.php(39): Conn->__construct('phpmyadmin.gdcs...', 'easyevent', 'a[ez-4.wBhai48M...', 'easyevent')
+#2 C:\xampp\htdocs\easyevents\home.php(2): require_once('C:\\xampp\\htdocs...')
+#3 {main}PDOException: SQLSTATE[HY000] [2002] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\easyevents\config\conn.php:16
+Stack trace:
+#0 C:\xampp\htdocs\easyevents\config\conn.php(16): PDO->__construct('mysql:host=phpm...', 'easyevent', 'a[ez-4.wBhai48M...')
+#1 C:\xampp\htdocs\easyevents\config\conn.php(39): Conn->__construct('phpmyadmin.gdcs...', 'easyevent', 'a[ez-4.wBhai48M...', 'easyevent')
+#2 C:\xampp\htdocs\easyevents\home.php(2): require_once('C:\\xampp\\htdocs...')
+#3 {main}PDOException: SQLSTATE[HY000] [2002] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\easyevents\config\conn.php:16
+Stack trace:
+#0 C:\xampp\htdocs\easyevents\config\conn.php(16): PDO->__construct('mysql:host=phpm...', 'easyevent', 'a[ez-4.wBhai48M...')
+#1 C:\xampp\htdocs\easyevents\config\conn.php(39): Conn->__construct('phpmyadmin.gdcs...', 'easyevent', 'a[ez-4.wBhai48M...', 'easyevent')
+#2 C:\xampp\htdocs\easyevents\home.php(2): require_once('C:\\xampp\\htdocs...')
+#3 {main}PDOException: SQLSTATE[HY000] [2002] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\easyevents\config\conn.php:16
+Stack trace:
+#0 C:\xampp\htdocs\easyevents\config\conn.php(16): PDO->__construct('mysql:host=phpm...', 'easyevent', 'a[ez-4.wBhai48M...')
+#1 C:\xampp\htdocs\easyevents\config\conn.php(39): Conn->__construct('phpmyadmin.gdcs...', 'easyevent', 'a[ez-4.wBhai48M...', 'easyevent')
+#2 C:\xampp\htdocs\easyevents\home.php(2): require_once('C:\\xampp\\htdocs...')
+#3 {main}PDOException: SQLSTATE[HY000] [2002] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\easyevents\config\conn.php:16
+Stack trace:
+#0 C:\xampp\htdocs\easyevents\config\conn.php(16): PDO->__construct('mysql:host=phpm...', 'easyevent', 'a[ez-4.wBhai48M...')
+#1 C:\xampp\htdocs\easyevents\config\conn.php(39): Conn->__construct('phpmyadmin.gdcs...', 'easyevent', 'a[ez-4.wBhai48M...', 'easyevent')
+#2 C:\xampp\htdocs\easyevents\home.php(2): require_once('C:\\xampp\\htdocs...')
+#3 {main}PDOException: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in C:\xampp\htdocs\easyevents\config\conn.php:16
+Stack trace:
+#0 C:\xampp\htdocs\easyevents\config\conn.php(16): PDO->__construct('mysql:host=loca...', 'root', '')
+#1 C:\xampp\htdocs\easyevents\config\conn.php(39): Conn->__construct('localhost', 'root', '', 'easyevents')
+#2 C:\xampp\htdocs\easyevents\home.php(2): require_once('C:\\xampp\\htdocs...')
+#3 {main}
