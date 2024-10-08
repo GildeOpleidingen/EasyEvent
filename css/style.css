@@ -129,21 +129,24 @@ body {
 }
 
 
-.form-control {
+.form-floating .form-control {
     width: 200% !important;
     background-color: transparent;
     border: 0;
     border-bottom: 1px solid #0E3D56;
 }
 
-.form-control:active {
-    background-color: transparent;
-    border: none;
+.form-floating .form-control:active {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
-.form-control:focus {
-    background-color: transparent;
-    border: none;
+.form-floating .form-control:focus {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #0E3D56 !important;
+    box-shadow: none !important;
 }
 
 .form-floating > input + label:after {
@@ -151,7 +154,7 @@ body {
     color: #0E3D56 !important;
 }
 
-.form-floating > input {
+.form-floating .form-floating > input {
     padding-right: 2.5rem;
 }
 
@@ -165,4 +168,10 @@ body {
     transform: translateY(-50%);
     cursor: pointer;
     color: #0E3D56;
+}
+
+i.bi {
+    color: #0E3D56;
+    width: 200%;
+    height: 200px !important;
 }
