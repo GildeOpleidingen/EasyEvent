@@ -31,9 +31,9 @@ class Conn {
     }
 }
 
-$server = "localhost";
-$username = "root";
-$password = "";
+$server = "10.250.0.103";
+$username = "easyevent";
+$password = "a[ez-4.wBhai48M8";
 $dbname = "easyevents";
 
 $database = new Conn($server, $username, $password, $dbname);
