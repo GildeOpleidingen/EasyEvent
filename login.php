@@ -17,6 +17,8 @@ require_once './config/conn.php';
     <!-- css -->
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <div class="login container-fluid vh-100 d-flex justify-content-center align-items-center">
@@ -28,7 +30,7 @@ require_once './config/conn.php';
             <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center">
                 <h1 class="text-center text-uppercase ms-5">Login</h1>
                 <p class="text-center ms-5">Log in met je persoonlijke gebruikersnaam en wachtwoord</p>
-                <form style="margin-left: -150px">
+                <form style="margin-left: -150px" action="./dashboard">
                     <div class="form-floating mb-3">
                         <input type="text" id="gebruikersnaam" class="form-control rounded-0 w-100" placeholder="Gebruikersnaam">
                         <label for="gebruikersnaam">Gebruikersnaam</label>
@@ -45,6 +47,21 @@ require_once './config/conn.php';
             </div>
         </div>
     </div>
+
+    <script>
+        function togglePasswordVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("bi-eye-fill");
+                icon.classList.add("bi-eye-slash-fill");
+            } else {
+                input.type = "password";
+                icon.classList.remove("bi-eye-slash-fill");
+                icon.classList.add("bi-eye-fill");
+            }
+        }
+    </script>
 
 
     <script src="./js/bootstrap.bundle.js"></script>
