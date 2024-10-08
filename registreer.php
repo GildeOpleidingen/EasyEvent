@@ -23,6 +23,7 @@ require_once './config/conn.php';
 </head>
 <body>
     <div class="login container-fluid vh-100 d-flex justify-content-center align-items-center">
+        <?php require_once("./parts/nav.html"); ?>
         <div class="row">
             <div class="col-lg-5 d-flex align-items-center justify-content-center">
                 <img src="./images/logo.png" alt="Easy Events logo" class="logo-img">
