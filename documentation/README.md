@@ -3,6 +3,7 @@
 Database credentials:
 
 host: phpmyadmin.gdcs.gildedevops.it
+Je moet het volgende ip-adres gebruiken voor de server: 10.250.0.103
 
 username: easyevent
 
