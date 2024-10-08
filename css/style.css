@@ -114,7 +114,7 @@ body {
     height: 100%;
 }
 
-.login .row .col-lg-5:first-child, .register .row .col-lg-5:first-child {
+.login .row .logo-img, .register .row .logo-img {
     background-color: #0E3D56;
     border-radius: 22px;
     display: flex;
@@ -130,7 +130,6 @@ body {
 
 
 .form-floating .form-control {
-    width: 200% !important;
     background-color: transparent;
     border: 0;
     border-bottom: 1px solid #0E3D56;
@@ -163,7 +162,7 @@ body {
 }
 
 .icon-eye {
-    left: 190%;
+    right: 0;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
@@ -172,5 +171,5 @@ body {
 
 i.bi {
     color: #0E3D56;
-    height: 200px !important;
+    bottom: 30px;
 }
