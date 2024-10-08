@@ -34,7 +34,7 @@ class Conn {
 $server = "10.250.0.103";
 $username = "easyevent";
 $password = "a[ez-4.wBhai48M8";
-$dbname = "easyevent";
+$dbname = "easyevents";
 
 $database = new Conn($server, $username, $password, $dbname);
 $conn = $database->getConnection();
