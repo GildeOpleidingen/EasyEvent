@@ -30,7 +30,7 @@ require_once './config/conn.php';
                 </div>
                 <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
                     <h1 class="text-center text-uppercase ms-6">Login</h1>
-                    <p class="text-center ms-6">Log in met je persoonlijke gebruikersnaam en wachtwoord</p>
+                    <p class="text-center ms-6">met je gebruikersnaam en wachtwoord</p>
                     <form action="./dashboard" class="w-75">
                         <div class="form-floating mb-3">
                             <input type="text" id="gebruikersnaam" class="form-control rounded-0" placeholder="Gebruikersnaam">
