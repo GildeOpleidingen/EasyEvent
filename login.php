@@ -21,29 +21,31 @@ require_once './config/conn.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-    <div class="login container-fluid vh-100 d-flex justify-content-center align-items-center">
+    <div class="login container-fluid vh-100">
         <?php require_once("./parts/nav.html"); ?>
-        <div class="row">
-            <div class="col-lg-5 d-flex align-items-center justify-content-center">
-                <img src="./images/logo.png" alt="Easy Events logo" class="logo-img">
-            </div>
-            <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center">
-                <h1 class="text-center text-uppercase ms-5">Login</h1>
-                <p class="text-center ms-5">Log in met je persoonlijke gebruikersnaam en wachtwoord</p>
-                <form style="margin-left: -150px" action="./dashboard">
-                    <div class="form-floating mb-3">
-                        <input type="text" id="gebruikersnaam" class="form-control rounded-0 w-100" placeholder="Gebruikersnaam">
-                        <label for="gebruikersnaam">Gebruikersnaam</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="password" id="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord">
-                        <label for="wachtwoord">Wachtwoord</label>
-                        <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
+        <div class="d-flex justify-content-center align-items-center h-75">
+            <div class="row">
+                <div class="col-lg-5 d-flex align-items-center justify-content-center">
+                    <img src="./images/logo.png" alt="Easy Events logo" class="logo-img">
+                </div>
+                <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center">
+                    <h1 class="text-center text-uppercase ms-5">Login</h1>
+                    <p class="text-center ms-5">Log in met je persoonlijke gebruikersnaam en wachtwoord</p>
+                    <form style="margin-left: -150px" action="./dashboard">
+                        <div class="form-floating mb-3">
+                            <input type="text" id="gebruikersnaam" class="form-control rounded-0 w-100" placeholder="Gebruikersnaam">
+                            <label for="gebruikersnaam">Gebruikersnaam</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" id="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord">
+                            <label for="wachtwoord">Wachtwoord</label>
+                            <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
 
-                    </div>
-                    <button class="btn btn-primary w-100" type="submit">Login</button>
-                </form>
-                <p class="text-center ms-5 mt-3">Geen account? Registreer <a href="./registreer">hier</a></p>
+                        </div>
+                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                    </form>
+                    <p class="text-center ms-5 mt-3">Geen account? Registreer <a href="./registreer">hier</a></p>
+                </div>
             </div>
         </div>
     </div>
