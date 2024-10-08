@@ -97,7 +97,7 @@ body {
 /* hero section */
 .hero .container .col-lg-6 h1{
     font-weight: 800 !important;
-    filter: drop-shadow(0 4px 6px #0e3d56);
+    filter: drop-shadow(4px 4px 6px #0e3d56);
     letter-spacing: 8px;
 }
 
