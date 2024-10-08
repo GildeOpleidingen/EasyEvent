@@ -30,7 +30,7 @@ require_once "./config/conn.php";
             <div class="container text-center">
                 <div class="row">
                     <div class="col-lg-6 text-lg-start text-center mb-5 mb-lg-0">
-                        <h1 class="display-4 fw-bold">PLAN <br> WITH <br> EASY <br> EVENTS</h1>
+                        <h1 class="display-4 fw-bold">PLAN <br> MET <br> EASY <br> EVENTS</h1>
                         <a href="#" class="btn btn-primary text-white mt-3">Installeer als app</a>
                     </div>
                     
