@@ -31,10 +31,10 @@ class Conn {
     }
 }
 
-$server = "phpmyadmin.gdcs.gildedevops.it";
-$username = "easyevent";
-$password = "a[ez-4.wBhai48M8";
-$dbname = "easyevent";
+$server = "localhost";
+$username = "root";
+$password = "";
+$dbname = "easyevents";
 
 $database = new Conn($server, $username, $password, $dbname);
 $conn = $database->getConnection();
