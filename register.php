@@ -61,7 +61,7 @@ require_once './config/conn.php';
                             <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
                             <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('herhaalWachtwoord', this);"></i>
                         </div>
-                        <button class="btn btn-primary w-100 login-btns" type="submit">Registreer</button>
+                        <button class="btn btn-primary w-100 login-btn" type="submit">Registreer</button>
                     </form>
                 </div>
             </div>
