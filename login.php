@@ -42,9 +42,9 @@ require_once './config/conn.php';
                             <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
 
                         </div>
-                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                        <button class="btn btn-primary w-100 login-btn" type="submit">Login</button>
                     </form>
-                    <p class="text-center ms-5 mt-3">Geen account? Registreer <a href="./registreer">hier</a></p>
+                    <p class="text-center ms-5 mt-3">Geen account? Registreer <a href="./register">hier</a></p>
                 </div>
             </div>
         </div>
