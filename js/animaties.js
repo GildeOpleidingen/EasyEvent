@@ -31,7 +31,7 @@ gsap.from(".form-floating", {
     ease: "power1.out"
 });
 
-gsap.from("button", {
+gsap.from(".login-btn", {
     scale: 0.8,
     opacity: 0,
     duration: 0.8,
