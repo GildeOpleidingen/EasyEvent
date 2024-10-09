@@ -21,26 +21,17 @@ require_once './config/conn.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-    <div class="login container-fluid vh-100">
+    <div class="container-fluid vh-100">
         <?php require_once("./parts/nav.html"); ?>
         
+        <!-- tab 1 - Evementenlijst en kalender -->
+
+        <!-- tab 2 - Evenementeninformatie -->
+
+        <!-- tab 3 - Jouw evenementen -->
+
+        <!-- tab 4 - Profiel -->
     </div>
-
-    <script>
-        function togglePasswordVisibility(inputId, icon) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.remove("bi-eye-fill");
-                icon.classList.add("bi-eye-slash-fill");
-            } else {
-                input.type = "password";
-                icon.classList.remove("bi-eye-slash-fill");
-                icon.classList.add("bi-eye-fill");
-            }
-        }
-    </script>
-
 
     <script src="./js/bootstrap.bundle.js"></script>
     <script src="./js/script.js"></script>
