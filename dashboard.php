@@ -23,30 +23,7 @@ require_once './config/conn.php';
 <body>
     <div class="login container-fluid vh-100">
         <?php require_once("./parts/nav.html"); ?>
-        <div class="d-flex justify-content-center align-items-center h-75">
-            <div class="row">
-                <div class="col-lg-6 d-flex align-items-center justify-content-center">
-                    <img src="./images/logo.png" alt="Easy Events logo" class="logo-img">
-                </div>
-                <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
-                    <h1 class="text-center text-uppercase ms-6">Login</h1>
-                    <p class="text-center ms-6">met je gebruikersnaam en wachtwoord</p>
-                    <form action="./dashboard" class="w-75">
-                        <div class="form-floating mb-3">
-                            <input type="text" id="gebruikersnaam" class="form-control rounded-0" placeholder="Gebruikersnaam">
-                            <label for="gebruikersnaam">Gebruikersnaam</label>
-                        </div>
-                        <div class="form-floating mb-3 position-relative">
-                            <input type="password" id="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord">
-                            <label for="wachtwoord">Wachtwoord</label>
-                            <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
-                        </div>
-                        <button class="btn btn-primary w-100 login-btn" type="submit">Login</button>
-                    </form>
-                    <p class="text-center ms-6 mt-3">Geen account? Registreer <a href="./register.php">hier</a></p>
-                </div>
-            </div>
-        </div>
+        
     </div>
 
     <script>
