@@ -26,18 +26,18 @@ require_once './config/conn.php';
         <?php require_once("./parts/nav.html"); ?>
         <div class="d-flex justify-content-center align-items-center h-75">
         <div class="row">
-            <div class="col-lg-5 d-flex align-items-center justify-content-center">
+            <div class="col-lg-6 d-flex align-items-center justify-content-center">
                 <img src="./images/logo.png" alt="Easy Events logo" class="logo-img">
             </div>
-            <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center">
+            <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
                 <h1 class="text-center text-uppercase ms-5">Registreer</h1>
-                <p class="text-center ms-5">Maak een nieuw account aan door hieronder je gegevens in te vullen</p>
+                <p class="text-center ms-5">Maak een nieuw account</p>
                 <form style="margin-left: -150px">
-                    <div class="form-floating mb-3">
+                    <div class="mb-3">
                         <input type="text" id="voornaam" class="form-control rounded-0 w-100" placeholder="Voornaam">
                         <label for="voornaam">Voornaam</label>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class=" mb-3">
                         <input type="text" id="achternaam" class="form-control rounded-0" placeholder="Achternaam">
                         <label for="achternaam">Achternaam</label>
                     </div>
