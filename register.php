@@ -34,14 +34,20 @@ require_once './config/conn.php';
             <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
                 <h1 class="text-center text-uppercase ms-5">Registreer</h1>
                 <p class="text-center ms-5">Maak een nieuw account</p>
-                <form style="margin-left: -150px">
-                    <div class="mb-3">
-                        <input type="text" id="voornaam" class="form-control rounded-0 w-100" placeholder="Voornaam">
-                        <label for="voornaam">Voornaam</label>
-                    </div>
-                    <div class=" mb-3">
-                        <input type="text" id="achternaam" class="form-control rounded-0" placeholder="Achternaam">
-                        <label for="achternaam">Achternaam</label>
+                <form style="margin-left: 50px">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" id="voornaam" class="form-control rounded-0" placeholder="Voornaam">
+                                <label for="voornaam">Voornaam</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" id="achternaam" class="form-control rounded-0" placeholder="Achternaam">
+                                <label for="achternaam">Achternaam</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="email" id="email" class="form-control rounded-0" placeholder="E-mailadres">
