@@ -43,7 +43,7 @@ require_once './config/conn.php';
                         </div>
                         <button class="btn btn-primary w-100 login-btn" type="submit">Login</button>
                     </form>
-                    <p class="text-center ms-6 mt-3">Geen account? Registreer <a href="./register.php">hier</a></p>
+                    <p class="text-center ms-6 mt-3">Geen account? Registreer <a href="./register">hier</a></p>
                 </div>
             </div>
         </div>
