@@ -35,6 +35,15 @@ gsap.from(".login-btn", {
     scale: 0.8,
     opacity: 0,
     duration: 0.8,
+    delay: 1.6,
+    ease: "elastic.out(1, 0.5)"
+});
+
+gsap.from(".register-btn", {
+    scale: 0.8,
+    opacity: 0,
+    duration: 0.8,
     delay: 2.5,
     ease: "elastic.out(1, 0.5)"
 });
+
