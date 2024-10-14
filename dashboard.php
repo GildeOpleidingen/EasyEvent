@@ -25,6 +25,7 @@ require_once './config/conn.php';
         <?php require_once("./parts/nav.html"); ?>
         
         <!-- tab 1 - Evementenlijst en kalender -->
+         
 
         <!-- tab 2 - Evenementeninformatie -->
 
