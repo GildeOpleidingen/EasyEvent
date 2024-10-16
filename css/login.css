@@ -1,0 +1,16 @@
+/* login */
+.login .row, .register .row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+}
+
+.login .row .logo-img, .register .row .logo-img {
+    background-color: #0E3D56;
+    border-radius: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70%;
+}

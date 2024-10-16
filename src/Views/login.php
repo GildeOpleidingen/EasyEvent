@@ -1,5 +1,5 @@
 <?php
-require_once "../../config/conn.php";
+use App\Conn;
 ?>
 
 <!DOCTYPE html>
@@ -8,21 +8,23 @@ require_once "../../config/conn.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- favicons -->
-    <link rel="shortcut icon" href="../../images/icons/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="../../images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
-    <link rel="shortcut icon" href="../../images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
+    <link rel="shortcut icon" href="/images/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
+    <link rel="shortcut icon" href="/images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
 
     <title>EasyEvents | Login</title>
 
     <!-- css -->
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/nav.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <div class="login container-fluid vh-100">
-    <?php require_once("../../parts/nav.html"); ?>
+     <?php require_once(__ROOT__."/parts/nav.html"); ?>
         <div class="d-flex justify-content-center align-items-center h-75">
             <div class="row">
                 <div class="col-lg-6 d-flex align-items-center justify-content-center">
