@@ -23,7 +23,7 @@ use App\Conn;
 
 <body>
     <div class="container-fluid vh-100">
-        <?php require_once(__ROOT__."/parts/nav-dashboard.html"); ?>
+        <?php require_once("./parts/nav.html"); ?>
         
         <!-- tab 1 - Evementenlijst en kalender -->
         <div class="row g-4">
