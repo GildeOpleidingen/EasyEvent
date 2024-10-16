@@ -1,0 +1,48 @@
+
+.navbar-brand.ms-5 {
+    margin-left: 80px !important;
+}
+
+.nav-link.active {
+    color: #0E3D56 !important;
+    font-weight: 700;
+    transition: text-decoration 0.3s ease-in-out, text-underline-offset 0.3s ease-in-out;
+}
+
+.nav-link.active:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.navbar-toggler {
+    border-color: #FF7A39;
+}
+
+.navbar-toggler-icon {
+    color: #FF7A39;
+}
+
+.navbar-nav.me-5 {
+    margin-right: 150px !important;
+}
+
+.nav-buttons {
+    margin-bottom: 20px;
+}
+
+.nav-buttons button {
+    background-color: #1c3a4f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+}
