@@ -31,15 +31,14 @@ use App\Conn;
         <!-- tab 1 - Evementenlijst en kalender -->
         <div class="row g-4">
             <!-- Event List -->
+            <div class="nav-buttons d-flex mb-3">
+                <button class="btn btn-primary">All</button>
+                <button class="btn btn-primary">Sports</button>
+                <button class="btn btn-primary">Tourism</button>
+                <button class="btn btn-primary">School</button>
+                <button class="btn btn-primary">Gaming</button>
+            </div>
             <div class="col-lg-8">
-                <div class="nav-buttons d-flex mb-3">
-                    <button class="btn btn-primary">All</button>
-                    <button class="btn btn-primary">Sports</button>
-                    <button class="btn btn-primary">Tourism</button>
-                    <button class="btn btn-primary">School</button>
-                    <button class="btn btn-primary">Gaming</button>
-                </div>
-
                 <!-- Event Items -->
                 <div class="event-item" style="background-image: url('../../images/bokkenollen.jpg');">
                     <h3>Bokkenollen</h3>
@@ -75,7 +74,7 @@ use App\Conn;
             </div>
 
             <!-- Calendar -->
-            <div class="col-lg-4">
+            <div class="col-lg-4 d-flex justify-content-center">
                 <div class="calendar p-3">
                     <div class="calendar-header d-flex justify-content-between align-items-center">
                         <button class="btn btn-outline-light btn-sm">&lt;</button>
