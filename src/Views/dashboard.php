@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="../../images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
     <link rel="shortcut icon" href="../../images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
 
-    <title>EasyEvents | Login</title>
+    <title>EasyEvents | Dashboard</title>
 
     <!-- css -->
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
@@ -34,16 +34,16 @@
                 </div>
 
                 <!-- Event Items -->
-                <div class="event-item" style="background-image: url('../../images/culture.jpg');">
-                    <h3>Cultuur</h3>
-                    <p>Experience the cultural life in the Netherlands at its best with our monthly events for a friendly price.</p>
+                <div class="event-item" style="background-image: url('../../images/bokkenollen.jpg');">
+                    <h3>Bokkenollen</h3>
+                    <p>Parcours met bokbier</p>
                     <div class="more-info">
                         <a href="#" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
                     </div>
                 </div>
 
-                <div class="event-item" style="background-image: url('../../images/sports.jpg');">
-                    <h3>Sports</h3>
+                <div class="event-item" style="background-image: url('../../images/4daagse.jpg');">
+                    <h3>Avondvierdaagse</h3>
                     <p>Enjoy different types of sports. Or even be a part of the event itself, all you gotta do is register yourself.</p>
                     <div class="more-info">
                         <a href="#" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
@@ -102,8 +102,6 @@
             </div>
         </div>
 
-        <!-- tab 2 - Evenementeninformatie -->
-
         <!-- tab 3 - Jouw evenementen -->
 
         <!-- tab 4 - Profiel -->
@@ -115,5 +113,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/animaties.js"></script>
     <script src="../../js/searchbar.js"></script>
+    <script src="../../js/tabs.js"></script>
 </body>
 </html>
