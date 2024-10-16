@@ -12,11 +12,14 @@ use App\Conn;
     <link rel="shortcut icon" href="/images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
     <link rel="shortcut icon" href="/images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
 
-    <title>EasyEvents | Dashboard</title>
+    <title>EasyEvents | Events</title>
 
     <!-- css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/events.css">
+    <link rel="stylesheet" href="/css/nav.css">
+
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>

@@ -17,6 +17,9 @@ use App\Conn;
     <!-- css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/nav.css">
+
 </head>
 <body>
     <div class="preloader">
