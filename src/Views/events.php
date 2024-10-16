@@ -31,7 +31,7 @@ use App\Conn;
         <!-- tab 1 - Evementenlijst en kalender -->
         <div class="row g-4">
             <!-- Event List -->
-            <div class="col-md-8">
+            <div class="col-lg-8">
                 <div class="nav-buttons d-flex mb-3">
                     <button class="btn btn-primary">All</button>
                     <button class="btn btn-primary">Sports</button>
@@ -75,35 +75,66 @@ use App\Conn;
             </div>
 
             <!-- Calendar -->
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <div class="calendar p-3">
                     <div class="calendar-header d-flex justify-content-between align-items-center">
                         <button class="btn btn-outline-light btn-sm">&lt;</button>
-                        <h3>September 2024</h3>
+                        <h3 class="px-2">September 2024</h3>
                         <button class="btn btn-outline-light btn-sm">&gt;</button>
                     </div>
-                    <div class="calendar-grid mt-4">
-                        <div class="calendar-day">1</div>
-                        <div class="calendar-day">2</div>
-                        <div class="calendar-day active">3</div>
-                        <div class="calendar-day">4</div>
-                        <div class="calendar-day">5</div>
-                        <div class="calendar-day">6</div>
-                        <div class="calendar-day">7</div>
-                        <div class="calendar-day">8</div>
-                        <div class="calendar-day">9</div>
-                        <div class="calendar-day">10</div>
-                        <div class="calendar-day">11</div>
-                        <div class="calendar-day active">14</div>
-                        <div class="calendar-day">15</div>
-                        <div class="calendar-day">16</div>
-                        <div class="calendar-day">17</div>
-                        <div class="calendar-day">18</div>
-                        <div class="calendar-day">19</div>
-                        <div class="calendar-day">20</div>
-                        <div class="calendar-day">21</div>
-                        <div class="calendar-day active">29</div>
-                        <div class="calendar-day">30</div>
+                    <?php //echo date('D', strtotime(date('Y-m-01')));?>
+                    <table class="calendar-grid mt-4">
+                        <tr>
+                            <th>ma</th>
+                            <th>di</th>
+                            <th>wo</th>
+                            <th>do</th>
+                            <th>vr</th>
+                            <th>za</th>
+                            <th>zo</th>
+                        </tr>
+                        <tr>
+                            <td><div class="calendar-day">1</div></td>
+                            <td><div class="calendar-day">2</div></td>
+                            <td><div class="calendar-day">3</div></td>
+                            <td><div class="calendar-day">4</div></td>
+                            <td><div class="calendar-day">5</div></td>
+                            <td><div class="calendar-day">6</div></td>
+                            <td><div class="calendar-day">7</div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="calendar-day">8</div></td>
+                            <td><div class="calendar-day">9</div></td>
+                            <td><div class="calendar-day">10</div></td>
+                            <td><div class="calendar-day">11</div></td>
+                            <td><div class="calendar-day">12</div></td>
+                            <td><div class="calendar-day">13</div></td>
+                            <td><div class="calendar-day">14</div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="calendar-day">15</div></td>
+                            <td><div class="calendar-day">16</div></td>
+                            <td><div class="calendar-day">17</div></td>
+                            <td><div class="calendar-day">18</div></td>
+                            <td><div class="calendar-day">19</div></td>
+                            <td><div class="calendar-day">20</div></td>
+                            <td><div class="calendar-day">21</div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="calendar-day">22</div></td>
+                            <td><div class="calendar-day">23</div></td>
+                            <td><div class="calendar-day">24</div></td>
+                            <td><div class="calendar-day">25</div></td>
+                            <td><div class="calendar-day">26</div></td>
+                            <td><div class="calendar-day">27</div></td>
+                            <td><div class="calendar-day">28</div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="calendar-day">29</div></td>
+                            <td><div class="calendar-day">30</div></td>
+                            <td><div class="calendar-day">31</div></td>
+                        </tr>
+                    </table>
                     </div>
                 </div>
             </div>

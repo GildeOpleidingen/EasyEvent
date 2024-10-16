@@ -52,6 +52,7 @@
     color: white;
     border-radius: 10px;
     padding: 20px;
+    max-width: fit-content;
 }
 
 .calendar-header {
@@ -61,17 +62,27 @@
 }
 
 .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
     margin-top: 20px;
+    width: 315px;
+}
+
+.calendar-grid th{
+    text-align: center;
+}
+
+.calendar-grid td{
+    padding: 5px;
+    height: 2rem;
 }
 
 .calendar-day {
     background-color: #2a4865;
-    text-align: center;
-    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
+    width: 35px;
+    height: 35px;
 }
 
 .calendar-day.active {
