@@ -15,10 +15,15 @@ class RegisterModel
     
     public function register($Voornaam, $Achternaam, $Telefoon, $Email, $Wachtwoord)
     {
+    $stmt = $this->db->prepare("SELECT * FROM `Gebruiker` WHERE Email = :email");
 
-
+    $stmt->bindParam(':email', $Email);
+    $stmt->execute();
+    return $stmt->rowCount();
     }
 
+
+    
 
 }
 

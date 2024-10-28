@@ -69,7 +69,10 @@ use App\Conn;
                         <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
                         <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('herhaalWachtwoord', this);"></i>
                     </div>
-                    <button class="btn btn-primary w-100 register-btn" type="submit">Registreer</button>
+                    <form action="/register" method="POST">
+                        <button class="btn btn-primary w-100 register-btn" type="submit">Registreer</button>
+                    </form>
+                    
                 </form>
             </div>
         </div>

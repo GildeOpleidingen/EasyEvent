@@ -14,6 +14,7 @@ $router->get('/home', HomeController::class, 'index');
 $router->get('/dashboard', DashboardController::class, 'index');
 $router->get('/login', LoginController::class, 'index');
 $router->get('/register', RegisterController::class, 'index');
+$router->post('/register', RegisterController::class, 'register');
 $router->get('/events', EventsController::class, 'index');
 
 
