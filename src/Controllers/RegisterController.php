@@ -22,13 +22,13 @@ class RegisterController extends Controller
             $wachtwoord = $_POST['wachtwoord'];
         }
         
-        $count = $this->model->checkUser($email);
+        $count = $this->model->register($voornaam, $achternaam, $telefoon, $email, $wachtwoord);
 
         if ($count > 0) {
             return "gebruiker bestaat al";
         } else {
             $this->model->register($voornaam, $achternaam, $telefoon, $email, $wachtwoord);
-            return "gebruiker bestaat niet";
+            echo "gebruiker is geregistreerd";
         }
     }
 }

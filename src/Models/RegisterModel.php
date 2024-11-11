@@ -14,17 +14,28 @@ class RegisterModel
     }
     
     public function register($Voornaam, $Achternaam, $Telefoon, $Email, $Wachtwoord)
-    {
+{
     $stmt = $this->db->prepare("SELECT * FROM `Gebruiker` WHERE Email = :email");
-
     $stmt->bindParam(':email', $Email);
     $stmt->execute();
-    return $stmt->rowCount();
-    }
-
-
     
-
+    $existingUserCount = $stmt->rowCount();
+    
+    if ($existingUserCount > 0) {
+        return $existingUserCount;
+    } else {
+        $stmt = $this->db->prepare("INSERT INTO `Gebruiker` (Voornaam, Achternaam, Telefoon, Email, Wachtwoord) 
+                                          VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord)");
+        $insertStmt->bindParam(':voornaam', $Voornaam);
+        $insertStmt->bindParam(':achternaam', $Achternaam);
+        $insertStmt->bindParam(':telefoon', $Telefoon);
+        $insertStmt->bindParam(':email', $Email);
+        $insertStmt->bindParam(':wachtwoord', $Wachtwoord);
+        $insertStmt->execute();
+        
+        return 0;
+    }
 }
 
+}
 ?>
