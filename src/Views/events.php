@@ -44,7 +44,7 @@ use App\Conn;
                     <h3>Bokkenollen</h3>
                     <p>Parcours met bokbier</p>
                     <div class="more-info">
-                        <a href="#" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
+                        <a href="./event-info" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
                     </div>
                 </div>
 
@@ -92,7 +92,7 @@ use App\Conn;
                             <th>zo</th>
                         </tr>
                         <tbody id="calendar-days">
-                            <!-- JavaScript will generate calendar days here -->
+                            <!-- JavaScript gaat hier de kalenderdagen genereren -->
                         </tbody>
                     </table>
                 </div>
