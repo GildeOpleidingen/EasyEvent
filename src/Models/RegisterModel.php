@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-require_once './config/conn.php';
+use App;
 
 class RegisterModel
 {
@@ -10,32 +10,47 @@ class RegisterModel
     
     public function __construct()
     {
-        $this->db = new \PDO('mysql:host=10.250.0.103;dbname=easyevent', 'easyevent', 'a[ez-4.wBhai48M8'); 
+        $this->db = new \PDO('mysql:host=10.250.0.103;dbname=easyevent', 'easyevent', 'a[ez-4.wBhai48M8', [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ]);
     }
-    
-    public function register($Voornaam, $Achternaam, $Telefoon, $Email, $Wachtwoord)
-{
-    $stmt = $this->db->prepare("SELECT * FROM `Gebruiker` WHERE Email = :email");
-    $stmt->bindParam(':email', $Email);
-    $stmt->execute();
-    
-    $existingUserCount = $stmt->rowCount();
-    
-    if ($existingUserCount > 0) {
-        return $existingUserCount;
-    } else {
-        $stmt = $this->db->prepare("INSERT INTO `Gebruiker` (Voornaam, Achternaam, Telefoon, Email, Wachtwoord) 
-                                          VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord)");
-        $insertStmt->bindParam(':voornaam', $Voornaam);
-        $insertStmt->bindParam(':achternaam', $Achternaam);
-        $insertStmt->bindParam(':telefoon', $Telefoon);
-        $insertStmt->bindParam(':email', $Email);
-        $insertStmt->bindParam(':wachtwoord', $Wachtwoord);
-        $insertStmt->execute();
-        
-        return 0;
-    }
-}
 
+    //controleert of de gebruiker al bestaat
+    public function userExists($email)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            
+            return $stmt->rowCount() > 0;
+        } catch (\PDOException $e) {
+            echo "fout bij controleren of gebruiker bestaat: " . $e->getMessage();
+        }
+    }
+
+    //registreren gebruiker in de db
+    public function register($voornaam, $achternaam, $telefoon, $email, $wachtwoord)
+    {
+        try {
+            
+            $hashedPassword = password_hash($wachtwoord, PASSWORD_DEFAULT);
+
+            //bereid de query
+            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord) 
+                                        VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord)");
+            
+            $rol = "gebruiker";
+
+            $stmt->bindParam(':voornaam', $voornaam);
+            $stmt->bindParam(':achternaam', $achternaam);
+            $stmt->bindParam(':telefoon', $telefoon);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':wachtwoord', $hashedPassword);
+
+            $stmt->execute();
+        } catch (\PDOException $e) {
+            echo "Fout bij registratie: " . $e->getMessage();
+        }
+    }
 }
-?>
