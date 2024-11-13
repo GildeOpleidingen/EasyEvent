@@ -35,8 +35,8 @@ use App\Conn;
                     <p class="text-center ms-6">met je gebruikersnaam en wachtwoord</p>
                     <form action="./dashboard" class="w-75">
                         <div class="form-floating mb-3">
-                            <input type="text" id="gebruikersnaam" class="form-control rounded-0" placeholder="Gebruikersnaam">
-                            <label for="gebruikersnaam">Gebruikersnaam</label>
+                            <input type="email" id="emailadres" class="form-control rounded-0" placeholder="Emailadres">
+                            <label for="emailadres">Emailadres</label>
                         </div>
                         <div class="form-floating mb-3 position-relative">
                             <input type="password" id="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord">
