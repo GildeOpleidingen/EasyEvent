@@ -1,0 +1,1 @@
+INSERT INTO `event`(`EventNaam`, `Informatie`, `Plaats`, `Organistor`, `AantalVrijwillegers`) VALUES ('Test','TestData','Venlo','Runar','6')
