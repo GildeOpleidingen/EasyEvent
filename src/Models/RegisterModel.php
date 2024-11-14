@@ -37,8 +37,8 @@ class RegisterModel
             $hashedPassword = password_hash($wachtwoord, PASSWORD_DEFAULT);
 
             //bereid de query
-            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord) 
-                                        VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord)");
+            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, Rol) 
+                                        VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :rol)");
             
             $rol = "gebruiker";
 
@@ -47,6 +47,8 @@ class RegisterModel
             $stmt->bindParam(':telefoon', $telefoon);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':wachtwoord', $hashedPassword);
+            $stmt->bindParam(':gebruikersnaam', $email);
+            $stmt->bindParam('rol', $rol);
 
             $stmt->execute();
         } catch (\PDOException $e) {

@@ -21,7 +21,9 @@ class RegisterController extends Controller
         $telefoon = $_POST['telefoon'];
         $email = $_POST['email'];
         $wachtwoord = $_POST['wachtwoord'];
-        $herhaalwachtwoord = $_POST['herhaalwachtwoord'];
+        $gebruikersnaam = $_POST['gebruikersnaam'];
+        $rol = $_POST['rol'];
+        $herhaalWachtwoord = $_POST['herhaalWachtwoord'];
         $this->model = new RegisterModel();
       
         // Controleer of de gebruiker al bestaat
@@ -30,8 +32,16 @@ class RegisterController extends Controller
             return;
         }
 
-        // Als de gebruiker nog niet bestaat, registreer deze dan
-        $this->model->register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $gebruikersnaam, $rol);
-        //echo "Gebruiker is geregistreerd.";
+        if (trim($wachtwoord) === trim($herhaalWachtwoord)) {
+            $this->model->register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $gebruikersnaam, $rol);
+            echo "gebruiiker is geregistreerd";
+        } else {
+            echo "Wachtwoorden komen niet overeen";
+            return;
+        }
+        
+
+
+        
     }
 }
