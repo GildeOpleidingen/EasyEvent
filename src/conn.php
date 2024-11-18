@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+
 class Conn {
     private $server;
     private $username;
