@@ -1,7 +1,3 @@
-<?php
-use App\Conn;
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,72 +23,73 @@ use App\Conn;
 
 <body>
     <div class="register container-fluid vh-100">
-    <?php require_once(__ROOT__."/parts/nav.html"); ?>
+        <?php require_once(__ROOT__."/parts/nav.html"); ?>
         <div class="d-flex justify-content-center align-items-center h-75">
-        <div class="row">
-            <div class="col-lg-6 d-flex align-items-center justify-content-center">
-                <img src="../../images/logo.png" alt="Easy Events logo" class="logo-img">
-            </div>
-            <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
-                <h1 class="text-center text-uppercase ms-5">Registreer</h1>
-                <p class="text-center ms-5">Maak een nieuw account</p>
-                <form style="margin-left: 50px">
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="form-floating">
-                                <input type="text" id="voornaam" class="form-control rounded-0" placeholder="Voornaam">
-                                <label for="voornaam">Voornaam</label>
+            <div class="row">
+                <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                    <img src="../../images/logo.png" alt="Easy Events logo" class="logo-img">
+                </div>
+                <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
+                    <h1 class="text-center text-uppercase ms-5">Registreer</h1>
+                    <p class="text-center ms-5">Maak een nieuw account</p>
+
+                    <!-- Begin van de formulier met actie en methode -->
+                    <form action="/register" method="POST" style="margin-left: 50px">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="form-floating">
+                                    <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam" maxlength="70">
+                                    <label for="voornaam">Voornaam</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating">
+                                    <input type="text" id="achternaam" name="achternaam" class="form-control rounded-0" placeholder="Achternaam" maxlength="70">
+                                    <label for="achternaam">Achternaam</label>
+                                </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-floating">
-                                <input type="text" id="achternaam" class="form-control rounded-0" placeholder="Achternaam">
-                                <label for="achternaam">Achternaam</label>
-                            </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" id="email" name="email" class="form-control rounded-0" placeholder="E-mailadres" maxlength="120">
+                            <label for="email">E-mailadres</label>
                         </div>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="email" id="email" class="form-control rounded-0" placeholder="E-mailadres">
-                        <label for="email">E-mailadres</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="tel" id="telefoon" class="form-control rounded-0" placeholder="Telefoonnummer">
-                        <label for="telefoon">Telefoonnummer</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="password" id="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord">
-                        <label for="wachtwoord">Wachtwoord</label>
-                        <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
-                    </div>
-                    <div class="form-floating mb-3 position-relative">
-                        <input type="password" id="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord">
-                        <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
-                        <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('herhaalWachtwoord', this);"></i>
-                    </div>
-                    <form action="/register" method="POST">
+                        <div class="form-floating mb-3">
+                            <input type="tel" id="telefoon" name="telefoon" class="form-control rounded-0" placeholder="Telefoonnummer" maxlength="20">
+                            <label for="telefoon">Telefoonnummer</label>
+                        </div>
+                        <div class="form-floating mb-3 position-relative">
+                            <input type="password" id="wachtwoord" name="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord" maxlength="100">
+                            <label for="wachtwoord">Wachtwoord</label>
+                            <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
+                        </div>
+                        <div class="form-floating mb-3 position-relative">
+                            <input type="password" id="herhaalWachtwoord" name="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord" maxlength="100">
+                            <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
+                            <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('herhaalWachtwoord', this);"></i>
+                        </div>
+
+                        <!-- Verzendknop voor het formulier -->
                         <button class="btn btn-primary w-100 register-btn" type="submit">Registreer</button>
                     </form>
-                    
-                </form>
+                </div>
             </div>
         </div>
     </div>
 
-        <script>
-            function togglePasswordVisibility(inputId, icon) {
-                const input = document.getElementById(inputId);
-                if (input.type === "password") {
-                    input.type = "text";
-                    icon.classList.remove("bi-eye-fill");
-                    icon.classList.add("bi-eye-slash-fill");
-                } else {
-                    input.type = "password";
-                    icon.classList.remove("bi-eye-slash-fill");
-                    icon.classList.add("bi-eye-fill");
-                }
+    <script>
+        function togglePasswordVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("bi-eye-fill");
+                icon.classList.add("bi-eye-slash-fill");
+            } else {
+                input.type = "password";
+                icon.classList.remove("bi-eye-slash-fill");
+                icon.classList.add("bi-eye-fill");
             }
-        </script>
-
+        }
+    </script>
 
     <script src="../../js/bootstrap.bundle.js"></script>
     <script src="../../js/script.js"></script>
@@ -100,5 +97,18 @@ use App\Conn;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/animaties.js"></script>
 </body>
+
+<?php if (isset($error)): ?>
+    <div class="alert alert-danger">
+        <?php echo $error; ?>
+    </div>
+<?php endif; ?>
+
+<?php if (isset($success)): ?>
+    <div class="alert alert-success">
+        <?php echo $success; ?>
+    </div>
+<?php endif; ?>
+
 
 </html>
