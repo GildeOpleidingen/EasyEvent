@@ -38,32 +38,32 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <div class="form-floating">
-                                    <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam">
+                                    <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam" maxlength="70">
                                     <label for="voornaam">Voornaam</label>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-floating">
-                                    <input type="text" id="achternaam" name="achternaam" class="form-control rounded-0" placeholder="Achternaam">
+                                    <input type="text" id="achternaam" name="achternaam" class="form-control rounded-0" placeholder="Achternaam" maxlength="70">
                                     <label for="achternaam">Achternaam</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="email" id="email" name="email" class="form-control rounded-0" placeholder="E-mailadres">
+                            <input type="email" id="email" name="email" class="form-control rounded-0" placeholder="E-mailadres" maxlength="120">
                             <label for="email">E-mailadres</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="tel" id="telefoon" name="telefoon" class="form-control rounded-0" placeholder="Telefoonnummer">
+                            <input type="tel" id="telefoon" name="telefoon" class="form-control rounded-0" placeholder="Telefoonnummer" maxlength="20">
                             <label for="telefoon">Telefoonnummer</label>
                         </div>
                         <div class="form-floating mb-3 position-relative">
-                            <input type="password" id="wachtwoord" name="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord">
+                            <input type="password" id="wachtwoord" name="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord" maxlength="100">
                             <label for="wachtwoord">Wachtwoord</label>
                             <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
                         </div>
                         <div class="form-floating mb-3 position-relative">
-                            <input type="password" id="herhaalWachtwoord" name="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord">
+                            <input type="password" id="herhaalWachtwoord" name="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord" maxlength="100">
                             <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
                             <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('herhaalWachtwoord', this);"></i>
                         </div>
@@ -97,5 +97,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/animaties.js"></script>
 </body>
+
+<?php if (isset($error)): ?>
+    <div class="alert alert-danger">
+        <?php echo $error; ?>
+    </div>
+<?php endif; ?>
+
+<?php if (isset($success)): ?>
+    <div class="alert alert-success">
+        <?php echo $success; ?>
+    </div>
+<?php endif; ?>
+
 
 </html>
