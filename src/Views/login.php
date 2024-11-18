@@ -70,7 +70,6 @@ use App\Conn;
         }
     </script>
 
-
     <script src="../../js/bootstrap.bundle.js"></script>
     <script src="../../js/script.js"></script>
     <script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
