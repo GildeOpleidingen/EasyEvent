@@ -11,4 +11,23 @@ class LoginController extends Controller
 
         $this->render('login');
     }
+
+    public function __construct()
+{
+    $this->model = new \App\Models\LoginModel();
+}
+
+public function invoke(){
+    $reslt = $this->model->login(); 
+
+    if($reslt == "login")
+{
+
+}
+else
+{
+
+}
+}
+
 }
