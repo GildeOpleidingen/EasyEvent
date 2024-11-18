@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\BeheerEventAanmakenController;
 use App\Controllers\HomeController;
 use App\Controllers\DashboardController;
 use App\Controllers\EventInfoController;
@@ -18,6 +19,7 @@ $router->get('/register', RegisterController::class, 'index');
 $router->post('/register', RegisterController::class, 'register');
 $router->get('/events', EventsController::class, 'index');
 $router->get('/event-info', EventInfoController::class, 'index');
+$router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index');
 
 
 $router->dispatch();
