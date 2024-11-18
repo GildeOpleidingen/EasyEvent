@@ -11,4 +11,24 @@ class RegisterController extends Controller
 
         $this->render('register');
     }
+
+    public function register()
+    {
+        {
+            $voornaam = $_POST['voornaam'];
+            $achternaam = $_POST['achternaam'];
+            $telefoon = $_POST['telefoon'];
+            $email = $_POST['email'];
+            $wachtwoord = $_POST['wachtwoord'];
+        }
+        
+        $count = $this->model->register($voornaam, $achternaam, $telefoon, $email, $wachtwoord);
+
+        if ($count > 0) {
+            return "gebruiker bestaat al";
+        } else {
+            $this->model->register($voornaam, $achternaam, $telefoon, $email, $wachtwoord);
+            echo "gebruiker is geregistreerd";
+        }
+    }
 }
