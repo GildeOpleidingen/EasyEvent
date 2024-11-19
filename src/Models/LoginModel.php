@@ -16,16 +16,35 @@ class LoginModel{
         ]);
     }
 
-    public function login()
+    public function login($gebruikersnaam, $wachtwoord)
     {
-        if (isset($_REQUEST['Gebruikersnaam']) && isset($_REQUEST['wachtwoord'])) {
-            $gebruikersnaam = $_REQUEST['Gebruikersnaam'];
-            $wachtwoord = $_REQUEST['wachtwoord'];
-            if ($gebruikersnaam ===$Gebruikersnaam && $wachtwoord === $wachtwoord) {
-                return 'events';
+        if (isset($gebruikersnaam) && isset($wachtwoord)) {
+            try {
+                // Haal gebruiker op met de ingevoerde gebruikersnaam (email)
+                $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
+                $stmt->bindParam(':email', $gebruikersnaam);
+                $stmt->execute();
+    
+                $gebruiker = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+                if ($gebruiker) {
+                    // Controleer het wachtwoord
+                    if (password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
+                        $_SESSION['Gebruikersnaam'] = $gebruikersnaam;
+                        $_SESSION['GebruikersID'] = $gebruiker['ID'];
+                        return 'events';
+                    } else {
+                        return 'invalid'; // Wachtwoord onjuist
+                    }
+                } else {
+                    return 'invalid'; // Geen gebruiker gevonden
+                }
+            } catch (\PDOException $e) {
+                echo "Fout bij controleren of gebruiker bestaat: " . $e->getMessage();
             }
         }
-
-        return 'invalid';
+    
+        return 'invalid'; // Geen gebruikersnaam of wachtwoord opgegeven
     }
+    
 }

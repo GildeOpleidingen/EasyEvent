@@ -33,13 +33,13 @@ use App\Conn;
                 <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
                     <h1 class="text-center text-uppercase ms-6">Login</h1>
                     <p class="text-center ms-6">met je gebruikersnaam en wachtwoord</p>
-                    <form action="./dashboard" class="w-75">
+                    <form action="./login" method="POST" class="w-75">
                         <div class="form-floating mb-3">
-                            <input type="email" id="emailadres" class="form-control rounded-0" placeholder="Emailadres">
+                            <input type="email" id="emailadres" name="Gebruikersnaam" class="form-control rounded-0" placeholder="Emailadres">
                             <label for="emailadres">Emailadres</label>
                         </div>
                         <div class="form-floating mb-3 position-relative">
-                            <input type="password" id="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord">
+                            <input type="password" id="wachtwoord" name="wachtwoord"  class="form-control rounded-0" placeholder="Wachtwoord">
                             <label for="wachtwoord">Wachtwoord</label>
                             <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
                         </div>
@@ -73,4 +73,9 @@ use App\Conn;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/animaties.js"></script>
 </body>
+<?php if (isset($error)): ?>
+    <div class="alert alert-danger">
+        <?php echo $error; ?>
+    </div>
+<?php endif; ?>
 </html>
