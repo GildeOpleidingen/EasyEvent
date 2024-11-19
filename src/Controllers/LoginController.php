@@ -20,14 +20,8 @@ class LoginController extends Controller
 public function invoke(){
     $reslt = $this->model->login(); 
 
-    if($reslt == "login")
-{
+    if($reslt == "login"){}
 
-}
-else
-{
-
-}
 }
 
 }
