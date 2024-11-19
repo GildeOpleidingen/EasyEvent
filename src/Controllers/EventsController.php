@@ -11,4 +11,6 @@ class EventsController extends Controller
 
         $this->render('events');
     }
+
+    
 }
