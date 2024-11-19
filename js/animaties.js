@@ -47,3 +47,30 @@ gsap.from(".register-btn", {
     ease: "elastic.out(1, 0.5)"
 });
 
+// Animate the form fields
+gsap.from(".form-label", {
+    y: 30,
+    opacity: 0,
+    duration: 0.8,
+    delay: 0.5,
+    stagger: 0.2,
+    ease: "power1.out"
+});
+
+gsap.from(".form-control", {
+    x: 100,
+    opacity: 0,
+    duration: 0.8,
+    delay: 0.7,
+    stagger: 0.2,
+    ease: "power2.out"
+});
+
+// Animate the image preview
+gsap.from("#imagePreview", {
+    scale: 0.5,
+    opacity: 0,
+    duration: 1,
+    delay: 1.5,
+    ease: "elastic.out(1, 0.5)"
+});
