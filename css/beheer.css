@@ -1,0 +1,8 @@
+a {
+    color: #083A54 !important;
+    transition: transform 0.3s ease;
+}
+
+a:hover {
+    transform: scale(1.04);
+}
