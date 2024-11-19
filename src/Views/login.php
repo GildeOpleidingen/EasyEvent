@@ -21,6 +21,9 @@ use App\Conn;
     <link rel="stylesheet" href="/css/nav.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- reCAPTCHA API -->
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 </head>
 <body>
     <div class="login container-fluid vh-100">
@@ -32,9 +35,9 @@ use App\Conn;
                 </div>
                 <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
                     <h1 class="text-center text-uppercase ms-6">Login</h1>
-                    <p class="text-center ms-6">met je gebruikersnaam en wachtwoord</p>
+                    <p class="text-center ms-6">met je emailadres en wachtwoord</p>
                     <form action="./login" method="POST" class="w-75">
-                        <div class="form-floating mb-3">
+                         <div class="form-floating mb-3">
                             <input type="email" id="emailadres" name="Gebruikersnaam" class="form-control rounded-0" placeholder="Emailadres">
                             <label for="emailadres">Emailadres</label>
                         </div>
@@ -43,7 +46,8 @@ use App\Conn;
                             <label for="wachtwoord">Wachtwoord</label>
                             <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
                         </div>
-                        <button class="btn btn-primary w-100 login-btn" type="submit">Login</button>
+                        <div class="g-recaptcha" data-sitekey="6LdGioIqAAAAAD_5qLYFbEWMExrDnDkzDWrw0M8o"></div>
+                        <button class="btn btn-primary w-100 login-btn mt-3" type="submit">Login</button>
                     </form>
                     <p class="text-center ms-6 mt-3">Geen account? Registreer <a href="./register">hier</a></p>
                 </div>
@@ -65,7 +69,6 @@ use App\Conn;
             }
         }
     </script>
-
 
     <script src="../../js/bootstrap.bundle.js"></script>
     <script src="../../js/script.js"></script>
