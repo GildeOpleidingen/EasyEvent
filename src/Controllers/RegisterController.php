@@ -25,6 +25,11 @@ class RegisterController extends Controller
         $rol = $_POST['rol'];
         $herhaalWachtwoord = $_POST['herhaalWachtwoord'];
 
+        if (empty($voornaam) || empty($achternaam) || empty($email) || empty($wachtwoord)|| empty($telefoon)|| empty($herhaalWachtwoord)) {
+            $this->render('register', ['error' => 'Alle velden zijn verplicht.']);
+            return;
+        }
+        
         $this->model = new RegisterModel();
       
         // Controleer of de gebruiker al bestaat
@@ -32,7 +37,7 @@ class RegisterController extends Controller
             $this->render('register', ['error' => 'gebruiker bestaat al']);
             return;
         }
-
+        
         if (trim($wachtwoord) === trim($herhaalWachtwoord)) {
             $this->model->register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $gebruikersnaam, $rol);
             $this->render('register', ['succes' => 'Gebruiker is geregistreerd.']);
@@ -40,10 +45,6 @@ class RegisterController extends Controller
             $this->render('register', ['error' => 'Gebruikersnaam en wachtwoord komen niet overeen.']);
             return;
         }
-        
-        
-
-
-        
+  
     }
 }
