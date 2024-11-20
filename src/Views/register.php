@@ -29,10 +29,11 @@
                 <div class="col-lg-6 d-flex align-items-center justify-content-center">
                     <img src="../../images/logo.png" alt="Easy Events logo" class="logo-img">
                 </div>
+                
                 <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
                     <h1 class="text-center text-uppercase ms-5">Registreer</h1>
                     <p class="text-center ms-5">Maak een nieuw account</p>
-
+                
                     <!-- Begin van de formulier met actie en methode -->
                     <form action="/register" method="POST" style="margin-left: 50px">
                         <div class="row mb-3">
@@ -97,18 +98,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/animaties.js"></script>
 </body>
-
-<?php if (isset($error)): ?>
-    <div class="alert alert-danger">
-        <?php echo $error; ?>
-    </div>
-<?php endif; ?>
-
-<?php if (isset($success)): ?>
-    <div class="alert alert-success">
-        <?php echo $success; ?>
-    </div>
-<?php endif; ?>
-
 
 </html>
