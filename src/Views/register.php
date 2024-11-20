@@ -29,14 +29,24 @@
                 <div class="col-lg-6 d-flex align-items-center justify-content-center">
                     <img src="../../images/logo.png" alt="Easy Events logo" class="logo-img">
                 </div>
-                
                 <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
                     <h1 class="text-center text-uppercase ms-5">Registreer</h1>
                     <p class="text-center ms-5">Maak een nieuw account</p>
-                
+
                     <!-- Begin van de formulier met actie en methode -->
                     <form action="/register" method="POST" style="margin-left: 50px">
                         <div class="row mb-3">
+                        <?php if (isset($error)): ?>
+                            <div class="alert alert-danger">
+                                <?php echo $error; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (isset($success)): ?>
+                            <div class="alert alert-success">
+                                <?php echo $success; ?>
+                            </div>
+                        <?php endif; ?>
                             <div class="col">
                                 <div class="form-floating">
                                     <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam" maxlength="70">
