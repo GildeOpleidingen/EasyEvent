@@ -40,7 +40,7 @@
                         <h5>Bekijk gebruikers</h5>
                     </div>
                 </a>
-                <a class="col-6 col-md-4 text-decoration-none" href="#">
+                <a class="col-6 col-md-4 text-decoration-none" href="./event-aanmaken">
                     <div class="p-4 bg-light text-center shadow-sm rounded">
                         <h5>Maak een nieuw evenement aan</h5>
                     </div>
