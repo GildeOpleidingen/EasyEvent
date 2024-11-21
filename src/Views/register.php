@@ -36,6 +36,17 @@
                     <!-- Begin van de formulier met actie en methode -->
                     <form action="/register" method="POST" style="margin-left: 50px">
                         <div class="row mb-3">
+                        <?php if (isset($error)): ?>
+                            <div class="alert alert-danger">
+                                <?php echo $error; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (isset($success)): ?>
+                            <div class="alert alert-success">
+                                <?php echo $success; ?>
+                            </div>
+                        <?php endif; ?>
                             <div class="col">
                                 <div class="form-floating">
                                     <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam" maxlength="70">
@@ -97,18 +108,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/animaties.js"></script>
 </body>
-
-<?php if (isset($error)): ?>
-    <div class="alert alert-danger">
-        <?php echo $error; ?>
-    </div>
-<?php endif; ?>
-
-<?php if (isset($success)): ?>
-    <div class="alert alert-success">
-        <?php echo $success; ?>
-    </div>
-<?php endif; ?>
-
 
 </html>
