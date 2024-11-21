@@ -52,7 +52,7 @@ use App\Conn;
                     <h3>Avondvierdaagse</h3>
                     <p>Enjoy different types of sports. Or even be a part of the event itself, all you gotta do is register yourself.</p>
                     <div class="more-info">
-                        <a href="#" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
+                        <a href="./event-info" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
                     </div>
                 </div>
 
