@@ -7,6 +7,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\LoginController;
 use App\Controllers\RegisterController;
 use App\Controllers\EventsController;
+use App\Controllers\EventInfoController;
 use App\Controllers\ProfielController;
 use App\Router;
 
