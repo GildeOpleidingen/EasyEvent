@@ -19,6 +19,7 @@ use App\Conn;
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/event-aanmaken.css">
 
 </head>
 <body>

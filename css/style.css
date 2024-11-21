@@ -45,7 +45,6 @@ body {
     }
 }
 
-
 .btn.btn-primary {
     background: linear-gradient(to right, #ff3921, #fe8d26);
     border: none;
@@ -60,6 +59,19 @@ body {
 
 .btn.btn-primary:hover {
     background-color: #ff3921;
+}
+
+.btn.btn-secondary {
+    background: #083A54 !important;
+    border: 0;
+    border-radius: 20px;
+    padding: 8px 20px;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    cursor: pointer !important;
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* hero section */
