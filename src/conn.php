@@ -44,9 +44,8 @@ class Conn
                 $this->conn = null;
                 error_log("Database connection failed: " . $e->getMessage(), 3, 'error.log');
             }
-        } else{
-            return $this->conn;
         }
+        return $this->conn;
     }
 
     // Disconnect from the database
