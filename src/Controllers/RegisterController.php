@@ -40,7 +40,7 @@ class RegisterController extends Controller
         
         if (trim($wachtwoord) === trim($herhaalWachtwoord)) {
             $this->model->register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $gebruikersnaam, $rol);
-            $this->render('register', ['succes' => 'Gebruiker is geregistreerd.']);
+            $this->render('login', ['succes' => 'Gebruiker is geregistreerd.']);
         } else {
             $this->render('register', ['error' => 'Gebruikersnaam en wachtwoord komen niet overeen.']);
             return;

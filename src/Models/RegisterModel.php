@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\DBModel;
+use App;
 
 class RegisterModel extends DBModel
 {
