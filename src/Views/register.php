@@ -34,7 +34,7 @@
                     <p class="text-center ms-5">Maak een nieuw account</p>
 
                     <!-- Begin van de formulier met actie en methode -->
-                    <form action="/register" method="POST" style="margin-left: 50px">
+                    <form action="/register" method="POST" style="margin-left: 50px" id="registratie">
                         <div class="row mb-3">
                         <?php if (isset($error)): ?>
                             <div class="alert alert-danger">
@@ -78,11 +78,27 @@
                             <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
                             <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('herhaalWachtwoord', this);"></i>
                         </div>
-
                         <!-- Verzendknop voor het formulier -->
-                        <button class="btn btn-primary w-100 register-btn" type="submit">Registreer</button>
+                        <button class="btn btn-primary w-100 register-btn" type="submit" onclick="handleRegistration(event)">Registreer</button>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code verificatie formulier -->
+    <div id="verificatie" style="display: none;">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
+                <h2>Code Verificatie</h2>
+                <form action="/verify-code" method="POST">
+                    <div class="form-floating mb-3">
+                        <input type="text" id="verificationCode" name="verificationCode" class="form-control rounded-0" placeholder="Code">
+                        <label for="verificationCode">Verificatiecode</label>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="backToRegistration()">Terug</button>
+                    <button type="submit" class="btn btn-primary">Verzenden</button>
+                </form>
             </div>
         </div>
     </div>
@@ -100,6 +116,33 @@
                 icon.classList.add("bi-eye-fill");
             }
         }
+
+
+        function showVerificatie() {
+            document.getElementById('registratie').style.display = 'none';
+            document.getElementById('verificatie').style.display = 'block';
+        }
+
+        function backToRegistratie() {
+            document.getElementById('verificatie').style.display = 'none';
+            document.getElementById('registratie').style.display = 'block';
+        }
+
+        function handleRegistration(event) {
+            event.preventDefault(); 
+    
+    const form = document.getElementById('registratie');
+
+
+        if (form.checkValidity()) {
+            showVerificatie(); 
+            form.submit();     
+        } else {
+
+            form.reportValidity();
+        }
+}
+
     </script>
 
     <script src="../../js/bootstrap.bundle.js"></script>

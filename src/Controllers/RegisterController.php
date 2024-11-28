@@ -18,6 +18,8 @@ class RegisterController extends Controller
 
     public function register()
     {
+        session_start();
+
         $voornaam = trim($_POST['voornaam']);
         $achternaam = trim($_POST['achternaam']);
         $telefoon = trim($_POST['telefoon']);
@@ -45,8 +47,12 @@ class RegisterController extends Controller
         }
 
         $this->model->register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $gebruikersnaam, $rol);
-
+    
         $verificationCode = $this->generateVerificationCode();
+        session_start(); 
+        $_SESSION['verificationCode'] = $verificationCode;
+
+
         if ($this->verifyEmail($email, $verificationCode)) {
             $this->render('login', ['succes' => 'Gebruiker is geregistreerd en een verificatiecode is verzonden.']);
         } else {
@@ -63,6 +69,8 @@ class RegisterController extends Controller
             $code .= $characters[rand(0, strlen($characters) - 1)];
 
         }
+        $_SESSION['verificationCode'] = $code;
+        echo $code;
         return $code;
     }
 
