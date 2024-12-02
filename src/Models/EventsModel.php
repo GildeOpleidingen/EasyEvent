@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App;
+use App\Conn;
+require __DIR__ . "/../Conn.php";
 
 class EventsModel
 {
@@ -18,6 +19,7 @@ class EventsModel
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $subEventID = [];
+    private $events = [];
 
     public function __construct(string $eventName, string $eventInfo, string $eventBanner, string $eventPlace, array $eventTime){
         $this->eventName = $eventName;
@@ -25,6 +27,9 @@ class EventsModel
         $this->eventBanner = $eventBanner;
         $this->eventPlace = $eventPlace;
         $this->eventTime[] = $eventTime;
+
+        $mysql = Conn::getInstance();
+        $pdo = $mysql->getPDO();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,22 +101,42 @@ class EventsModel
     // functions
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static function generateEvents(){
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+    
         $sql = "SELECT 
-            event.ID, 
-            event.Eventnaam, 
-            event.Info, 
-            `event-tijd`.Datum,
-            event.SubEvent
-        FROM 
-            event
-        JOIN 
-            `event-tijd` 
-        ON 
-            event.ID = `event-tijd`.Event_ID;";
-        
-        
+                    event.ID, 
+                    event.Eventnaam AS eventName, 
+                    event.Info AS eventInfo, 
+                    `event-tijd`.Datum AS eventDate,
+                    event.SubEvent AS subEventID
+                FROM 
+                    event
+                JOIN 
+                    `event-tijd` 
+                ON 
+                    event.ID = `event-tijd`.Event_ID;";
+    
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+    
+        $events = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $event = new self(
+                $row['eventName'],
+                $row['eventInfo'],
+                $row['eventPlace'],
+                $row['eventBanner'],
+                $row['$eventDate']
+            );
+            $event->eventID = $row['ID'];
+            $event->subEventID[] = $row['subEventID'];
+            $events[] = $event;
+
+            echo $event . ' event aangemaakt \n';
+        }
     }
-    public function sendEvent(int $subEventID = null)
+    public function sendEvent()
     {
         // SQL to insert event data into the `event` table, now including `subEvent`
         $sqlEvent = "INSERT INTO event (Eventnaam, Info, Plaats, Organisator, subEvent) VALUES (:eventName, :eventInfo, :eventPlace, :eventOrganizer, :subEvent)";
