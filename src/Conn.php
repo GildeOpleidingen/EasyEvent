@@ -7,79 +7,32 @@ use PDOException;
 
 class Conn
 {
-    private string $server;
-    private string $username;
-    private string $password;
-    private string $dbname;
-    private ?PDO $conn = null;
+    private string $server = "127.0.0.1";
+    private string $username = "easyevent";
+    private string $password = "a[ez-4.wBhai48M8";
+    private string $dbname = "easyevent";
+    private static ?Conn $instance = null;
+    private ?PDO $pdo;
 
     // Constructor to initialize the connection parameters
-    public function __construct(
-        string $server = "10.250.0.103",
-        string $username = "easyevent",
-        string $password = "a[ez-4.wBhai48M8",
-        string $dbname = "easyevent"
-    ) {
-        $this->server = $server;
-        $this->username = $username;
-        $this->password = $password;
-        $this->dbname = $dbname;
-
-        // Automatically attempt connection during instantiation
-        $this->connect();
-    }
-
-    // Get a connection
-    public function getConnection(): ?PDO
-    {
-        if ($this->conn == null) {
-            try {
-                $this->conn = new PDO(
-                    "mysql:host={$this->server};dbname={$this->dbname}",
-                    $this->username,
-                    $this->password
-                );
-                $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (PDOException $e) {
-                $this->conn = null;
-                error_log("Database connection failed: " . $e->getMessage(), 3, 'error.log');
-            }
+    private function __construct(){
+        try{
+            $this->pdo = new PDO("mysql:host=$this->server;dbname=$this->dbname", $this->username, $this->password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $ex){
+            echo $ex->getMessage();
         }
-        return $this->conn;
     }
 
-    // Disconnect from the database
-    public function disconnect(): void
-    {
-        $this->conn = null;
+    public static function getInstance() : Database{
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
-    // Reconnect with new credentials
-    public function reconnect(string $server, string $username, string $password, string $dbname): void
-    {
-        $this->server = $server;
-        $this->username = $username;
-        $this->password = $password;
-        $this->dbname = $dbname;
-
-        $this->connect();
+    public static function getPDO(){
+        return self::$instance->pdo;
     }
 }
-
-// Example Usage
-try {
-    // Instantiate with default parameters
-    $database = new Conn();
-    $conn = $database->getConnection();
-
-    if ($conn) {
-        echo "Connected successfully!";
-    } else {
-        echo "Connection failed. Check error.log for details.";
-    }
-
-    // Optional: Reconnect with new credentials
-    $database->reconnect("new_host", "new_user", "new_pass", "new_dbname");
-} catch (Exception $e) {
-    error_log("Unexpected error: " . $e->getMessage(), 3, 'error.log');
-}
+?>

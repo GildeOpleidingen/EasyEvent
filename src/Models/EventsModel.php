@@ -17,6 +17,7 @@ class EventsModel
     public $eventTime = [];   //[[startTime,endTime],[startTime,endTime]]
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
+    public $subEventID = [];
 
     public function __construct(string $eventName, string $eventInfo, string $eventBanner, string $eventPlace, array $eventTime){
         $this->eventName = $eventName;
@@ -53,6 +54,9 @@ class EventsModel
     public function addImage(array $image){
         $this->images[] = $image;
     }
+    public function addSubEventID(array $subEventID){
+        $this->subEventID[] = $this->subEventID;
+    }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Getters
@@ -84,19 +88,28 @@ class EventsModel
     public function getImages(){
         return $this->images;
     }
+    public function getSubEventID(){
+        return $this->subEventID;
+    }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // functions
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static function generateEvents(){
         $sql = "SELECT 
             event.ID, 
             event.Eventnaam, 
             event.Info, 
-            `event-tijd`.Datum
+            `event-tijd`.Datum,
+            event.SubEvent
         FROM 
             event
         JOIN 
             `event-tijd` 
         ON 
             event.ID = `event-tijd`.Event_ID;";
+        
+        
     }
     public function sendEvent(int $subEventID = null)
     {
