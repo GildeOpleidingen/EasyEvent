@@ -1,3 +1,7 @@
+.bg-light {
+    background-color: whitesmoke !important;
+}
+
 a {
     color: #083A54 !important;
     transition: transform 0.3s ease;

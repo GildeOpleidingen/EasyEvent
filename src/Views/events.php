@@ -41,6 +41,7 @@ use App\Conn;
                 <input type="text" id="search-input-top" class="form-control rounded-2 mb-3" placeholder="Search events..." onkeyup="filterEvents();">
                 <!-- Event Items -->
                 <div class="event-item" style="background-image: url('../../images/bokkenollen.jpg');">
+                    <div class="event-date">13 en 14 oktober 2024</div>
                     <h3>Bokkenollen</h3>
                     <p>Parcours met bokbier</p>
                     <div class="more-info">
@@ -49,6 +50,7 @@ use App\Conn;
                 </div>
 
                 <div class="event-item" style="background-image: url('../../images/4daagse.jpg');">
+                    <div class="event-date">Datum onbekend</div>
                     <h3>Avondvierdaagse</h3>
                     <p>Enjoy different types of sports. Or even be a part of the event itself, all you gotta do is register yourself.</p>
                     <div class="more-info">
@@ -57,6 +59,7 @@ use App\Conn;
                 </div>
 
                 <div class="event-item" style="background-image: url('../../images/music.jpg');">
+                    <div class="event-date">Datum onbekend</div>
                     <h3>Muziek</h3>
                     <p>Experience music events performed by great musical artists or even be part of the event itself by registering yourself.</p>
                     <div class="more-info">
@@ -65,6 +68,7 @@ use App\Conn;
                 </div>
 
                 <div class="event-item" style="background-image: url('../../images/tourism.jpg');">
+                    <div class="event-date">Datum onbekend</div>
                     <h3>Tourism</h3>
                     <p>Experience tourism events for a memorable time exploring various destinations and cultures.</p>
                     <div class="more-info">
