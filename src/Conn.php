@@ -29,25 +29,22 @@ class Conn
         $this->connect();
     }
 
-    // Establish a database connection
-    private function connect(): void
-    {
-        try {
-            $this->conn = new PDO(
-                "mysql:host={$this->server};dbname={$this->dbname}",
-                $this->username,
-                $this->password
-            );
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            $this->conn = null;
-            error_log("Database connection failed: " . $e->getMessage(), 3, 'error.log');
-        }
-    }
-
-    // Get the current connection
+    // Get a connection
     public function getConnection(): ?PDO
     {
+        if ($this->conn == null) {
+            try {
+                $this->conn = new PDO(
+                    "mysql:host={$this->server};dbname={$this->dbname}",
+                    $this->username,
+                    $this->password
+                );
+                $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                $this->conn = null;
+                error_log("Database connection failed: " . $e->getMessage(), 3, 'error.log');
+            }
+        }
         return $this->conn;
     }
 

@@ -84,4 +84,57 @@ class EventsModel
     public function getImages(){
         return $this->images;
     }
+
+    public static function generateEvents(){
+        $sql = "SELECT 
+            event.ID, 
+            event.Eventnaam, 
+            event.Info, 
+            `event-tijd`.Datum
+        FROM 
+            event
+        JOIN 
+            `event-tijd` 
+        ON 
+            event.ID = `event-tijd`.Event_ID;";
+    }
+    public function sendEvent(int $subEventID = null)
+    {
+        // SQL to insert event data into the `event` table, now including `subEvent`
+        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Plaats, Organisator, subEvent) VALUES (:eventName, :eventInfo, :eventPlace, :eventOrganizer, :subEvent)";
+
+        // Prepare and execute the query for the `event` table
+        $stmtEvent = $this->db->prepare($sqlEvent);
+        $stmtEvent->bindParam(':eventName', $this->eventName);
+        $stmtEvent->bindParam(':eventInfo', $this->eventInfo);
+        $stmtEvent->bindParam(':eventPlace', $this->eventPlace);
+        $stmtEvent->bindParam(':eventOrganizer', $this->eventOrganizer);
+        $stmtEvent->bindParam(':subEvent', $subEventID);
+
+        if ($stmtEvent->execute()) {
+            // Retrieve the last inserted ID for the event
+            $this->eventID = $this->db->lastInsertId();
+
+            // Insert each time slot into the `event-tijd` table
+            $sqlEventTime = "INSERT INTO `event-tijd` (Event_ID, Datum, BeginTijd, EindTijd) 
+                            VALUES (:eventID, :date, :startTime, :endTime)";
+
+            $stmtEventTime = $this->db->prepare($sqlEventTime);
+
+            foreach ($this->eventTime as $timeSlot) {
+                $stmtEventTime->bindParam(':eventID', $this->eventID);
+                $stmtEventTime->bindParam(':date', $timeSlot['date']);
+                $stmtEventTime->bindParam(':startTime', $timeSlot['startTime']);
+                $stmtEventTime->bindParam(':endTime', $timeSlot['endTime']);
+
+                if (!$stmtEventTime->execute()) {
+                    // Rollback if the time slot insertion fails
+                    return "The time slot insertion failed!";
+                }
+            }
+            return "Successfully added event and all time slots!";
+        }
+        return "Insertion into `event` table failed!";
+    }
+
 }

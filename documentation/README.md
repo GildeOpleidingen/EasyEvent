@@ -15,6 +15,8 @@ reCAPTCHA secret key: 6LdGioIqAAAAADKUk1OCnriLFES0x2-r5RmU29Gx
 
 Google Account: gilde.easyevents@gmail.com      sNKibJA2lcqPaA7
 
+App wachtwoord google PHPMailer: wiqabusqxmeeavnv
+
 
 ## Getting started
 
