@@ -23,7 +23,7 @@ class RegisterModel extends DBModel
     }
 
     //registreren gebruiker in de db
-    public function register($voornaam, $achternaam, $telefoon, $email, $wachtwoord)
+    public function register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $verif)
     {
         try {
             
