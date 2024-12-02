@@ -9,6 +9,14 @@ username: easyevent
 
 wachtwoord: a[ez-4.wBhai48M8
 
+reCAPTCHA sitekey: 6LdGioIqAAAAAD_5qLYFbEWMExrDnDkzDWrw0M8o
+
+reCAPTCHA secret key: 6LdGioIqAAAAADKUk1OCnriLFES0x2-r5RmU29Gx
+
+Google Account: gilde.easyevents@gmail.com      sNKibJA2lcqPaA7
+
+App wachtwoord google PHPMailer: wiqabusqxmeeavnv
+
 
 ## Getting started
 
