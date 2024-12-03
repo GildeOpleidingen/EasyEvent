@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Conn;
-require __DIR__ . "/../Conn.php";
+// require __DIR__ . "/../Conn.php";
 
 class EventsModel
 {
@@ -20,6 +20,8 @@ class EventsModel
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $subEventID = [];
     private $events = [];
+    private $mysql;
+    private $pdo;
 
     public function __construct(string $eventName, string $eventInfo, string $eventBanner, string $eventPlace, array $eventTime){
         $this->eventName = $eventName;
