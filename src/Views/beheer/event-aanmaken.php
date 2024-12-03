@@ -23,7 +23,7 @@
         <?php require_once('./parts/nav-beheer.html'); ?>
         <div class="container my-4 pb-4">
             <h1 class="text-center mb-4">Event Aanmaken</h1>
-            <form action="" class="needs-validation" novalidate method="POST">
+            <form action="<?php $_PHP_SELF ?>" class="needs-validation" novalidate method="POST">
                 <div class="mb-3">
                     <label for="eventTitle" class="form-label">Titel <span class="verplicht">*</span></label>
                     <input type="text" class="form-control" id="eventTitle" name="title" placeholder="Event titel" required>
@@ -63,9 +63,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="eventImage" class="form-label">Afbeelding <span class="verplicht">*</span></label>
-                    <input type="file" class="form-control" id="eventImage" name="image" accept="image/png" onchange="previewImage(event)" required>
-                    <div class="invalid-feedback">Kies een afbeelding.</div>
+                    <label for="eventBanner" class="form-label">Afbeelding <span class="verplicht">*</span></label>
+                    <input type="file" class="form-control" id="eventBanner" name="banner" accept="image/png" onchange="previewImage(event)" required>
+                    <div class="invalid-feedback">Kies een Banner.</div>
                 </div>
 
                 <div class="mb-3">
@@ -89,12 +89,13 @@
 </html>
 
 <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $name = htmlspecialchars($_POST['fname']);
-        if (empty($name)) {
-          echo "Name is empty";
-        } else {
-          echo $name;
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+        if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
+            $title = htmlspecialchars($_POST['title']);
         }
-      }
+        $description = htmlspecialchars($_POST['description']);
+        $date = htmlspecialchars($_POST['date']);
+        $location = htmlspecialchars($_POST['location']);
+        $banner = htmlspecialchars($_POST['banner']);
+    }
 ?>
