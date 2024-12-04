@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\BeheerBekijkEventController;
 use App\Controllers\BeheerEventAanmakenController;
 use App\Controllers\BeheerHomeController;
 use App\Controllers\HomeController;
@@ -23,6 +24,7 @@ $router->get('/event-info', EventInfoController::class, 'index');
 $router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index');
 $router->get('/beheer/', BeheerHomeController::class, 'index');
 $router->get('/profiel', ProfielController::class, 'index');
+$router->get('/beheer/bekijk-events', BeheerBekijkEventController::class, 'index');
 
 
 $router->dispatch();
