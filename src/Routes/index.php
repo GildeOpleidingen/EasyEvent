@@ -21,11 +21,11 @@ $router->post('/login', LoginController::class, 'login');
 $router->get('/logout', LoginController::class, 'logout');
 $router->get('/register', RegisterController::class, 'index');
 $router->post('/register', RegisterController::class, 'register');
+$router->post('/verify-code', RegisterController::class, 'verifyCode');
 $router->get('/events', EventsController::class, 'index');
 $router->get('/event-info', EventInfoController::class, 'index');
 $router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index');
 $router->get('/beheer/', BeheerHomeController::class, 'index');
 $router->get('/profiel', ProfielController::class, 'index');
-
 
 $router->dispatch();

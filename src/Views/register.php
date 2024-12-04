@@ -4,20 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- favicons -->
     <link rel="shortcut icon" href="/images/icons/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
     <link rel="shortcut icon" href="/images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
-
     <title>EasyEvents | Registreer</title>
-
-    <!-- css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/register.css">
     <link rel="stylesheet" href="/css/nav.css">
-
-    <!-- bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
@@ -29,127 +23,88 @@
                 <div class="col-lg-6 d-flex align-items-center justify-content-center">
                     <img src="../../images/logo.png" alt="Easy Events logo" class="logo-img">
                 </div>
+
                 <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
                     <h1 class="text-center text-uppercase ms-5">Registreer</h1>
                     <p class="text-center ms-5">Maak een nieuw account</p>
 
-                    <!-- Begin van de formulier met actie en methode -->
-                    <form action="/register" method="POST" style="margin-left: 50px" id="registratie">
-                        <div class="row mb-3">
-                        <?php if (isset($error)): ?>
-                            <div class="alert alert-danger">
-                                <?php echo $error; ?>
-                            </div>
-                        <?php endif; ?>
+                    <?php if (isset($succes)): ?>
+                        <div class="alert alert-success"><?php echo $succes; ?></div>
+                    <?php endif; ?>
 
-                        <?php if (isset($success)): ?>
-                            <div class="alert alert-success">
-                                <?php echo $success; ?>
-                            </div>
-                        <?php endif; ?>
-                            <div class="col">
-                                <div class="form-floating">
-                                    <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam" maxlength="70">
-                                    <label for="voornaam">Voornaam</label>
+                    <?php if (isset($error)): ?>
+                        <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <?php endif; ?>
+
+                    <?php if (!isset($step) || $step !== 'verify'): ?>
+                        <!-- Standaard registratieformulier -->
+                        <form action="/register" method="POST" id="registratie">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <div class="form-floating">
+                                        <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam" maxlength="70" required>
+                                        <label for="voornaam">Voornaam</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-floating">
+                                        <input type="text" id="achternaam" name="achternaam" class="form-control rounded-0" placeholder="Achternaam" maxlength="70" required>
+                                        <label for="achternaam">Achternaam</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="form-floating">
-                                    <input type="text" id="achternaam" name="achternaam" class="form-control rounded-0" placeholder="Achternaam" maxlength="70">
-                                    <label for="achternaam">Achternaam</label>
-                                </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="email" id="email" name="email" class="form-control rounded-0" placeholder="E-mailadres" maxlength="120" required>
+                                <label for="email">E-mailadres</label>
                             </div>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="email" id="email" name="email" class="form-control rounded-0" placeholder="E-mailadres" maxlength="120">
-                            <label for="email">E-mailadres</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="tel" id="telefoon" name="telefoon" class="form-control rounded-0" placeholder="Telefoonnummer" maxlength="20">
-                            <label for="telefoon">Telefoonnummer</label>
-                        </div>
-                        <div class="form-floating mb-3 position-relative">
-                            <input type="password" id="wachtwoord" name="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord" maxlength="100">
-                            <label for="wachtwoord">Wachtwoord</label>
-                            <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
-                        </div>
-                        <div class="form-floating mb-3 position-relative">
-                            <input type="password" id="herhaalWachtwoord" name="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord" maxlength="100">
-                            <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
-                            <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('herhaalWachtwoord', this);"></i>
-                        </div>
-                        <!-- Verzendknop voor het formulier -->
-                        <button class="btn btn-primary w-100 register-btn" type="submit" onclick="handleRegistration(event)">Registreer</button>
-                    </form>
+                            <div class="form-floating mb-3">
+                                <input type="tel" id="telefoon" name="telefoon" class="form-control rounded-0" placeholder="Telefoonnummer" maxlength="20" required>
+                                <label for="telefoon">Telefoonnummer</label>
+                            </div>
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="password" id="wachtwoord" name="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord" maxlength="100" required>
+                                <label for="wachtwoord">Wachtwoord</label>
+                                <i class="bi bi-eye-fill position-absolute icon-eye" data-toggle="wachtwoord"></i>
+                            </div>
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="password" id="herhaalWachtwoord" name="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord" maxlength="100" required>
+                                <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
+                                <i class="bi bi-eye-fill position-absolute icon-eye" data-toggle="herhaalWachtwoord"></i>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 register-btn">Registreer</button>
+                        </form>
+                    <?php endif; ?>
+
+                    <?php if (isset($step) && $step === 'verify'): ?>
+                        <!-- Verificatiecode formulier -->
+                        <h3 class="text-center mt-5">Verificatiecode</h3>
+                        <form action="/verify-code" method="POST">
+                            <div class="form-floating mb-3">
+                                <input type="text" id="verificationCode" name="verificationCode" class="form-control rounded-0" placeholder="Verificatiecode" required maxlength="6">
+                                <label for="verificationCode">Verificatiecode</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Verstuur</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Code verificatie formulier -->
-    <div id="verificatie" style="display: none;">
-        <div class="d-flex justify-content-center align-items-center vh-100">
-            <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
-                <h2>Code Verificatie</h2>
-                <form action="/verify-code" method="POST">
-                    <div class="form-floating mb-3">
-                        <input type="text" id="verificationCode" name="verificationCode" class="form-control rounded-0" placeholder="Code">
-                        <label for="verificationCode">Verificatiecode</label>
-                    </div>
-                    <button type="button" class="btn btn-secondary" onclick="backToRegistration()">Terug</button>
-                    <button type="submit" class="btn btn-primary">Verzenden</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <script>
-        function togglePasswordVisibility(inputId, icon) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.remove("bi-eye-fill");
-                icon.classList.add("bi-eye-slash-fill");
-            } else {
-                input.type = "password";
-                icon.classList.remove("bi-eye-slash-fill");
-                icon.classList.add("bi-eye-fill");
-            }
-        }
-
-
-        function showVerificatie() {
-            document.getElementById('registratie').style.display = 'none';
-            document.getElementById('verificatie').style.display = 'block';
-        }
-
-        function backToRegistratie() {
-            document.getElementById('verificatie').style.display = 'none';
-            document.getElementById('registratie').style.display = 'block';
-        }
-
-        function handleRegistration(event) {
-            event.preventDefault(); 
-    
-    const form = document.getElementById('registratie');
-
-
-        if (form.checkValidity()) {
-            showVerificatie(); 
-            form.submit();     
-        } else {
-
-            form.reportValidity();
-        }
-}
-
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.icon-eye').forEach(icon => {
+                icon.addEventListener('click', () => {
+                    const input = document.getElementById(icon.dataset.toggle);
+                    input.type = input.type === "password" ? "text" : "password";
+                    icon.classList.toggle('bi-eye-fill');
+                    icon.classList.toggle('bi-eye-slash-fill');
+                });
+            });
+        });
     </script>
-
     <script src="../../js/bootstrap.bundle.js"></script>
-    <script src="../../js/script.js"></script>
-    <script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="../../js/animaties.js"></script>
 </body>
 
 </html>
