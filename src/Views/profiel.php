@@ -36,17 +36,17 @@ use App\Conn;
                 <h2><?= $greeting, $email; ?></h2>
                 <div class="card position-relative mt-5">
                     <div class="card-body text-start ms-5">
-                        <img src="./images/profile.png" alt="Profile Picture" class="img-fluid rounded-circle position-absolute" style="width: 150px; height: 150px; top: -75px; left: calc(50% - 75px);">
+                        <img src="./images/output-onlinepngtools (5).png" alt="Profile Picture" class="img-fluid rounded-circle position-absolute profiel-foto" style="width: 150px; height: 150px; top: -75px; left: calc(50% - 75px);">
                         <div class="mt-5 pt-5 row">
                             <div class="col">
                                 <div class="contact-info">
                                     <p><i class="bi bi-envelope-fill me-2"></i>Email: <?php echo $email; ?></p>
-                                    <p><i class="bi bi-key-fill me-2"></i>Wachtwoord: ******</p>
+                                    <p><i class="bi bi-key-fill me-2"></i>Wachtwoord: ****** <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Wachtwoord wijzigen" onclick="openModalPassword();"></i></p>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <?= $phone; ?></p>
+                                    <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <?= $phone; ?> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></p>
                                 </div>
                                 <p></p>
                             </div>
@@ -60,6 +60,75 @@ use App\Conn;
             </div>
         </div>
     </div>
+
+    <!-- Password Modal -->
+    <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passwordModalLabel">Wachtwoord wijzigen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="passwordForm">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Huidig wachtwoord</label>
+                            <input type="password" class="form-control" id="currentPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Nieuw wachtwoord</label>
+                            <input type="password" class="form-control" id="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Bevestig nieuw wachtwoord</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Opslaan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phone Modal -->
+    <div class="modal fade" id="phoneModal" tabindex="-1" aria-labelledby="phoneModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="phoneModalLabel">Telefoonnummer wijzigen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="phoneForm">
+                        <div class="mb-3">
+                            <label for="newPhone" class="form-label">Nieuw telefoonnummer</label>
+                            <input type="text" class="form-control" id="newPhone" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Opslaan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModalPassword() {
+            var passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
+            passwordModal.show();
+        }
+
+        function openModalPhone() {
+            var phoneModal = new bootstrap.Modal(document.getElementById('phoneModal'));
+            phoneModal.show();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
 
     <script src="../../js/bootstrap.bundle.js"></script>
     <script src="../../js/script.js"></script>
