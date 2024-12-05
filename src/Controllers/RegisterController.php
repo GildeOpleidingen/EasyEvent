@@ -33,6 +33,7 @@ class RegisterController extends Controller
     $wachtwoord = trim($_POST['wachtwoord']);
     $gebruikersnaam = trim($_POST['gebruikersnaam']);
     $rol = trim($_POST['rol']);
+    $is_geverifieerd = trim($_POST['is_geverifieerd']);
     $herhaalWachtwoord = trim($_POST['herhaalWachtwoord']);
 
     // Controleer of alle velden ingevuld zijn
@@ -62,7 +63,8 @@ class RegisterController extends Controller
         'email' => $email,
         'wachtwoord' => $wachtwoord,
         'gebruikersnaam' => $gebruikersnaam,
-        'rol' => $rol
+        'rol' => $rol,
+        'is_geverifieerd' => $is_geverifieerd
     ];
 
     // Genereer en verstuur verificatiecode
@@ -145,7 +147,8 @@ class RegisterController extends Controller
                 $registerData['email'],
                 $registerData['wachtwoord'],
                 $registerData['gebruikersnaam'],
-                $registerData['rol']
+                $registerData['rol'],
+                $registerData['is_geverifieerd']
             );
 
             unset($_SESSION['register_data']);

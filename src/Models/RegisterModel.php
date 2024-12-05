@@ -30,10 +30,11 @@ class RegisterModel extends DBModel
             $hashedPassword = password_hash($wachtwoord, PASSWORD_DEFAULT);
 
             //bereid de query
-            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, Rol) 
-                                        VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :rol)");
+            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, Rol, is_geverifieerd) 
+                                        VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :rol, :is_geverifieerd)");
             
             $rol = "gebruiker";
+            $is_geverifieerd = "ja";
 
             $stmt->bindParam(':voornaam', $voornaam);
             $stmt->bindParam(':achternaam', $achternaam);
@@ -42,6 +43,7 @@ class RegisterModel extends DBModel
             $stmt->bindParam(':wachtwoord', $hashedPassword);
             $stmt->bindParam(':gebruikersnaam', $email);
             $stmt->bindParam('rol', $rol);
+            $stmt->bindparam('is_geverifieerd', $is_geverifieerd);
 
             $stmt->execute();
         } catch (\PDOException $e) {
