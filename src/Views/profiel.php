@@ -22,6 +22,19 @@ use App\Conn;
     <link rel="stylesheet" href="/css/nav.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .contact-info p {
+            display: flex;
+            align-items: center;
+        }
+        .contact-info i {
+            width: 20px;
+        }
+        .contact-info span.label {
+            display: inline-block;
+            width: 120px;
+        }
+    </style>
 </head>
 <body>
     <?php
@@ -34,19 +47,20 @@ use App\Conn;
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <h2><?= $greeting, $email; ?></h2>
+                
                 <div class="card position-relative mt-5">
                     <div class="card-body text-start ms-5">
                         <img src="./images/output-onlinepngtools (5).png" alt="Profile Picture" class="img-fluid rounded-circle position-absolute profiel-foto" style="width: 150px; height: 150px; top: -75px; left: calc(50% - 75px);">
                         <div class="mt-5 pt-5 row">
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-envelope-fill me-2"></i>Email: <?php echo $email; ?></p>
-                                    <p><i class="bi bi-key-fill me-2"></i>Wachtwoord: ****** <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Wachtwoord wijzigen" onclick="openModalPassword();"></i></p>
+                                    <p><i class="bi bi-envelope-fill me-2"></i><span class="label">Email:</span> test@test.nl</p>
+                                    <p><i class="bi bi-key-fill me-2"></i><span class="label">Wachtwoord:</span> ****** <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Wachtwoord wijzigen" onclick="openModalPassword();"></i></p>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <?= $phone; ?> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></p>
+                                    <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <span class="ms-4">+31 6 123456789</span> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></p>
                                 </div>
                                 <p></p>
                             </div>
