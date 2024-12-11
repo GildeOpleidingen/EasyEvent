@@ -69,7 +69,6 @@ use App\Conn;
                 </div>
                 <div class="mt-4">
                     <button class="btn btn-primary">Bekijk mijn Evenementen</button>
-                    <button class="btn btn-danger">Uitloggen</button>
                 </div>
             </div>
         </div>
