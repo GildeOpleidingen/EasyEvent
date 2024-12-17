@@ -44,6 +44,41 @@
                     <div class="invalid-feedback">Voer een beschrijving in.</div>
                 </div>
 
+                <div class="mb-3 row">
+                    <div class="col-md-6">
+                        <label for="eventCountry" class="form-label">Land <span class="verplicht">*</span></label>
+                        <select class="form-control" id="eventCountry" name="Country" required>
+                            <option value="Netherland" selected>Nederland</option>
+                            <option value="Belgium">België</option>
+                            <option value="Germany">Duitsland</option>
+                            <option value="Luxembourg">Luxemburg</option>
+                        </select>
+                        <div class="invalid-feedback">Voer een locatie in.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Placename" class="form-label">Plaatsnaam <span class="verplicht">*</span></label>
+                        <input type="text" class="form-control" id="eventPlacename" name="Placename" placeholder="Amsterdam" required>
+                        <div class="invalid-feedback">Voer een locatie in.</div>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-md-7">
+                        <label for="Streetname" class="form-label">Straatnaam</label>
+                        <input type="text" class="form-control" id="eventStreetname" name="Streetname" placeholder="Kalverstraat">
+                        <div class="invalid-feedback">Voer een locatie in.</div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="Address" class="form-label">Postcode <span class="verplicht">*</span></label>
+                        <input type="text" class="form-control" id="eventAddress" name="Address" placeholder="1234 AB" required>
+                        <div class="invalid-feedback">Voer een geldig postcode in.</div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="Homenumber" class="form-label">Huisnummer</label>
+                        <input type="text" class="form-control" id="eventHomenumber" name="Homenumber" placeholder="1">
+                        <div class="invalid-feedback">Voer een locatie in.</div>
+                    </div>
+                </div>
+                
                 <div class="mb-3 row" id="eventDatesContainer">
                     <div class="col-md-4">
                         <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
@@ -70,13 +105,7 @@
                 </button>
 
                 <div class="mb-3">
-                    <label for="eventLocation" class="form-label">Locatie <span class="verplicht">*</span></label>
-                    <input type="text" class="form-control" id="eventLocation" name="location" placeholder="Event locatie" required>
-                    <div class="invalid-feedback">Voer een locatie in.</div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="eventBanner" class="form-label">Afbeelding <span class="verplicht">*</span></label>
+                    <label for="eventBanner" class="form-label">Banner <span class="verplicht">*</span></label>
                     <input type="file" class="form-control" id="eventBanner" name="banner" accept="image/png" onchange="previewImage(event)" required>
                     <div class="invalid-feedback">Kies een Banner.</div>
                 </div>
@@ -196,8 +225,8 @@
 <?php
 $title;
 $description;
-$date;
-$location;
+$date = [];
+$location = [];
 $banner;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
