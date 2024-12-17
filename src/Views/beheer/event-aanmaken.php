@@ -244,7 +244,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
     //     $begintime = strtotime("",$replacementdate . ' ' . $_POST['begin-time']);
     //     $endtime = strtotime("",$replacementdate . ' ' . $_POST['end-time']);
     // }
+    if (isset($_POST['Country']) && $_POST['Country'] == "Netherland") {
+        if (isset($_POST['Address']) && !preg_match("/^\d{4}\s[A-Z]{2}$/", $_POST['Address'])) {
+            $errors[] = "De postcode moet bestaan uit 4 cijfers, een spatie, en 2 hoofdletters.";
+        }
+    } else if (isset($_POST['Country']) && $_POST['Country'] == "België"){
+        if (isset($_POST['Address']) && !preg_match("/^\d{4}$/", $_POST['Address'])) {
+            $errors[] = "De postcode moet bestaan uit 4 cijfers";
+        }
+    } else if (isset($_POST['Country']) && $_POST['Country'] == "Duitsland"){
+        if (isset($_POST['Address']) && !preg_match("/^\d{5}$/", $_POST['Address'])) {
+            $errors[] = "De postcode moet bestaan uit 5 cijfers";
+        }
+    } else if (isset($_POST['Country']) && $_POST['Country'] == "Luxemburg"){
+        if (isset($_POST['Address']) && !preg_match("/^\d{4}$/", $_POST['Address'])) {
+            $errors[] = "De postcode moet bestaan uit 4 cijfers";
+        }
+    }
     $location = htmlspecialchars($_POST['location']);
     $banner = htmlspecialchars($_POST['banner']);
 }
+
 ?>
