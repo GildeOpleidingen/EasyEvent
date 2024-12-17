@@ -236,11 +236,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['description'])) {
         $description = htmlspecialchars($_POST['description']);
     }
-    if ($_POST['date'] != null && $_POST['begin-time'] != null &&$_POST['end-time'] != null) {
-        $replacementdate = str_replace('/','-',$_POST['date']);
-        $begintime = strtotime("",$replacementdate . ' ' . $_POST['begin-time']);
-        $endtime = strtotime("",$replacementdate . ' ' . $_POST['end-time']);
+    if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['description'])) {
+        $description = htmlspecialchars($_POST['description']);
     }
+    // if ($_POST['date'] != null && $_POST['begin-time'] != null &&$_POST['end-time'] != null) {
+    //     $replacementdate = str_replace('/','-',$_POST['date']);
+    //     $begintime = strtotime("",$replacementdate . ' ' . $_POST['begin-time']);
+    //     $endtime = strtotime("",$replacementdate . ' ' . $_POST['end-time']);
+    // }
     $location = htmlspecialchars($_POST['location']);
     $banner = htmlspecialchars($_POST['banner']);
 }
