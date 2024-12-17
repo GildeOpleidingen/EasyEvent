@@ -17,6 +17,9 @@ Google Account: gilde.easyevents@gmail.com      sNKibJA2lcqPaA7
 
 App wachtwoord google PHPMailer: wiqabusqxmeeavnv
 
+**Uitvoeren in Ubuntu:**
+- composer require phpmailer/phpmailer
+-
 
 ## Getting started
 
