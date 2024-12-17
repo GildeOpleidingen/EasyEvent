@@ -212,7 +212,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
         $begintime = strtotime("",$replacementdate . ' ' . $_POST['begin-time']);
         $endtime = strtotime("",$replacementdate . ' ' . $_POST['end-time']);
     }
-    $date = htmlspecialchars($_POST['date']);
     $location = htmlspecialchars($_POST['location']);
     $banner = htmlspecialchars($_POST['banner']);
 }
