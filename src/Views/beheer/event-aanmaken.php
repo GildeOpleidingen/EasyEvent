@@ -89,13 +89,26 @@
 </html>
 
 <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
-        if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
-            $title = htmlspecialchars($_POST['title']);
-        }
-        $description = htmlspecialchars($_POST['description']);
-        $date = htmlspecialchars($_POST['date']);
-        $location = htmlspecialchars($_POST['location']);
-        $banner = htmlspecialchars($_POST['banner']);
+$title;
+$description;
+$date;
+$location;
+$banner;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+    if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
+        $title = htmlspecialchars($_POST['title']);
     }
+    if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['description'])) {
+        $description = htmlspecialchars($_POST['description']);
+    }
+    if ($_POST['date'] != null && $_POST['begin-time'] != null &&$_POST['end-time'] != null) {
+        $replacementdate = str_replace('/','-',$_POST['date']);
+        $begintime = strtotime("",$replacementdate . ' ' . $_POST['begin-time']);
+        $endtime = strtotime("",$replacementdate . ' ' . $_POST['end-time']);
+    }
+    $date = htmlspecialchars($_POST['date']);
+    $location = htmlspecialchars($_POST['location']);
+    $banner = htmlspecialchars($_POST['banner']);
+}
 ?>

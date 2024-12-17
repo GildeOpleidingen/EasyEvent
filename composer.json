@@ -8,5 +8,7 @@
         }
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "phpmailer/phpmailer": "dev-master"
+    }
 }
