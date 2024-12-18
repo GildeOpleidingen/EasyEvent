@@ -8,7 +8,7 @@ use App\Conn;
 class EventsModel
 {
     protected $db;
-    
+
     private int $eventID;
     public string $eventName;
     public string $eventInfo;
@@ -23,15 +23,17 @@ class EventsModel
     private $mysql;
     private $pdo;
 
-    public function __construct(string $eventName, string $eventInfo, string $eventBanner, string $eventPlace, array $eventTime){
+    public function __construct(string $eventName, string $eventInfo, string $eventPlace, array $eventTime, string $eventBanner){
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
-        $this->eventBanner = $eventBanner;
         $this->eventPlace = $eventPlace;
         $this->eventTime[] = $eventTime;
+        $this->eventBanner = $eventBanner;
 
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
+
+        // sql to push event to db
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

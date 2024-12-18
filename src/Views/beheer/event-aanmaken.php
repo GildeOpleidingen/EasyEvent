@@ -1,3 +1,6 @@
+<?php
+use App\Models\EventsModel;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -236,14 +239,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['description'])) {
         $description = htmlspecialchars($_POST['description']);
     }
-    if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['description'])) {
-        $description = htmlspecialchars($_POST['description']);
+    if (isset($_POST['Placename']) && preg_match("/[éèêüåäöçñØ,.\-\'&\s]/u",$_POST['Placename'])) {
+        $location = htmlspecialchars($_POST['Placename']);
     }
-    // if ($_POST['date'] != null && $_POST['begin-time'] != null &&$_POST['end-time'] != null) {
-    //     $replacementdate = str_replace('/','-',$_POST['date']);
-    //     $begintime = strtotime("",$replacementdate . ' ' . $_POST['begin-time']);
-    //     $endtime = strtotime("",$replacementdate . ' ' . $_POST['end-time']);
-    // }
+    if (isset($_POST['date[]']) && isset($_POST['begin-time[]']) && isset($_POST['end-time[]'])) {
+        // $date[] = $_POST['date[]']; 
+        
+    }
     if (isset($_POST['Country']) && $_POST['Country'] == "Netherland") {
         if (isset($_POST['Address']) && !preg_match("/^\d{4}\s[A-Z]{2}$/", $_POST['Address'])) {
             $errors[] = "De postcode moet bestaan uit 4 cijfers, een spatie, en 2 hoofdletters.";
@@ -261,8 +263,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
             $errors[] = "De postcode moet bestaan uit 4 cijfers";
         }
     }
-    $location = htmlspecialchars($_POST['location']);
-    $banner = htmlspecialchars($_POST['banner']);
+    if (isset($_POST['banner'])) {
+        // change image input too savable image string thingy
+    }
+    if (!$title && !$description && !$location && !$date && !$banner) {
+        $event = new EventsModel($title,$description,$location,$date,$banner);
+    }
 }
 
 ?>
