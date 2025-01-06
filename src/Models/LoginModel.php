@@ -46,5 +46,15 @@ class LoginModel{
     
         return 'invalid'; // Geen gebruikersnaam of wachtwoord opgegeven
     }
+
+    public function userExists($email)
+{
+    $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+
+    return $stmt->rowCount() > 0;
+}
+
     
 }

@@ -53,6 +53,7 @@ use App\Conn;
                             <label for="wachtwoord">Wachtwoord</label>
                             <i class="bi bi-eye-fill position-absolute icon-eye" onclick="togglePasswordVisibility('wachtwoord', this);"></i>
                         </div>
+                        <p class="text-left ms-6 mt-3"><a href="./forgot-password">Wachtwoord vergeten?</a></p>
                         <div class="g-recaptcha" data-sitekey="6LdGioIqAAAAAD_5qLYFbEWMExrDnDkzDWrw0M8o"></div>
                         <button class="btn btn-primary w-100 login-btn mt-3" type="submit">Login</button>
                     </form>
