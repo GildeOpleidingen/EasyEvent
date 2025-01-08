@@ -50,7 +50,7 @@ use App\Models\EventsModel;
                 <div class="mb-3 row">
                     <div class="col-md-6">
                         <label for="eventCountry" class="form-label">Land <span class="verplicht">*</span></label>
-                        <select class="form-control" id="eventCountry" name="Country" required>
+                        <select class="form-select" id="eventCountry" name="Country" required>
                             <option value="Netherland" selected>Nederland</option>
                             <option value="Belgium">België</option>
                             <option value="Germany">Duitsland</option>
@@ -117,13 +117,71 @@ use App\Models\EventsModel;
                     <img id="imagePreview" src="#" alt="Afbeelding Preview" class="img-fluid" style="display: none; max-height: 200px; object-fit: cover;">
                 </div>
 
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                        <label class="form-check-label" for="flexCheckChecked">
+                            Sub-events toevoegen
+                        </label>
+                    </div>
+                </div>
+
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
                     <button type="button" class="btn btn-primary" id="btnToForm2">Volgende</button>
                 </div>
             </form>
+            
+            <!-- Form 2: SubEvents aanmaken -->
+            <form id="formSubEvents" class="needs-validation" style="display: none;" novalidate>
+                <h2 class="text-center mb-4">Sub-Events Toevoegen</h2>
+                <div id="subEventsContainer">
+                    <!-- SubEvent 1 -->
+                    <div class="sub-event-item mb-4 border rounded p-3">
+                        <h5>Sub-Event 1</h5>
+                        <div class="mb-3">
+                            <label for="subEventTitle1" class="form-label">Titel <span class="verplicht">*</span></label>
+                            <input type="text" class="form-control" id="subEventTitle1" name="subevent-title[]" placeholder="Sub-event titel" required>
+                            <div class="invalid-feedback">Voer een titel in.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subEventDescription1" class="form-label">Beschrijving <span class="verplicht">*</span></label>
+                            <textarea class="form-control" id="subEventDescription1" name="subevent-description[]" rows="3" placeholder="Beschrijf het sub-event" required></textarea>
+                            <div class="invalid-feedback">Voer een beschrijving in.</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="subEventDate1" class="form-label">Datum <span class="verplicht">*</span></label>
+                                <input type="date" class="form-control" id="subEventDate1" name="subevent-date[]" required>
+                                <div class="invalid-feedback">Selecteer een datum.</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="subEventBeginTime1" class="form-label">Begintijd <span class="verplicht">*</span></label>
+                                <input type="time" class="form-control" id="subEventBeginTime1" name="subevent-begin-time[]" required>
+                                <div class="invalid-feedback">Voer een begintijd in.</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="subEventEndTime1" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+                                <input type="time" class="form-control" id="subEventEndTime1" name="subevent-end-time[]" required>
+                                <div class="invalid-feedback">Voer een eindtijd in.</div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger remove-sub-event"><i class="bi bi-trash"></i> Verwijder Sub-Event</button>
+                    </div>
+                </div>
 
-            <!-- Form 2: Activities -->
+                <!-- Button to Add Sub-Events -->
+                <button type="button" class="btn btn-outline-primary mb-3" id="addSubEvent">
+                    <i class="bi bi-plus"></i> Voeg Sub-Event Toe
+                </button>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" id="btnToFormEvent">Terug</button>
+                    <button type="submit" class="btn btn-primary" id="btnToForm3">Opslaan</button>
+                </div>
+            </form>
+
+            <!-- Form 3: Activities -->
             <form id="formActivities" class="needs-validation" style="display: none;" novalidate>
                 <div id="activitiesContainer">
                     <div class="activity-item mb-3">
@@ -152,7 +210,7 @@ use App\Models\EventsModel;
                 </button>
 
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" id="btnToForm1">Terug</button>
+                    <button type="button" class="btn btn-secondary" id="btnToFormActivity">Terug</button>
                     <button type="submit" class="btn btn-primary">Opslaan</button>
                 </div>
             </form>
@@ -163,7 +221,6 @@ use App\Models\EventsModel;
             <div id="successMessage" style="display:none;" class="alert alert-danger mt-4">
                 Fout bij het aanmaken van een evenement. Probeer het later opnieuw.
             </div>
-
         </div>
     </div>
 
@@ -175,53 +232,131 @@ use App\Models\EventsModel;
     <script src="/js/activiteit-toevoegen.js"></script>
 
     <script>
-        document.getElementById("btnToForm2").addEventListener("click", function() {
-            document.querySelector(".progress-bar").style.width = "100%";
-            document.querySelector(".progress-bar").textContent = "Stap 2 van de 2";
-        });
 
-        document.getElementById("btnToForm1").addEventListener("click", function() {
-            document.querySelector(".progress-bar").style.width = "50%";
-            document.querySelector(".progress-bar").textContent = "Stap 1 van de 2";
-        });
+    const progressBar = document.querySelector(".progress-bar");
 
-        document.getElementById("formActivities").addEventListener("submit", function() {
-            document.getElementById("successMessage").style.display = "block";
-        });
+    const formEventDetails = document.getElementById("formEventDetails");
+    const formSubEvents = document.getElementById("formSubEvents");
+    const formActivities = document.getElementById("formActivities");
+    const btnToForm2 = document.getElementById("btnToForm2");
+    const btnToFormEvent = document.getElementById("btnToFormEvent");
+    const btnToFormActivity = document.getElementById("btnToFormActivity");
+    const subEventCheckbox = document.getElementById("flexCheckChecked");
 
-        document.getElementById("addDay").addEventListener("click", function() {
-            const container = document.getElementById("eventDatesContainer");
-            const newDay = document.createElement("div");
-            newDay.classList.add("mb-3", "row");
-            newDay.innerHTML = `
+    function updateProgressBar(step) {
+        const totalSteps = subEventCheckbox.checked ? 3 : 2;
+        if (step === 1) {
+            progressBar.style.width = `${100 / totalSteps}%`;
+            progressBar.textContent = `Stap 1 van de ${totalSteps}`;
+        } else if (step === 2) {
+            progressBar.style.width = `${(2 * 100) / totalSteps}%`;
+            progressBar.textContent = `Stap 2 van de ${totalSteps}`;
+        } else if (step === 3 && totalSteps === 3) {
+            progressBar.style.width = "100%";
+            progressBar.textContent = "Stap 3 van de 3";
+        }
+    }
+
+    btnToForm2.addEventListener("click", () => {
+        if (subEventCheckbox.checked) {
+            formEventDetails.style.display = "none";
+            formSubEvents.style.display = "block";
+            formActivities.style.display = "none";
+            updateProgressBar(2);
+        } else {
+            formEventDetails.style.display = "none";
+            formSubEvents.style.display = "none";
+            formActivities.style.display = "block";
+            updateProgressBar(2);
+        }
+    });
+
+    btnToFormEvent.addEventListener("click", () => {
+        formSubEvents.style.display = "none";
+        formActivities.style.display = "none";
+        formEventDetails.style.display = "block";
+        updateProgressBar(1);
+    });
+
+    btnToFormActivity.addEventListener("click", () => {
+        formActivities.style.display = "block";
+        formSubEvents.style.display = "none";
+        formEventDetails.style.display = "none";
+        updateProgressBar(3);
+    });
+
+    subEventCheckbox.addEventListener("change", () => {
+        updateProgressBar(1);
+    });
+
+    const subEventsContainer = document.getElementById("subEventsContainer");
+    const addSubEventBtn = document.getElementById("addSubEvent");
+
+    let subEventCount = 1;
+
+    function createSubEventBlock(index) {
+        const subEventBlock = document.createElement("div");
+        subEventBlock.classList.add("sub-event-item", "mb-4", "border", "rounded", "p-3");
+        subEventBlock.innerHTML = `
+            <h5>Sub-Event ${index}</h5>
+            <div class="mb-3">
+                <label for="subEventTitle${index}" class="form-label">Titel <span class="verplicht">*</span></label>
+                <input type="text" class="form-control" id="subEventTitle${index}" name="subevent-title[]" placeholder="Sub-event titel" required>
+                <div class="invalid-feedback">Voer een titel in.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subEventDescription${index}" class="form-label">Beschrijving <span class="verplicht">*</span></label>
+                <textarea class="form-control" id="subEventDescription${index}" name="subevent-description[]" rows="3" placeholder="Beschrijf het sub-event" required></textarea>
+                <div class="invalid-feedback">Voer een beschrijving in.</div>
+            </div>
+            <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                    <input type="date" class="form-control" name="date[]" required>
+                    <label for="subEventDate${index}" class="form-label">Datum <span class="verplicht">*</span></label>
+                    <input type="date" class="form-control" id="subEventDate${index}" name="subevent-date[]" required>
                     <div class="invalid-feedback">Selecteer een datum.</div>
                 </div>
                 <div class="col-md-4">
-                    <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                    <input type="time" class="form-control" name="begin-time[]" required>
+                    <label for="subEventBeginTime${index}" class="form-label">Begintijd <span class="verplicht">*</span></label>
+                    <input type="time" class="form-control" id="subEventBeginTime${index}" name="subevent-begin-time[]" required>
                     <div class="invalid-feedback">Voer een begintijd in.</div>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <div class="flex-grow-1">
-                        <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" name="end-time[]" required>
-                        <div class="invalid-feedback">Voer een eindtijd in.</div>
-                    </div>
-                    <button class="btn btn-danger ms-2 remove-day"><i class="bi bi-trash text-white"></i></button>
+                <div class="col-md-4">
+                    <label for="subEventEndTime${index}" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+                    <input type="time" class="form-control" id="subEventEndTime${index}" name="subevent-end-time[]" required>
+                    <div class="invalid-feedback">Voer een eindtijd in.</div>
                 </div>
-            `;
-            container.appendChild(newDay);
-        });
+            </div>
+            <button type="button" class="btn btn-danger remove-sub-event">
+                <i class="bi bi-trash"></i> Verwijder Sub-Event
+            </button>
+        `;
+        return subEventBlock;
+    }
 
-        document.getElementById("eventDatesContainer").addEventListener("click", function(event) {
-            if (event.target.classList.contains("remove-day") || event.target.closest(".remove-day")) {
-                event.target.closest(".row").remove();
-            }
-        });
-    </script>
+    addSubEventBtn.addEventListener("click", () => {
+        subEventCount++;
+        const newSubEvent = createSubEventBlock(subEventCount);
+        subEventsContainer.appendChild(newSubEvent);
+    });
+
+    subEventsContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("remove-sub-event") || event.target.closest(".remove-sub-event")) {
+            event.target.closest(".sub-event-item").remove();
+        }
+    });
+
+    document.getElementById("formSubEvents").addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (!formSubEvents.checkValidity()) {
+            formSubEvents.classList.add("was-validated");
+            return;
+        }
+
+        alert("Sub-Events succesvol opgeslagen!");
+    });
+</script>
+
 </body>
 </html>
 
