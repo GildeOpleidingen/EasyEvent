@@ -25,9 +25,9 @@ $router->post('/register', RegisterController::class, 'register');
 $router->post('/verify-code', RegisterController::class, 'verifyCode');
 $router->get('/events', EventsController::class, 'index');
 $router->get('/event-info', EventInfoController::class, 'index');
-$router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index');
+$router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index', true);
 $router->get('/beheer/', BeheerHomeController::class, 'index');
-$router->get('/profiel', ProfielController::class, 'index');
-$router->get('/beheer/bekijk-events', BeheerBekijkEventController::class, 'index');
+$router->get('/profiel', ProfielController::class, 'index', true);
+$router->get('/beheer/bekijk-events', BeheerBekijkEventController::class, 'index', true);
 
 $router->dispatch();

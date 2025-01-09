@@ -6,15 +6,14 @@ class Router
 {
     protected $routes = [];
 
-    private function addRoute($route, $controller, $action, $method)
+    private function addRoute($route, $controller, $action, $method, $isLoggedIn = false)
     {
-
-        $this->routes[$method][$route] = ['controller' => $controller, 'action' => $action];
+        $this->routes[$method][$route] = ['controller' => $controller, 'action' => $action, 'isLoggedIn' => $isLoggedIn];
     }
 
-    public function get($route, $controller, $action)
+    public function get($route, $controller, $action, $isLoggedIn = false)
     {
-        $this->addRoute($route, $controller, $action, "GET");
+        $this->addRoute($route, $controller, $action, "GET", $isLoggedIn);
     }
 
     public function post($route, $controller, $action)
@@ -30,9 +29,16 @@ class Router
         if (array_key_exists($uri, $this->routes[$method])) {
             $controller = $this->routes[$method][$uri]['controller'];
             $action = $this->routes[$method][$uri]['action'];
-
-            $controller = new $controller();
-            $controller->$action();
+            $isLoggedIn = $this->routes[$method][$uri]['isLoggedIn'];
+            if ($isLoggedIn && isset($_SESSION['Gebruikersnaam']) && isset($_SESSION['GebruikersID']) ) {
+                $controller = new $controller();
+                $controller->$action();
+            } else if (!$isLoggedIn) {
+                $controller = new $controller();
+                $controller->$action();
+            } else {
+                header('Location: HTTP://' . $_SERVER["HTTP_HOST"] . "/login");
+            }
         } else {
             throw new \Exception("No route found for URI: $uri");
         }
