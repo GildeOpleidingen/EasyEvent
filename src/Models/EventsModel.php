@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Conn;
+use PDO;
 // require __DIR__ . "/../Conn.php";
 
 class EventsModel
@@ -18,7 +19,7 @@ class EventsModel
     public $eventTime = [];   //[[startTime,endTime],[startTime,endTime]]
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
-    public $subEventID = [];
+    public $hoofdEventID;
     private $events = [];
     private $mysql;
     private $pdo;
@@ -63,8 +64,8 @@ class EventsModel
     public function addImage(array $image){
         $this->images[] = $image;
     }
-    public function addSubEventID(array $subEventID){
-        $this->subEventID[] = $this->subEventID;
+    public function addSubEventID(array $hoofdEventID){
+        $this->hoofdEventID = $this->hoofdEventID;
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,8 +98,8 @@ class EventsModel
     public function getImages(){
         return $this->images;
     }
-    public function getSubEventID(){
-        return $this->subEventID;
+    public function getHoofdEventID(){
+        return $this->hoofdEventID;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,7 +135,7 @@ class EventsModel
                 $row['$eventDate']
             );
             $event->eventID = $row['ID'];
-            $event->subEventID[] = $row['subEventID'];
+            $event->hoofdEventID = $row['subEventID'];
             $events[] = $event;
 
             echo $event . ' event aangemaakt \n';
@@ -143,7 +144,7 @@ class EventsModel
     public function sendEvent()
     {
         // SQL to insert event data into the `event` table, now including `subEvent`
-        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Plaats, Organisator, subEvent) VALUES (:eventName, :eventInfo, :eventPlace, :eventOrganizer, :subEvent)";
+        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Plaats, Organisator, hoofdEvent) VALUES (:eventName, :eventInfo, :eventPlace, :eventOrganizer, :hoofdEvent)";
 
         // Prepare and execute the query for the `event` table
         $stmtEvent = $this->db->prepare($sqlEvent);
@@ -151,7 +152,7 @@ class EventsModel
         $stmtEvent->bindParam(':eventInfo', $this->eventInfo);
         $stmtEvent->bindParam(':eventPlace', $this->eventPlace);
         $stmtEvent->bindParam(':eventOrganizer', $this->eventOrganizer);
-        $stmtEvent->bindParam(':subEvent', $subEventID);
+        $stmtEvent->bindParam(':hoofdEvent', $this->hoofdEventID);
 
         if ($stmtEvent->execute()) {
             // Retrieve the last inserted ID for the event
