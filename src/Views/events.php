@@ -1,8 +1,16 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use App\Conn;
 use App\Models\EventsModel;
 
-$events = EventsModel::generateEvents();
+$eventModel = new EventsModel();
+$events = $eventModel->generateEvents();
+
+echo "Number of events: " . count($events) . "<br>";
+
 
 ?>
 
@@ -44,16 +52,21 @@ $events = EventsModel::generateEvents();
             <div class="container col-lg-8">
                 <input type="text" id="search-input-top" class="form-control rounded-2 mb-3" placeholder="Search events..." onkeyup="filterEvents();">
                 <!-- Event Items -->
-                <?php foreach ($events as $event): ?>
-                    <div class="event-item" style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>');">
-                        <div class="event-date"><?= htmlspecialchars($event->getEventTime()[0]['date'] ?? 'Datum onbekend') ?></div>
-                        <h3><?= htmlspecialchars($event->getEventName()) ?></h3>
-                        <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
-                        <div class="more-info">
-                            <a href="./event-info" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
+                <?php if (!empty($events)): ?>
+                    <?php foreach ($events as $event): ?>
+                        <div class="event-item" style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>');">
+                            <div class="event-date"><?= htmlspecialchars($event->getEventTime()[0]['date'] ?? 'Datum onbekend') ?></div>
+                            <h3><?= htmlspecialchars($event->getEventName()) ?></h3>
+                            <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
+                            <div class="more-info">
+                                <a href="#" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No events found.</p>
+                <?php endif; ?>
+
             </div>
 
             <!-- Calendar -->
