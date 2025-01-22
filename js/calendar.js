@@ -28,7 +28,7 @@ function loadCalendar(date) {
         const date = new Date(year, month, day);
         const isToday = today.toDateString() === date.toDateString();
 
-        dayHTML += `<td><div class="calendar-day${isToday ? ' today' : ''}">${day}</div></td>`;
+        dayHTML += `<td><div class="text-white calendar-day${isToday ? ' today' : ''}">${day}</div></td>`;
 
         if ((firstDayIndex + day) % 7 === 0) {
             dayHTML += "</tr><tr>";
