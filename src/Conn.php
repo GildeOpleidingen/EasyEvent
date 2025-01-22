@@ -8,7 +8,7 @@ namespace App
 
     class Conn
     {
-        private string $server = "127.0.0.1";
+        private string $server = "10.250.0.103"; // eerst was t 127.0.0.1 en dat is fout.
         private string $username = "easyevent";
         private string $password = "a[ez-4.wBhai48M8";
         private string $dbname = "easyevent";
