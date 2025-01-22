@@ -58,7 +58,7 @@ body {
 }
 
 .btn.btn-primary:hover {
-    background-color: #ff3921;
+    background-color: #ff3921 !important;
 }
 
 .btn.btn-secondary {
@@ -72,6 +72,16 @@ body {
     transition: background-color 0.3s ease;
     cursor: pointer !important;
     box-shadow: 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn.btn-danger {
+    background: #ff1717;
+    border: 0;
+    border-radius: 20px;
+    padding: 8px 20px;
+    color: #fff;
+    text-transform: uppercase;
+    cursor: pointer !important;
 }
 
 /* hero section */

@@ -39,9 +39,10 @@ use App\Conn;
                     </div>
                     
                     <div class="col-lg-6">
-                        <p class="lead text-start">Welkom op ons evenementenplatform! Hier kun je eenvoudig solliciteren voor allerlei soorten evenementen, van concerten en festivals tot workshops en conferenties. Blader door ons aanbod, kies de evenementen die jou interesseren en dien je aanmelding in met slechts een paar klikken. Het is jouw alles-in-één oplossing om nieuwe en spannende evenementen te ontdekken en mee te doen!</p>
-                        <p class="lead text-start">Of je nu op zoek bent naar een grote conferentie of een intieme workshop, ons platform maakt het aanmelden makkelijk en snel.</p>
+                        <p class="lead text-start">Welkom op onze evenementenapp! Met deze app kun je niet alleen eenvoudig aanmelden voor allerlei soorten evenementen, van concerten en festivals tot workshops en conferenties, maar ook je eigen evenementen toevoegen en beheren. Ontdek een breed scala aan activiteiten of creëer zelf een onvergetelijke ervaring voor anderen.</p>
+                        <p class="lead text-start">Of je nu op zoek bent naar een groot evenement of een intieme bijeenkomst, onze app biedt jou een alles-in-één oplossing om evenementen te ontdekken, organiseren en delen.</p>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -49,7 +50,6 @@ use App\Conn;
 
     <script src="../../js/bootstrap.bundle.js"></script>
     <script src="../../js/script.js"></script>
-    <script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/animaties.js"></script>
 </body>

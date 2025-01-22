@@ -1,5 +1,17 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use App\Conn;
+use App\Models\EventsModel;
+
+$eventModel = new EventsModel();
+$events = $eventModel->generateEvents();
+
+echo "Number of events: " . count($events) . "<br>";
+
+
 ?>
 
 <!DOCTYPE html>
@@ -40,37 +52,21 @@ use App\Conn;
             <div class="container col-lg-8">
                 <input type="text" id="search-input-top" class="form-control rounded-2 mb-3" placeholder="Search events..." onkeyup="filterEvents();">
                 <!-- Event Items -->
-                <div class="event-item" style="background-image: url('../../images/bokkenollen.jpg');">
-                    <h3>Bokkenollen</h3>
-                    <p>Parcours met bokbier</p>
-                    <div class="more-info">
-                        <a href="./event-info" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
-                    </div>
-                </div>
+                <?php if (!empty($events)): ?>
+                    <?php foreach ($events as $event): ?>
+                        <div class="event-item" style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>');">
+                            <div class="event-date"><?= htmlspecialchars($event->getEventTime()[0]['date'] ?? 'Datum onbekend') ?></div>
+                            <h3><?= htmlspecialchars($event->getEventName()) ?></h3>
+                            <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
+                            <div class="more-info">
+                                <a href="#" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No events found.</p>
+                <?php endif; ?>
 
-                <div class="event-item" style="background-image: url('../../images/4daagse.jpg');">
-                    <h3>Avondvierdaagse</h3>
-                    <p>Enjoy different types of sports. Or even be a part of the event itself, all you gotta do is register yourself.</p>
-                    <div class="more-info">
-                        <a href="./event-info" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
-                    </div>
-                </div>
-
-                <div class="event-item" style="background-image: url('../../images/music.jpg');">
-                    <h3>Muziek</h3>
-                    <p>Experience music events performed by great musical artists or even be part of the event itself by registering yourself.</p>
-                    <div class="more-info">
-                        <a href="#" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
-                    </div>
-                </div>
-
-                <div class="event-item" style="background-image: url('../../images/tourism.jpg');">
-                    <h3>Tourism</h3>
-                    <p>Experience tourism events for a memorable time exploring various destinations and cultures.</p>
-                    <div class="more-info">
-                        <a href="#" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
-                    </div>
-                </div>
             </div>
 
             <!-- Calendar -->
@@ -99,12 +95,6 @@ use App\Conn;
             </div>
 
         </div>
-
-        <!-- tab 2 - Eventinfo -->
-
-        <!-- tab 3 - Jouw evenementen -->
-
-        <!-- tab 4 - Profiel -->
     </div>
 
     <script src="../../js/bootstrap.bundle.js"></script>

@@ -1,0 +1,33 @@
+.profiel-foto {
+    background: linear-gradient(to right, #ff3921, #fe8d26) !important;
+    padding: 20px;
+    width: 100px;
+    height: 100px;
+    top: 0;
+    left: 10px;
+}
+
+.card {
+    border: 1px solid black !important;
+}
+
+@media (max-width: 768px) {
+    .profiel-foto {
+        position: relative;
+        margin: 10px auto;
+        display: block;
+    }
+
+    .card {
+        padding-left: 10px;
+        text-align: center;
+    }
+
+    .contact-info {
+        text-align: center;
+    }
+}
+
+.icon {
+    cursor: pointer;
+}
