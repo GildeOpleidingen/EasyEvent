@@ -19,7 +19,7 @@ class EventsModel
     public $eventTime = [];   //[[startTime,endTime],[startTime,endTime]]
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
-    public $subEventID = [];
+    public $hoofdEventID;
     private $events = [];
     private $mysql;
     private $pdo;
@@ -64,8 +64,8 @@ class EventsModel
     public function addImage(array $image){
         $this->images[] = $image;
     }
-    public function addSubEventID(array $subEventID){
-        $this->subEventID[] = $this->subEventID;
+    public function addHoofdEventID(array $hoofdEventID){
+        $this->hoofdEventID = $this->hoofdEventID;
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,8 +98,8 @@ class EventsModel
     public function getImages(){
         return $this->images;
     }
-    public function getSubEventID(){
-        return $this->subEventID;
+    public function getHoofdEventID(){
+        return $this->hoofdEventID;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,8 +112,8 @@ class EventsModel
         $sql = "SELECT 
                     event.ID, event.EventNaam AS eventName, 
                     event.Info AS eventInfo, 
-                    `event-tijd`.Datum AS eventDate, 
-                    event.Organisator, event.Banner, event.HoofdEvent AS subEventID
+                    `event-tijd`.Datum AS eventDate,
+                    event.HoofdEvent AS hoofdEventID
                 FROM 
                     event 
                 LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID";
@@ -134,7 +134,7 @@ class EventsModel
                 '' // eventBanner (mist in query)
             );
             $event->eventID = $row['ID'];
-            $event->subEventID[] = $row['subEventID'];
+            $event->hoofdEventID = $row['hoofdEventID'];
             $events[] = $event;
         }
     
@@ -143,8 +143,8 @@ class EventsModel
     
     public function sendEvent()
     {
-        // SQL to insert event data into the `event` table, now including `subEvent`
-        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Plaats, Organisator, subEvent) VALUES (:eventName, :eventInfo, :eventPlace, :eventOrganizer, :subEvent)";
+        // SQL to insert event data into the `event` table, now including `hoofdEvent`
+        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Plaats, Organisator, hoofdEvent) VALUES (:eventName, :eventInfo, :eventPlace, :eventOrganizer, :hoofdEvent)";
 
         // Prepare and execute the query for the `event` table
         $stmtEvent = $this->db->prepare($sqlEvent);
@@ -152,7 +152,7 @@ class EventsModel
         $stmtEvent->bindParam(':eventInfo', $this->eventInfo);
         $stmtEvent->bindParam(':eventPlace', $this->eventPlace);
         $stmtEvent->bindParam(':eventOrganizer', $this->eventOrganizer);
-        $stmtEvent->bindParam(':subEvent', $subEventID);
+        $stmtEvent->bindParam(':hoofdEvent', $this->hoofdEventID);
 
         if ($stmtEvent->execute()) {
             // Retrieve the last inserted ID for the event
