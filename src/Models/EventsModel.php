@@ -64,7 +64,7 @@ class EventsModel
     public function addImage(array $image){
         $this->images[] = $image;
     }
-    public function addSubEventID(array $hoofdEventID){
+    public function addHoofdEventID(array $hoofdEventID){
         $this->hoofdEventID = $this->hoofdEventID;
     }
     
@@ -114,7 +114,7 @@ class EventsModel
                     event.Eventnaam AS eventName, 
                     event.Info AS eventInfo, 
                     `event-tijd`.Datum AS eventDate,
-                    event.SubEvent AS subEventID
+                    event.HoofdEvent AS hoofdEventID
                 FROM 
                     event
                 JOIN 
@@ -135,7 +135,7 @@ class EventsModel
                 $row['$eventDate']
             );
             $event->eventID = $row['ID'];
-            $event->hoofdEventID = $row['subEventID'];
+            $event->hoofdEventID = $row['hoofdEventID'];
             $events[] = $event;
 
             echo $event . ' event aangemaakt \n';
@@ -143,7 +143,7 @@ class EventsModel
     }
     public function sendEvent()
     {
-        // SQL to insert event data into the `event` table, now including `subEvent`
+        // SQL to insert event data into the `event` table, now including `hoofdEvent`
         $sqlEvent = "INSERT INTO event (Eventnaam, Info, Plaats, Organisator, hoofdEvent) VALUES (:eventName, :eventInfo, :eventPlace, :eventOrganizer, :hoofdEvent)";
 
         // Prepare and execute the query for the `event` table
