@@ -233,31 +233,21 @@ $date = [];
 $location = [];
 $banner;
 
-//subevent
-$subEventCount = 0;
-$subEventTitle = [];
-$subEventDescription = [];
-$subEventDate = [];
-
-//activity
-$activityCount = 0;
-$activityTitle = [];
-$activityTime = [];
-$activityPeople = [];
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+    // checks for invalid input for title
     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
         $title = htmlspecialchars($_POST['title']);
     }
+    // checks for invalid input for description
     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['description'])) {
         $description = htmlspecialchars($_POST['description']);
     }
-    if (isset($_POST['Placename']) && preg_match("/[éèêüåäöçñØ,.\-\'&\s]/u",$_POST['Placename'])) {
+    // checks for invalid input for placename
+    if (isset($_POST['Placename[]']) && preg_match("/[éèêüåäöçñØ,.\-\'&\s]/u",$_POST['Placename[]'])) {
         $location = htmlspecialchars($_POST['Placename']);
     }
     if (isset($_POST['date[]']) && isset($_POST['begin-time[]']) && isset($_POST['end-time[]'])) {
-        // $date[] = $_POST['date[]'];    
+        
     }
     if (isset($_POST['Country']) && $_POST['Country'] == "Netherland") {
         if (isset($_POST['Address']) && !preg_match("/^\d{4}\s[A-Z]{2}$/", $_POST['Address'])) {
@@ -284,28 +274,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
         $event = new EventsModel($title,$description,$location,$date,$banner);
     }
 }
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["subEventTitle1"]) && isset($_POST["subEventDescription1"]) && isset($_POST["subEventDate1"])){
-    $subEventCount++;
-    if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['subEventTitle1'])) {
-        $title = htmlspecialchars($_POST['subEventTitle1']);
-    }
-    if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['subEventDescription1'])) {
-        $description = htmlspecialchars($_POST['subEventDescription1']);
-    }
-    if (isset($_POST['subEventDate[]']) && isset($_POST['subEventBeginTime[]']) && isset($_POST['subEventEndTime[]'])) {
-        // $date[] = $_POST['date[]'];    
-    }
-}
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["activityName1"]) && isset($_POST["activityTime1"]) && isset($_POST["activityPeople1"])){
-    $activityCount++;
-    if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['activityTitle'])) {
-        $description = htmlspecialchars($_POST['activityTitle']);
-    }
-    if (isset($_POST['activityTime1[]'])) {
-        // $date[] = $_POST['date[]'];    
-    }
-    if (isset($POST['activityPeople1'])){
-        $activityPeople = htmlspecialchars($_POST['activityPeople1']);
-    }
-}
+// if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["activityName1"]) && isset($_POST["activityTime1"]) && isset($_POST["activityPeople1"])){
+//     $activityCount++;
+//     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['activityTitle'])) {
+//         $description = htmlspecialchars($_POST['activityTitle']);
+//     }
+//     if (isset($_POST['activityTime1[]'])) {
+//         // $date[] = $_POST['date[]'];    
+//     }
+//     if (isset($POST['activityPeople1'])){
+//         $activityPeople = htmlspecialchars($_POST['activityPeople1']);
+//     }
+// }
 ?>
