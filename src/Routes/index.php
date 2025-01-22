@@ -11,6 +11,11 @@ use App\Controllers\EventInfoController;
 use App\Controllers\ProfielController;
 use App\Router;
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 $router = new Router();
 
 $router->get('/', HomeController::class, 'index');
@@ -26,8 +31,8 @@ $router->post('/register', RegisterController::class, 'register');
 $router->post('/verify-code', RegisterController::class, 'verifyCode');
 $router->get('/events', EventsController::class, 'index');
 $router->get('/event-info', EventInfoController::class, 'index');
-$router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index');
+$router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index', true);
 $router->get('/beheer/', BeheerHomeController::class, 'index');
-$router->get('/profiel', ProfielController::class, 'index');
+$router->get('/profiel', ProfielController::class, 'index', true);
 
 $router->dispatch();
