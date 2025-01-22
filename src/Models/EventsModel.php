@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Conn;
+use PDO;
 // require __DIR__ . "/../Conn.php";
 
 class EventsModel
@@ -23,7 +24,7 @@ class EventsModel
     private $mysql;
     private $pdo;
 
-    public function __construct(string $eventName, string $eventInfo, string $eventPlace, array $eventTime, string $eventBanner){
+    public function __construct(string $eventName = '', string $eventInfo = '', string $eventPlace = '', array $eventTime = [], string $eventBanner = ''){
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
         $this->eventPlace = $eventPlace;
@@ -104,42 +105,42 @@ class EventsModel
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // functions
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static function generateEvents(){
+    public static function generateEvents() {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
     
         $sql = "SELECT 
-                    event.ID, 
-                    event.Eventnaam AS eventName, 
+                    event.ID, event.EventNaam AS eventName, 
                     event.Info AS eventInfo, 
-                    `event-tijd`.Datum AS eventDate,
-                    event.SubEvent AS subEventID
+                    `event-tijd`.Datum AS eventDate, 
+                    event.Organisator, event.Banner, event.HoofdEvent AS subEventID
                 FROM 
-                    event
-                JOIN 
-                    `event-tijd` 
-                ON 
-                    event.ID = `event-tijd`.Event_ID;";
-    
+                    event 
+                LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID";
+
         $stmt = $db->prepare($sql);
-        $stmt->execute();
+
+        if (!$stmt->execute()) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
     
         $events = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $event = new self(
                 $row['eventName'],
                 $row['eventInfo'],
-                $row['eventPlace'],
-                $row['eventBanner'],
-                $row['$eventDate']
+                '', // eventLocatie (mist in query)
+                [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
+                '' // eventBanner (mist in query)
             );
             $event->eventID = $row['ID'];
             $event->subEventID[] = $row['subEventID'];
             $events[] = $event;
-
-            echo $event . ' event aangemaakt \n';
         }
+    
+        return $events;
     }
+    
     public function sendEvent()
     {
         // SQL to insert event data into the `event` table, now including `subEvent`
