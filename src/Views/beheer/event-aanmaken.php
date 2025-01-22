@@ -1,5 +1,8 @@
 <?php
 use App\Models\EventsModel;
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -232,7 +235,6 @@ use App\Models\EventsModel;
     <script src="/js/activiteit-toevoegen.js"></script>
 
     <script>
-
     const progressBar = document.querySelector(".progress-bar");
 
     const formEventDetails = document.getElementById("formEventDetails");
