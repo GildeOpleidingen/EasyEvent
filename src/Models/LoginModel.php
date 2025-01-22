@@ -2,49 +2,80 @@
 
 namespace App\Models;
 
-use App; 
+use PDO;
+use PDOException;
 
-
-class LoginModel{
-    
+class LoginModel
+{
     protected $db;
-    
+
     public function __construct()
     {
-        $this->db = new \PDO('mysql:host=10.250.0.103;dbname=easyevent', 'easyevent', 'a[ez-4.wBhai48M8', [
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-        ]);
+        try {
+            $this->db = new PDO('mysql:host=10.250.0.103;dbname=easyevent;charset=utf8mb4', 'easyevent', 'a[ez-4.wBhai48M8', [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ]);
+        } catch (PDOException $e) {
+            error_log("Database Connection Error: " . $e->getMessage());
+            die("Er is een fout opgetreden. Probeer het later opnieuw.");
+        }
     }
 
     public function login($gebruikersnaam, $wachtwoord)
     {
-        if (isset($gebruikersnaam) && isset($wachtwoord)) {
+        if (!empty($gebruikersnaam) && !empty($wachtwoord)) {
             try {
-                // Haal gebruiker op met de ingevoerde gebruikersnaam (email)
                 $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
                 $stmt->bindParam(':email', $gebruikersnaam);
                 $stmt->execute();
-    
-                $gebruiker = $stmt->fetch(\PDO::FETCH_ASSOC);
-    
+
+                $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
+
                 if ($gebruiker) {
-                    // Controleer het wachtwoord
                     if (password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
-                        $_SESSION['Gebruikersnaam'] = $gebruikersnaam;
+                        $_SESSION['Gebruikersnaam'] = $gebruiker['E-mail'];
                         $_SESSION['GebruikersID'] = $gebruiker['ID'];
                         return 'events';
                     } else {
-                        return 'invalid'; // Wachtwoord onjuist
+                        return 'invalid'; 
                     }
                 } else {
-                    return 'invalid'; // Geen gebruiker gevonden
+                    return 'invalid'; 
                 }
-            } catch (\PDOException $e) {
-                echo "Fout bij controleren of gebruiker bestaat: " . $e->getMessage();
+            } catch (PDOException $e) {
+                error_log("Fout bij inloggen: " . $e->getMessage());
+                return 'invalid';
             }
         }
-    
-        return 'invalid'; // Geen gebruikersnaam of wachtwoord opgegeven
+
+        return 'invalid'; 
     }
-    
+
+    public function getUserByEmail($email)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Fout bij het ophalen van gebruiker: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function userExists($email)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM `gebruiker` WHERE `E-mail` = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            return $stmt->fetchColumn() > 0;
+        } catch (PDOException $e) {
+            error_log("Fout bij het controleren van gebruiker: " . $e->getMessage());
+            return false;
+        }
+    }
 }
