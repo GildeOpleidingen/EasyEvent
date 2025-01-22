@@ -54,7 +54,7 @@ use App\Conn;
                         <div class="mt-5 pt-5 row">
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-envelope-fill me-2"></i><span class="label">Email:</span> test@test.nl</p>
+                                    <p><i class="bi bi-envelope-fill me-2"></i><span class="label">Email:</span> <?php $email?></p>
                                     <p><i class="bi bi-key-fill me-2"></i><span class="label">Wachtwoord:</span> ****** <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Wachtwoord wijzigen" onclick="openModalPassword();"></i></p>
                                 </div>
                             </div>
@@ -69,7 +69,6 @@ use App\Conn;
                 </div>
                 <div class="mt-4">
                     <button class="btn btn-primary">Bekijk mijn Evenementen</button>
-                    <button class="btn btn-danger">Uitloggen</button>
                 </div>
             </div>
         </div>
@@ -105,25 +104,26 @@ use App\Conn;
     </div>
 
     <!-- Phone Modal -->
-    <div class="modal fade" id="phoneModal" tabindex="-1" aria-labelledby="phoneModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="phoneModalLabel">Telefoonnummer wijzigen</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="phoneForm">
-                        <div class="mb-3">
-                            <label for="newPhone" class="form-label">Nieuw telefoonnummer</label>
-                            <input type="text" class="form-control" id="newPhone" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Opslaan</button>
-                    </form>
-                </div>
+<div class="modal fade" id="phoneModal" tabindex="-1" aria-labelledby="phoneModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="phoneModalLabel">Telefoonnummer wijzigen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="phoneForm" method="POST" action="/profiel">
+                    <div class="mb-3">
+                        <label for="newPhone" class="form-label">Nieuw telefoonnummer</label>
+                        <input type="text" class="form-control" id="newPhone" name="newPhone" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Opslaan</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
 
     <script>
         function openModalPassword() {
@@ -146,7 +146,6 @@ use App\Conn;
 
     <script src="../../js/bootstrap.bundle.js"></script>
     <script src="../../js/script.js"></script>
-    <script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/searchbar.js"></script>
     <script src="../../js/tabs.js"></script>
