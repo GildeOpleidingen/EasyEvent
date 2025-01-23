@@ -9,8 +9,6 @@ use App\Models\EventsModel;
 $eventModel = new EventsModel();
 $events = $eventModel->generateEvents();
 
-echo "Number of events: " . count($events) . "<br>";
-
 
 ?>
 
@@ -59,7 +57,9 @@ echo "Number of events: " . count($events) . "<br>";
                             <h3><?= htmlspecialchars($event->getEventName()) ?></h3>
                             <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
                             <div class="more-info">
-                                <a href="#" class="btn btn-primary">Leer meer <i class="bi bi-chevron-right text-white"></i></a>
+                                <a href="event-info?eventID=<?= htmlspecialchars($event->getEventID()) ?>" class="btn btn-primary">
+                                    Leer meer <i class="bi bi-chevron-right text-white"></i>
+                                </a>
                             </div>
                         </div>
                     <?php endforeach; ?>

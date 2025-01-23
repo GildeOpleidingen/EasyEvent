@@ -1,5 +1,27 @@
 <?php
     use App\Conn;
+    use App\Models\EventsModel;
+
+    if (isset($_GET['eventID'])) {
+        $eventID = intval($_GET['eventID']);
+        $eventModel = new EventsModel();
+
+        $events = $eventModel::generateEvents();
+        $event = null;
+
+        foreach ($events as $e) {
+            if ($e->getEventID() === $eventID) {
+                $event = $e;
+                break;
+            }
+        }
+
+        if (!$event) {
+            die('Event not found.');
+        }
+    } else {
+        die('No Event ID provided.');
+    }
 ?>
 
 <!DOCTYPE html>
@@ -28,26 +50,25 @@
         <?php require_once("./parts/nav.html"); ?>
         
         <div class="flex-grow-1 position-relative d-flex align-items-center justify-content-center rounded-4 mb-4 bg-dark" 
-            style="background-image: url('../../images/bokkenollen.jpg'); background-size: cover; background-position: center;">
+            style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>'); background-size: cover; background-position: center;">
             
             <div class="position-absolute top-0 start-0 w-100 h-100 rounded-4 bg-dark opacity-50"></div>
             
             <div class="position-relative text-white px-3">
-                <h1 class="text-uppercase underline mb-4">Bokkenollen</h1>
+                <h1 class="text-uppercase underline mb-4"><?= htmlspecialchars($event->getEventName()) ?></h1>
             </div>
             
-            <div class="position-absolute text-white top-50 end-0 translate-middle-y text-dark rounded-3 shadow p-4 me-4" style="width: 300px; background-color: rgba(254, 141, 38, 0.5);">
-                <h5 class="fw-bold">12 - 13 oktober 2024</h5>
-                <p class="mb-2">10:00 - 18:00</p>
-                <p class="small">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem similique unde eum aperiam praesentium nobis beatae facilis assumenda? Dolor, vitae? Esse, recusandae ipsa. Esse ipsum illum possimus quod minus est expedita modi fugiat natus?
+            <div class="position-absolute text-white top-50 end-0 translate-middle-y text-dark rounded-3 shadow p-4 me-4" style="width: 300px; min-height: ; background-color: rgba(254, 141, 38, 0.5);">
+                <h5 class="fw-bold">
+                    <?php
+                    $eventTime = $event->getEventTime()[0] ?? [];
+                    echo htmlspecialchars($eventTime['date'] ?? 'Datum onbekend');
+                    ?>
+                </h5>
+                <p class="mb-2">
+                    <?= htmlspecialchars($eventTime['startTime'] ?? '') ?> - <?= htmlspecialchars($eventTime['endTime'] ?? '') ?>
                 </p>
-                <p class="small mb-4">
-                    Tempora voluptates ipsa voluptatem earum pariatur, exercitationem omnis dicta? Omnis aliquid placeat alias accusantium cum!
-                </p>
-                <p class="small mb-4">
-                    Tempora voluptates ipsa voluptatem earum pariatur, exercitationem omnis dicta? Omnis aliquid placeat alias accusantium cum!
-                </p>
+                <p class="small"><?= htmlspecialchars($event->getEventInfo()); ?></p>
                 <a href="#" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#activiteiten">Bekijk de activiteiten</a>
             </div>
         </div>
