@@ -123,40 +123,6 @@ use App\Models\EventsModel;
                 </div>
             </form>
 
-            <!-- Form 2: Activities -->
-            <form id="formActivities" class="needs-validation" style="display: none;" novalidate>
-                <div id="activitiesContainer">
-                    <div class="activity-item mb-3">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="activityName1" class="form-label">Naam <span class="verplicht">*</span></label>
-                                <input type="text" class="form-control" id="activityName1" name="activity-name[]" placeholder="Activiteit Naam" required>
-                                <div class="invalid-feedback">Voer een activiteit naam in.</div>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="activityTime1" class="form-label">Tijd <span class="verplicht">*</span></label>
-                                <input type="time" class="form-control" id="activityTime1" name="activity-time[]" required>
-                                <div class="invalid-feedback">Voer een activiteit tijd in.</div>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="activityPeople1" class="form-label">Aantal personen <span class="verplicht">*</span></label>
-                                <input type="number" class="form-control" id="activityPeople1" name="activity-people[]" placeholder="Aantal personen" required>
-                                <div class="invalid-feedback">Voer het aantal personen in voor de activiteit</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" class="btn btn-outline-primary mb-3" id="addActivity">
-                    <i class="bi bi-plus"></i> Voeg Activiteit Toe
-                </button>
-
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" id="btnToForm1">Terug</button>
-                    <button type="submit" class="btn btn-primary">Opslaan</button>
-                </div>
-            </form>
-
             <div id="successMessage" style="display:none;" class="alert alert-success mt-4">
                 🎉 Evenement succesvol aangemaakt!
             </div>
@@ -175,20 +141,6 @@ use App\Models\EventsModel;
     <script src="/js/activiteit-toevoegen.js"></script>
 
     <script>
-        document.getElementById("btnToForm2").addEventListener("click", function() {
-            document.querySelector(".progress-bar").style.width = "100%";
-            document.querySelector(".progress-bar").textContent = "Stap 2 van de 2";
-        });
-
-        document.getElementById("btnToForm1").addEventListener("click", function() {
-            document.querySelector(".progress-bar").style.width = "50%";
-            document.querySelector(".progress-bar").textContent = "Stap 1 van de 2";
-        });
-
-        document.getElementById("formActivities").addEventListener("submit", function() {
-            document.getElementById("successMessage").style.display = "block";
-        });
-
         document.getElementById("addDay").addEventListener("click", function() {
             const container = document.getElementById("eventDatesContainer");
             const newDay = document.createElement("div");
@@ -273,17 +225,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
     if (!$title && !$description && !$location && !$date && !$banner) {
         $event = new EventsModel($title,$description,$location,$date,$banner);
     }
-}
-// if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["activityName1"]) && isset($_POST["activityTime1"]) && isset($_POST["activityPeople1"])){
-//     $activityCount++;
-//     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['activityTitle'])) {
-//         $description = htmlspecialchars($_POST['activityTitle']);
-//     }
-//     if (isset($_POST['activityTime1[]'])) {
-//         // $date[] = $_POST['date[]'];    
-//     }
-//     if (isset($POST['activityPeople1'])){
-//         $activityPeople = htmlspecialchars($_POST['activityPeople1']);
-//     }
-// }
+} 
 ?>

@@ -105,6 +105,15 @@ class EventsModel
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // functions
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function validateModel() {
+        // check model properties before query to the database
+        // Add errors to an errors array
+        // if errors array has been filled at the end.
+        // return errors
+        // else 
+        // return empty array
+    }
+
     public static function generateEvents() {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
@@ -141,7 +150,7 @@ class EventsModel
         return $events;
     }
     
-    public function sendEvent()
+    public static function sendEvent()
     {
         // SQL to insert event data into the `event` table, now including `hoofdEvent`
         $sqlEvent = "INSERT INTO event (Eventnaam, Info, Plaats, Organisator, hoofdEvent) VALUES (:eventName, :eventInfo, :eventPlace, :eventOrganizer, :hoofdEvent)";
