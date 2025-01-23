@@ -11,6 +11,8 @@ class UserModel
     private $telefoon;
     private $postcode;
     private $rol;
+    private $plaatsnaam; 
+    private $huisnummer; 
 
     public function __construct(array $data)
     {
@@ -21,6 +23,8 @@ class UserModel
         $this->telefoon = $data['Telefoon'] ?? null;
         $this->postcode = $data['Postcode'] ?? null;
         $this->rol = $data['Rol'] ?? null;
+        $this->plaatsnaam = $data['Plaatsnaam'] ?? null; 
+        $this->huisnummer = $data['Huisnummer'] ?? null; 
     }
 
     public function getId() { return $this->id; }
@@ -41,4 +45,10 @@ class UserModel
 
     public function getRol() { return $this->rol; }
     public function setRol($rol) { $this->rol = $rol; }
+
+    public function getPlaatsnaam() { return $this->plaatsnaam; }
+    public function setPlaatsnaam($plaatsnaam) { $this->plaatsnaam = $plaatsnaam; }
+
+    public function getHuisnummer() { return $this->huisnummer; }
+    public function setHuisnummerr($huisnummer) { $this->huisnummer = $huisnummer; }
 }
