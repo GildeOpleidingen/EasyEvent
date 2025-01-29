@@ -92,20 +92,12 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-<<<<<<< HEAD
     "stability-flags": {
         "phpmailer/phpmailer": 20
     },
-=======
-    "stability-flags": [],
->>>>>>> main
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-<<<<<<< HEAD
-    "plugin-api-version": "2.2.0"
-=======
     "plugin-api-version": "2.6.0"
->>>>>>> main
 }
