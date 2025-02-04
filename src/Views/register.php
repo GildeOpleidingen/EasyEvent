@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
@@ -25,19 +25,18 @@
                 </div>
 
                 <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
-                    <h1 class="text-center text-uppercase ms-5">Registreer</h1>
-                    <p class="text-center ms-5">Maak een nieuw account</p>
+                    <div id="registerForm" <?php if (isset($step) && $step === 'verify') echo 'style="display: none;"'; ?>>
+                        <h1 class="text-center text-uppercase ms-5">Registreer</h1>
+                        <p class="text-center ms-5">Maak een nieuw account</p>
 
-                    <?php if (isset($succes)): ?>
-                        <div class="alert alert-success"><?php echo $succes; ?></div>
-                    <?php endif; ?>
+                        <?php if (isset($succes)): ?>
+                            <div class="alert alert-success"><?php echo $succes; ?></div>
+                        <?php endif; ?>
 
-                    <?php if (isset($error)): ?>
-                        <div class="alert alert-danger"><?php echo $error; ?></div>
-                    <?php endif; ?>
+                        <?php if (isset($error)): ?>
+                            <div class="alert alert-danger"><?php echo $error; ?></div>
+                        <?php endif; ?>
 
-                    <?php if (!isset($step) || $step !== 'verify'): ?>
-                        <!-- Standaard registratieformulier -->
                         <form action="/register" method="POST" id="registratie">
                             <div class="row mb-3">
                                 <div class="col">
@@ -74,19 +73,20 @@
                             </div>
                             <button type="submit" class="btn btn-primary w-100 register-btn">Registreer</button>
                         </form>
-                    <?php endif; ?>
+                    </div>
 
-                    <?php if (isset($step) && $step === 'verify'): ?>
-                        <!-- Verificatiecode formulier -->
+                    <div id="verificationForm" <?php if (!isset($step) || $step !== 'verify') echo 'style="display: none;"'; ?>>
                         <h3 class="text-center mt-5">Verificatiecode</h3>
+                        <p class="text-center">Voer de code in die naar je e-mail is gestuurd.</p>
                         <form action="/verify-code" method="POST">
                             <div class="form-floating mb-3">
                                 <input type="text" id="verificationCode" name="verificationCode" class="form-control rounded-0" placeholder="Verificatiecode" required maxlength="6">
                                 <label for="verificationCode">Verificatiecode</label>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Verstuur</button>
+                            <button type="button" class="btn btn-secondary w-100 mt-2" id="backToRegister">Terug naar registratie</button>
                         </form>
-                    <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,6 +102,14 @@
                     icon.classList.toggle('bi-eye-slash-fill');
                 });
             });
+
+            const backToRegisterButton = document.getElementById("backToRegister");
+            if (backToRegisterButton) {
+                backToRegisterButton.addEventListener("click", () => {
+                    document.getElementById("verificationForm").style.display = "none";
+                    document.getElementById("registerForm").style.display = "block";
+                });
+            }
         });
     </script>
     <script src="../../js/bootstrap.bundle.js"></script>
