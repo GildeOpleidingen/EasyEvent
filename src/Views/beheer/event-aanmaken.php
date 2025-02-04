@@ -39,14 +39,14 @@ error_reporting(E_ALL);
             <!-- Form 1: Event Details -->
             <form id="formEventDetails" class="needs-validation" novalidate action="<?php $_PHP_SELF ?>" method="POST">
                 <div class="mb-3">
-                    <label for="eventTitle" class="form-label">Titel <span class="verplicht">*</span></label>
-                    <input type="text" class="form-control" id="eventTitle" name="title" placeholder="Event titel" required>
+                    <label for="eventName" class="form-label">Titel <span class="verplicht">*</span></label>
+                    <input type="text" class="form-control" id="eventTitle" name="eventNaam" placeholder="Event titel" required>
                     <div class="invalid-feedback">Voer een titel in.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="eventDescription" class="form-label">Beschrijving <span class="verplicht">*</span></label>
-                    <textarea class="form-control" id="eventDescription" name="description" rows="5" placeholder="Beschrijf het event" required></textarea>
+                    <textarea class="form-control" id="eventDescription" name="info" rows="5" placeholder="Beschrijf het event" required></textarea>
                     <div class="invalid-feedback">Voer een beschrijving in.</div>
                 </div>
 
@@ -88,20 +88,20 @@ error_reporting(E_ALL);
                 <div class="mb-3 row" id="eventDatesContainer">
                     <div class="col-md-4">
                         <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                        <input type="date" class="form-control" id="eventDate" name="date[]" required>
+                        <input type="date" class="form-control" id="eventDate" name="datum[]" required>
                         <div class="invalid-feedback">Selecteer een datum.</div>
                     </div>
 
                     <div class="col-md-4">
                         <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" id="eventBeginTime" name="begin-time[]" required>
+                        <input type="time" class="form-control" id="eventBeginTime" name="begin-tijd[]" required>
                         <div class="invalid-feedback">Voer een begintijd in.</div>
                     </div>
 
                     <div class="col-md-4 d-flex align-items-end">
                         <div class="flex-grow-1">
                             <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                            <input type="time" class="form-control" id="eventEndTime" name="end-time[]" required>
+                            <input type="time" class="form-control" id="eventEndTime" name="eind-tijd[]" required>
                             <div class="invalid-feedback">Voer een eindtijd in.</div>
                         </div>
                     </div>
@@ -122,41 +122,7 @@ error_reporting(E_ALL);
 
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
-                    <button type="button" class="btn btn-primary" id="btnToForm2">Volgende</button>
-                </div>
-            </form>
-
-            <!-- Form 2: Activities -->
-            <form id="formActivities" class="needs-validation" style="display: none;" novalidate>
-                <div id="activitiesContainer">
-                    <div class="activity-item mb-3">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="activityName1" class="form-label">Naam <span class="verplicht">*</span></label>
-                                <input type="text" class="form-control" id="activityName1" name="activity-name[]" placeholder="Activiteit Naam" required>
-                                <div class="invalid-feedback">Voer een activiteit naam in.</div>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="activityTime1" class="form-label">Tijd <span class="verplicht">*</span></label>
-                                <input type="time" class="form-control" id="activityTime1" name="activity-time[]" required>
-                                <div class="invalid-feedback">Voer een activiteit tijd in.</div>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="activityPeople1" class="form-label">Aantal personen <span class="verplicht">*</span></label>
-                                <input type="number" class="form-control" id="activityPeople1" name="activity-people[]" placeholder="Aantal personen" required>
-                                <div class="invalid-feedback">Voer het aantal personen in voor de activiteit</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" class="btn btn-outline-primary mb-3" id="addActivity">
-                    <i class="bi bi-plus"></i> Voeg Activiteit Toe
-                </button>
-
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" id="btnToForm1">Terug</button>
-                    <button type="submit" class="btn btn-primary">Opslaan</button>
+                    <button type="submit" class="btn btn-primary" id="btnToForm2">Volgende</button>
                 </div>
             </form>
 
@@ -178,20 +144,6 @@ error_reporting(E_ALL);
     <script src="/js/activiteit-toevoegen.js"></script>
 
     <script>
-        document.getElementById("btnToForm2").addEventListener("click", function() {
-            document.querySelector(".progress-bar").style.width = "100%";
-            document.querySelector(".progress-bar").textContent = "Stap 2 van de 2";
-        });
-
-        document.getElementById("btnToForm1").addEventListener("click", function() {
-            document.querySelector(".progress-bar").style.width = "50%";
-            document.querySelector(".progress-bar").textContent = "Stap 1 van de 2";
-        });
-
-        document.getElementById("formActivities").addEventListener("submit", function() {
-            document.getElementById("successMessage").style.display = "block";
-        });
-
         document.getElementById("addDay").addEventListener("click", function() {
             const container = document.getElementById("eventDatesContainer");
             const newDay = document.createElement("div");
