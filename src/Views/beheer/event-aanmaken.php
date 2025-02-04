@@ -178,7 +178,6 @@ error_reporting(E_ALL);
         });
     </script>
 </body>
-<<<<<<< HEAD
 </html>
 
 <?php
@@ -265,6 +264,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["activityName1"]) && is
     }
 }
 ?>
-=======
-</html>
->>>>>>> events_aanmaken
