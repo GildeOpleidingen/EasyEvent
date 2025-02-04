@@ -16,7 +16,7 @@ class EventsModel
     public string $eventPlace;
     private int $eventOrganizer;
     public string $eventBanner;
-    public $eventTime = [];   //[[startTime,endTime],[startTime,endTime]]
+    public $eventTime = [];   //[[date, startTime,endTime],[date, startTime,endTime]]
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $hoofdEventID;
@@ -106,12 +106,72 @@ class EventsModel
     // functions
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function validateModel() {
-        // check model properties before query to the database
-        // Add errors to an errors array
-        // if errors array has been filled at the end.
-        // return errors
-        // else 
-        // return empty array
+        //event
+        $title;
+        $description;
+        $date = [];
+        $location = [];
+        $banner;
+
+        // geen post gebruik eigenschappen van de class
+        if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+            // checks for invalid input for title
+            if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
+                $title = htmlspecialchars($_POST['title']);
+            }
+            // checks for invalid input for description
+            if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['description'])) {
+                $description = htmlspecialchars($_POST['description']);
+            }
+            // checks for invalid input for placename
+            if (isset($_POST['Placename[]']) && preg_match("/[éèêüåäöçñØ,.\-\'&\s]/u",$_POST['Placename[]'])) {
+                $location = htmlspecialchars($_POST['Placename']);
+            }
+            if (isset($_POST['date[]']) && isset($_POST['begin-time[]']) && isset($_POST['end-time[]'])) {
+                
+            }
+            if (isset($_POST['Country']) && $_POST['Country'] == "Netherland") {
+                if (isset($_POST['Address']) && !preg_match("/^\d{4}\s[A-Z]{2}$/", $_POST['Address'])) {
+                    $errors[] = "De postcode moet bestaan uit 4 cijfers, een spatie, en 2 hoofdletters.";
+                }
+            } else if (isset($_POST['Country']) && $_POST['Country'] == "België"){
+                if (isset($_POST['Address']) && !preg_match("/^\d{4}$/", $_POST['Address'])) {
+                    $errors[] = "De postcode moet bestaan uit 4 cijfers";
+                }
+            } else if (isset($_POST['Country']) && $_POST['Country'] == "Duitsland"){
+                if (isset($_POST['Address']) && !preg_match("/^\d{5}$/", $_POST['Address'])) {
+                    $errors[] = "De postcode moet bestaan uit 5 cijfers";
+                }
+            } else if (isset($_POST['Country']) && $_POST['Country'] == "Luxemburg"){
+                if (isset($_POST['Address']) && !preg_match("/^\d{4}$/", $_POST['Address'])) {
+                    $errors[] = "De postcode moet bestaan uit 4 cijfers";
+                }
+            }
+            if (isset($_POST['banner'])) {
+                $img = file_get_contents($_POST['banner']);
+                $data = base64_encode($img);
+            }
+            if (!$title && !$description && !$location && !$date && !$banner) {
+                $event = new EventsModel($title,$description,$location,$date,$banner);
+            }
+        } 
+
+        if (isset($_POST["activityName1"]) && isset($_POST["activityTime1"]) && isset($_POST["activityPeople1"])){
+            $activityCount++;
+            if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['activityTitle'])) {
+                $description = htmlspecialchars($_POST['activityTitle']);
+            }
+            if (isset($_POST['activityTime1[]'])) {
+                 $date[] = $_POST['date[]'];    
+            }
+            if (isset($POST['activityPeople1'])){
+                $activityPeople = htmlspecialchars($_POST['activityPeople1']);
+            }
+        } 
+        if (!empty($errors)) {
+            return $errors;
+        }
+        return [];
     }
 
     public static function generateEvents() {
@@ -150,34 +210,35 @@ class EventsModel
         return $events;
     }
     
-    public static function sendEvent()
+    public static function sendEvent(EventsModel $event)
     {
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+    
         // SQL to insert event data into the `event` table, now including `hoofdEvent`
-        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Plaats, Organisator, hoofdEvent) VALUES (:eventName, :eventInfo, :eventPlace, :eventOrganizer, :hoofdEvent)";
+        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Banner) VALUES (:eventName, :eventInfo, :eventBanner)";
 
         // Prepare and execute the query for the `event` table
-        $stmtEvent = $this->db->prepare($sqlEvent);
-        $stmtEvent->bindParam(':eventName', $this->eventName);
-        $stmtEvent->bindParam(':eventInfo', $this->eventInfo);
-        $stmtEvent->bindParam(':eventPlace', $this->eventPlace);
-        $stmtEvent->bindParam(':eventOrganizer', $this->eventOrganizer);
-        $stmtEvent->bindParam(':hoofdEvent', $this->hoofdEventID);
+        $stmtEvent = $db->prepare($sqlEvent);
+        $stmtEvent->bindParam(':eventName', $event->eventName);
+        $stmtEvent->bindParam(':eventInfo', $event->eventInfo);
+        $stmtEvent->bindParam(':eventBanner', $event->eventBanner);
 
         if ($stmtEvent->execute()) {
             // Retrieve the last inserted ID for the event
-            $this->eventID = $this->db->lastInsertId();
+            $event->eventID = $db->lastInsertId();
 
             // Insert each time slot into the `event-tijd` table
             $sqlEventTime = "INSERT INTO `event-tijd` (Event_ID, Datum, BeginTijd, EindTijd) 
-                            VALUES (:eventID, :date, :startTime, :endTime)";
+                            VALUES (:eventID, :date, :BeginTijd, :EindTijd)";
 
-            $stmtEventTime = $this->db->prepare($sqlEventTime);
+            $stmtEventTime = $db->prepare($sqlEventTime);
 
-            foreach ($this->eventTime as $timeSlot) {
-                $stmtEventTime->bindParam(':eventID', $this->eventID);
+            foreach ($event->eventTime as $timeSlot) {
+                $stmtEventTime->bindParam(':eventID', $event->eventID);
                 $stmtEventTime->bindParam(':date', $timeSlot['date']);
-                $stmtEventTime->bindParam(':startTime', $timeSlot['startTime']);
-                $stmtEventTime->bindParam(':endTime', $timeSlot['endTime']);
+                $stmtEventTime->bindParam(':BeginTijd', $timeSlot['BeginTijd']);
+                $stmtEventTime->bindParam(':EindTijd', $timeSlot['EindTijd']);
 
                 if (!$stmtEventTime->execute()) {
                     // Rollback if the time slot insertion fails

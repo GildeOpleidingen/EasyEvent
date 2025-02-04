@@ -36,14 +36,14 @@ use App\Models\EventsModel;
             <!-- Form 1: Event Details -->
             <form id="formEventDetails" class="needs-validation" novalidate action="<?php $_PHP_SELF ?>" method="POST">
                 <div class="mb-3">
-                    <label for="eventTitle" class="form-label">Titel <span class="verplicht">*</span></label>
-                    <input type="text" class="form-control" id="eventTitle" name="title" placeholder="Event titel" required>
+                    <label for="eventName" class="form-label">Titel <span class="verplicht">*</span></label>
+                    <input type="text" class="form-control" id="eventTitle" name="eventNaam" placeholder="Event titel" required>
                     <div class="invalid-feedback">Voer een titel in.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="eventDescription" class="form-label">Beschrijving <span class="verplicht">*</span></label>
-                    <textarea class="form-control" id="eventDescription" name="description" rows="5" placeholder="Beschrijf het event" required></textarea>
+                    <textarea class="form-control" id="eventDescription" name="info" rows="5" placeholder="Beschrijf het event" required></textarea>
                     <div class="invalid-feedback">Voer een beschrijving in.</div>
                 </div>
 
@@ -85,20 +85,20 @@ use App\Models\EventsModel;
                 <div class="mb-3 row" id="eventDatesContainer">
                     <div class="col-md-4">
                         <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                        <input type="date" class="form-control" id="eventDate" name="date[]" required>
+                        <input type="date" class="form-control" id="eventDate" name="datum[]" required>
                         <div class="invalid-feedback">Selecteer een datum.</div>
                     </div>
 
                     <div class="col-md-4">
                         <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" id="eventBeginTime" name="begin-time[]" required>
+                        <input type="time" class="form-control" id="eventBeginTime" name="begin-tijd[]" required>
                         <div class="invalid-feedback">Voer een begintijd in.</div>
                     </div>
 
                     <div class="col-md-4 d-flex align-items-end">
                         <div class="flex-grow-1">
                             <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                            <input type="time" class="form-control" id="eventEndTime" name="end-time[]" required>
+                            <input type="time" class="form-control" id="eventEndTime" name="eind-tijd[]" required>
                             <div class="invalid-feedback">Voer een eindtijd in.</div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@ use App\Models\EventsModel;
 
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
-                    <button type="button" class="btn btn-primary" id="btnToForm2">Volgende</button>
+                    <button type="submit" class="btn btn-primary" id="btnToForm2">Volgende</button>
                 </div>
             </form>
 
@@ -176,54 +176,3 @@ use App\Models\EventsModel;
     </script>
 </body>
 </html>
-
-<?php
-//event
-$title;
-$description;
-$date = [];
-$location = [];
-$banner;
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
-    // checks for invalid input for title
-    if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
-        $title = htmlspecialchars($_POST['title']);
-    }
-    // checks for invalid input for description
-    if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['description'])) {
-        $description = htmlspecialchars($_POST['description']);
-    }
-    // checks for invalid input for placename
-    if (isset($_POST['Placename[]']) && preg_match("/[éèêüåäöçñØ,.\-\'&\s]/u",$_POST['Placename[]'])) {
-        $location = htmlspecialchars($_POST['Placename']);
-    }
-    if (isset($_POST['date[]']) && isset($_POST['begin-time[]']) && isset($_POST['end-time[]'])) {
-        
-    }
-    if (isset($_POST['Country']) && $_POST['Country'] == "Netherland") {
-        if (isset($_POST['Address']) && !preg_match("/^\d{4}\s[A-Z]{2}$/", $_POST['Address'])) {
-            $errors[] = "De postcode moet bestaan uit 4 cijfers, een spatie, en 2 hoofdletters.";
-        }
-    } else if (isset($_POST['Country']) && $_POST['Country'] == "België"){
-        if (isset($_POST['Address']) && !preg_match("/^\d{4}$/", $_POST['Address'])) {
-            $errors[] = "De postcode moet bestaan uit 4 cijfers";
-        }
-    } else if (isset($_POST['Country']) && $_POST['Country'] == "Duitsland"){
-        if (isset($_POST['Address']) && !preg_match("/^\d{5}$/", $_POST['Address'])) {
-            $errors[] = "De postcode moet bestaan uit 5 cijfers";
-        }
-    } else if (isset($_POST['Country']) && $_POST['Country'] == "Luxemburg"){
-        if (isset($_POST['Address']) && !preg_match("/^\d{4}$/", $_POST['Address'])) {
-            $errors[] = "De postcode moet bestaan uit 4 cijfers";
-        }
-    }
-    if (isset($_POST['banner'])) {
-        $img = file_get_contents($_POST['banner']);
-        $data = base64_encode($img);
-    }
-    if (!$title && !$description && !$location && !$date && !$banner) {
-        $event = new EventsModel($title,$description,$location,$date,$banner);
-    }
-} 
-?>

@@ -118,25 +118,3 @@ use App\Models\EventsModel;
     </script>
 </body>
 </html>
-
-<?php
-//event
-$title;
-$description;
-$date = [];
-$location = [];
-$banner;
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["activityName1"]) && isset($_POST["activityTime1"]) && isset($_POST["activityPeople1"])){
-     $activityCount++;
-     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['activityTitle'])) {
-         $description = htmlspecialchars($_POST['activityTitle']);
-     }
-     if (isset($_POST['activityTime1[]'])) {
-          $date[] = $_POST['date[]'];    
-     }
-     if (isset($POST['activityPeople1'])){
-         $activityPeople = htmlspecialchars($_POST['activityPeople1']);
-     }
-    } 
-?>
