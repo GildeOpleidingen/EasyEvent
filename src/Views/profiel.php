@@ -62,7 +62,15 @@ use App\Conn;
                                 <div class="contact-info">
                                     <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <span class="ms-4">+31 6 123456789</span> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></p>
                                 </div>
-                                <p></p>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col">
+                                <div class="contact-info">
+                                    <p><i class="bi bi-house-fill me-2"></i><span class="label">Postcode:</span> 1234 AB <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Adres wijzigen" onclick="openModalAddress();"></i></p>
+                                    <p><i class="bi bi-geo-alt-fill me-2"></i><span class="label">Plaatsnaam:</span> Amsterdam</p>
+                                    <p><i class="bi bi-door-open-fill me-2"></i><span class="label">Huisnummer:</span> 56</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -104,26 +112,54 @@ use App\Conn;
     </div>
 
     <!-- Phone Modal -->
-<div class="modal fade" id="phoneModal" tabindex="-1" aria-labelledby="phoneModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="phoneModalLabel">Telefoonnummer wijzigen</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="phoneForm" method="POST" action="/profiel">
-                    <div class="mb-3">
-                        <label for="newPhone" class="form-label">Nieuw telefoonnummer</label>
-                        <input type="text" class="form-control" id="newPhone" name="newPhone" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Opslaan</button>
-                </form>
+    <div class="modal fade" id="phoneModal" tabindex="-1" aria-labelledby="phoneModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="phoneModalLabel">Telefoonnummer wijzigen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="phoneForm" method="POST" action="/profiel">
+                        <div class="mb-3">
+                            <label for="newPhone" class="form-label">Nieuw telefoonnummer</label>
+                            <input type="text" class="form-control" id="newPhone" name="newPhone" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Opslaan</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Address Modal -->
+    <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addressModalLabel">Adres wijzigen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addressForm" method="POST" action="/profiel">
+                        <div class="mb-3">
+                            <label for="newPostcode" class="form-label">Postcode</label>
+                            <input type="text" class="form-control" id="newPostcode" name="newPostcode" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newCity" class="form-label">Plaatsnaam</label>
+                            <input type="text" class="form-control" id="newCity" name="newCity" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newHouseNumber" class="form-label">Huisnummer</label>
+                            <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Opslaan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function openModalPassword() {
@@ -134,6 +170,11 @@ use App\Conn;
         function openModalPhone() {
             var phoneModal = new bootstrap.Modal(document.getElementById('phoneModal'));
             phoneModal.show();
+        }
+
+        function openModalAddress() {
+            var addressModal = new bootstrap.Modal(document.getElementById('addressModal'));
+            addressModal.show();
         }
 
         document.addEventListener('DOMContentLoaded', function () {
