@@ -112,12 +112,56 @@ class RegisterController extends Controller
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
-            $mail->setFrom('gilde.easyevents@gmail.com', 'Mailer');
+            $mail->setFrom('gilde.easyevents@gmail.com', 'EasyEvents');
             $mail->addAddress($email);
 
             $mail->isHTML(true);
             $mail->Subject = 'Verificatiecode';
-            $mail->Body = "Uw verificatiecode is: $verificationCode";
+            $mail->Body = "
+                            <html>
+                                <head>
+                                    <style>
+                                        body {
+                                            font-family: Arial, sans-serif;
+                                            background-color: #f4f4f4;
+                                            padding: 20px;
+                                        }
+                                        .container {
+                                            max-width: 500px;
+                                            background-color: #fff;
+                                            padding: 20px;
+                                            border-radius: 10px;
+                                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                                            text-align: center;
+                                        }
+                                        .code {
+                                            font-size: 24px;
+                                            font-weight: bold;
+                                            color: #4CAF50;
+                                            padding: 10px;
+                                            background-color: #e8f5e9;
+                                            display: inline-block;
+                                            border-radius: 5px;
+                                            margin-top: 10px;
+                                        }
+                                        .footer {
+                                            margin-top: 20px;
+                                            font-size: 12px;
+                                            color: #666;
+                                        }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class='container'>
+                                        <h2>Verificatiecode</h2>
+                                        <h4>Welkom bij EasyEvents! Hier kun je eenvoudig solliciteren voor allerlei soorten evenementen, van concerten en festivals tot workshops en conferenties.<h4>
+                                        <p>Gebruik onderstaande code om uw e-mailadres te verifiëren:</p>
+                                        <div class='code'>$verificationCode</div>
+                                    </div>
+                                </body>
+                            </html>
+                        ";
+
 
             $mail->send();
             return true;
