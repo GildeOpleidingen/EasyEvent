@@ -37,8 +37,6 @@ test:
   script:
     - echo "Running tests..."
     - ./vendor/bin/phpunit --configuration phpunit.xml --testdox
-  dependencies:
-    - build
 
 zip:
   stage: zip
@@ -50,8 +48,6 @@ zip:
   artifacts:
     paths:
       - $ZIP_FILE
-    dependencies:
-      - test
 
 deploy:
   stage: deploy
