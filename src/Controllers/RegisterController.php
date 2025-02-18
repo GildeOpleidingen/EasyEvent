@@ -13,7 +13,10 @@ class RegisterController extends Controller
 
     public function index()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
 
         if (isset($_SESSION['verificationCode'])) {
             $this->render('register', ['step' => 'verify']); 
@@ -21,62 +24,60 @@ class RegisterController extends Controller
             $this->render('register'); 
         }
     }
-    // functie om te registreren
-    public function register()
-{
-    session_start();
+        
+        public function register()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
-    $voornaam = trim($_POST['voornaam']);
-    $achternaam = trim($_POST['achternaam']);
-    $telefoon = trim($_POST['telefoon']);
-    $email = trim($_POST['email']);
-    $wachtwoord = trim($_POST['wachtwoord']);
-    $gebruikersnaam = trim($_POST['gebruikersnaam']);
-    $rol = trim($_POST['rol']);
-    $is_geverifieerd = trim($_POST['is_geverifieerd']);
-    $herhaalWachtwoord = trim($_POST['herhaalWachtwoord']);
+        $voornaam = isset($_POST['voornaam']) ? trim($_POST['voornaam']) : null;
+        $achternaam = isset($_POST['achternaam']) ? trim($_POST['achternaam']) : null;
+        $telefoon = isset($_POST['telefoon']) ? trim($_POST['telefoon']) : null;
+        $email = isset($_POST['email']) ? trim($_POST['email']) : null;
+        $wachtwoord = isset($_POST['wachtwoord']) ? trim($_POST['wachtwoord']) : null;
+        $gebruikersnaam = isset($_POST['gebruikersnaam']) ? trim($_POST['gebruikersnaam']) : null;
+        $rol = isset($_POST['rol']) ? trim($_POST['rol']) : null;
+        $is_geverifieerd = isset($_POST['is_geverifieerd']) ? trim($_POST['is_geverifieerd']) : '0';
+        $herhaalWachtwoord = isset($_POST['herhaalWachtwoord']) ? trim($_POST['herhaalWachtwoord']) : null;
 
-    // Controleer of alle velden ingevuld zijn
-    if (empty($voornaam) || empty($achternaam) || empty($email) || empty($wachtwoord) || empty($telefoon) || empty($herhaalWachtwoord)) {
-        $this->render('register', ['error' => 'Alle velden zijn verplicht.']);
-        return;
+        if (empty($voornaam) || empty($achternaam) || empty($email) || empty($wachtwoord) || empty($telefoon) || empty($herhaalWachtwoord)) {
+            $this->render('register', ['error' => 'Alle velden zijn verplicht.']);
+            return;
+        }
+
+        if ($wachtwoord !== $herhaalWachtwoord) {
+            $this->render('register', ['error' => 'Wachtwoorden komen niet overeen.']);
+            return;
+        }
+
+        $this->model = new RegisterModel();
+        if ($this->model->userExists($email)) {
+            $this->render('register', ['error' => 'Er is al een gebruiker met dit e-mailadres.']);
+            return;
+        }
+
+        $_SESSION['register_data'] = [
+            'voornaam' => $voornaam,
+            'achternaam' => $achternaam,
+            'telefoon' => $telefoon,
+            'email' => $email,
+            'wachtwoord' => $wachtwoord,
+            'gebruikersnaam' => $gebruikersnaam,
+            'rol' => $rol,
+            'is_geverifieerd' => $is_geverifieerd
+        ];
+
+        $verificationCode = $this->generateVerificationCode();
+        $_SESSION['verificationCode'] = $verificationCode;
+
+        if ($this->verifyEmail($email, $verificationCode)) {
+            $this->render('register', ['succes' => 'Gebruiker is geregistreerd, een verificatiecode is verzonden.', 'step' => 'verify']);
+        } else {
+            $this->render('register', ['error' => 'E-mailverificatie is mislukt.']);
+        }
     }
 
-    // Controleer of de wachtwoorden overeenkomen
-    if ($wachtwoord !== $herhaalWachtwoord) {
-        $this->render('register', ['error' => 'Wachtwoorden komen niet overeen.']);
-        return;
-    }
-
-    // Controleer of de gebruiker al bestaat
-    $this->model = new RegisterModel();
-    if ($this->model->userExists($email)) {
-        $this->render('register', ['error' => 'Er is al een gebruiker met dit e-mailadres.']);
-        return;
-    }
-
-    // Sla de gegevens tijdelijk op in de sessie
-    $_SESSION['register_data'] = [
-        'voornaam' => $voornaam,
-        'achternaam' => $achternaam,
-        'telefoon' => $telefoon,
-        'email' => $email,
-        'wachtwoord' => $wachtwoord,
-        'gebruikersnaam' => $gebruikersnaam,
-        'rol' => $rol,
-        'is_geverifieerd' => $is_geverifieerd
-    ];
-
-    // Genereer en verstuur verificatiecode
-    $verificationCode = $this->generateVerificationCode();
-    $_SESSION['verificationCode'] = $verificationCode;
-
-    if ($this->verifyEmail($email, $verificationCode)) {
-        $this->render('register', ['succes' => 'Gebruiker is geregistreerd, een verificatiecode is verzonden.', 'step' => 'verify']);
-    } else {
-        $this->render('register', ['error' => 'E-mailverificatie is mislukt.']);
-    }
-}
 
 
 
@@ -174,7 +175,8 @@ class RegisterController extends Controller
     // functie om verificatie code te checken
     public function verifyCode()
 {
-    session_start();
+    if (session_status() == PHP_SESSION_NONE) 
+        session_start();
 
     $enteredCode = trim($_POST['verificationCode']);
     $verificationCode = $_SESSION['verificationCode'] ?? '';
