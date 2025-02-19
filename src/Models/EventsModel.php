@@ -16,20 +16,25 @@ class EventsModel
     public string $eventPlace;
     private int $eventOrganizer;
     public string $eventBanner;
+    public $Land;
+    public $Plaats;
+    public $Straatnaam;
+    public $Postcode;
     public $eventTime = [];   //[[date, startTime,endTime],[date, startTime,endTime]]
-    public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
+    public $Sector;
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $hoofdEventID;
     private $events = [];
     private $mysql;
     private $pdo;
 
-    public function __construct(string $eventName = '', string $eventInfo = '', string $eventPlace = '', array $eventTime = [], string $eventBanner = ''){
+    public function __construct(string $eventName = '', string $eventInfo = '', int $eventOrganizer, string $eventPlace = '', array $eventTime = [], string $eventBanner = ''){
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
         $this->eventPlace = $eventPlace;
         $this->eventTime[] = $eventTime;
         $this->eventBanner = $eventBanner;
+        $this->eventOrganizer = $eventOrganizer; 
 
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
@@ -204,7 +209,9 @@ class EventsModel
             );
             $event->eventID = $row['ID'];
             $event->hoofdEventID = $row['hoofdEventID'];
+            //$event->setEventOrganizer(4);
             $events[] = $event;
+            
         }
     
         return $events;
@@ -216,29 +223,36 @@ class EventsModel
         $db = $mysql->getPDO();
     
         // SQL to insert event data into the `event` table, now including `hoofdEvent`
-        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Banner) VALUES (:eventName, :eventInfo, :eventBanner)";
+        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Banner, Organisator) VALUES (:eventName, :eventInfo, :eventBanner, :eventOrganizer)";
 
         // Prepare and execute the query for the `event` table
         $stmtEvent = $db->prepare($sqlEvent);
         $stmtEvent->bindParam(':eventName', $event->eventName);
         $stmtEvent->bindParam(':eventInfo', $event->eventInfo);
         $stmtEvent->bindParam(':eventBanner', $event->eventBanner);
+        $stmtEvent->bindParam(':eventOrganizer', $event->eventOrganizer);
 
         if ($stmtEvent->execute()) {
             // Retrieve the last inserted ID for the event
             $event->eventID = $db->lastInsertId();
 
             // Insert each time slot into the `event-tijd` table
-            $sqlEventTime = "INSERT INTO `event-tijd` (Event_ID, Datum, BeginTijd, EindTijd) 
-                            VALUES (:eventID, :date, :BeginTijd, :EindTijd)";
+            $sqlEventTime = "INSERT INTO `event-tijd` (Event_ID, Land, Plaats, Straatnaam, Huisnummer, Postcode, Datum, BeginTijd, EindTijd, sector) 
+                            VALUES (:eventID, Land, Plaats, Straatnaam, Huisnummer, Postcode, :date, :BeginTijd, :EindTijd, Sector)";
 
             $stmtEventTime = $db->prepare($sqlEventTime);
 
             foreach ($event->eventTime as $timeSlot) {
                 $stmtEventTime->bindParam(':eventID', $event->eventID);
+                $stmtEventTime->bindParam(':Land', $event->Land);
+                $stmtEventTime->bindParam(':Plaats', $event->Plaats);
+                $stmtEventTime->bindParam(':Straatnaam', $event->Straatnaam);
+                $stmtEventTime->bindParam(':Huisnummer', $event->Huisnummer);
+                $stmtEventTime->bindParam(':Postcode', $event->Postcode);
                 $stmtEventTime->bindParam(':date', $timeSlot['date']);
                 $stmtEventTime->bindParam(':BeginTijd', $timeSlot['BeginTijd']);
                 $stmtEventTime->bindParam(':EindTijd', $timeSlot['EindTijd']);
+                $stmtEventTime->bindParam(':Sector', $event->Sector);
 
                 if (!$stmtEventTime->execute()) {
                     // Rollback if the time slot insertion fails
