@@ -50,6 +50,18 @@ error_reporting(E_ALL);
                     <div class="invalid-feedback">Voer een beschrijving in.</div>
                 </div>
 
+                <div class="mb-3">
+                    <label for="eventCategory" class="form-label">Categorie <span class="verplicht">*</span></label>
+                    <select class="form-control" id="eventCategory" name="category" required>
+                        <option value="" disabled selected>Selecteer een categorie</option>
+                        <option value="Sport">Sport</option>
+                        <option value="Cultuur">Cultuur</option>
+                        <option value="School">School</option>
+                        <option value="Gamen">Gamen</option>
+                    </select>
+                    <div class="invalid-feedback">Selecteer een categorie.</div>
+                </div>
+
                 <div class="mb-3 row">
                     <div class="col-md-6">
                         <label for="eventCountry" class="form-label">Land <span class="verplicht">*</span></label>
