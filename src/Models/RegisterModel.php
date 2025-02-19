@@ -33,8 +33,8 @@ class RegisterModel extends DBModel
             $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, Rol, is_geverifieerd) 
                                         VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :rol, :is_geverifieerd)");
             
-            $rol = "gebruiker";
-            $is_geverifieerd = "ja";
+            $rol = 1;
+            $is_geverifieerd = 1;
 
             $stmt->bindParam(':voornaam', $voornaam);
             $stmt->bindParam(':achternaam', $achternaam);
