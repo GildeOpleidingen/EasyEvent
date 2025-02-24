@@ -28,13 +28,13 @@ class EventsModel
     private $mysql;
     private $pdo;
 
-    public function __construct(string $eventName = '', string $eventInfo = '', int $eventOrganizer, string $eventPlace = '', array $eventTime = [], string $eventBanner = ''){
+    public function __construct(string $eventName, string $eventInfo, int $eventOrganizer, string $eventPlace, array $eventTime, string $eventBanner){
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
+        $this->eventOrganizer = $eventOrganizer; 
         $this->eventPlace = $eventPlace;
         $this->eventTime[] = $eventTime;
         $this->eventBanner = $eventBanner;
-        $this->eventOrganizer = $eventOrganizer; 
 
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
@@ -63,8 +63,8 @@ class EventsModel
     public function addEventTime(array $timeSlot){
         $this->eventTime[] = $timeSlot;
     }
-    public function addEventSectorInfo(array $sectorInfo){
-        $this->eventSectorInfo[] = $sectorInfo;
+    public function addSector(string $sector){
+        $this->Sector = $sector;
     }
     public function addImage(array $image){
         $this->images[] = $image;
@@ -97,8 +97,8 @@ class EventsModel
     public function getEventTime(){
         return $this->eventTime;
     }
-    public function getEventSectorInfo(){
-        return $this->eventSectorInfo;
+    public function getSector(){
+        return $this->Sector;
     }
     public function getImages(){
         return $this->images;
@@ -186,8 +186,10 @@ class EventsModel
         $sql = "SELECT 
                     event.ID, event.EventNaam AS eventName, 
                     event.Info AS eventInfo, 
+                    Organisator,
                     `event-tijd`.Datum AS eventDate,
-                    event.HoofdEvent AS hoofdEventID
+                    event.HoofdEvent AS hoofdEventID,
+                    Banner
                 FROM 
                     event 
                 LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID";
@@ -203,9 +205,10 @@ class EventsModel
             $event = new self(
                 $row['eventName'],
                 $row['eventInfo'],
+                $row['Organisator'],
                 '', // eventLocatie (mist in query)
                 [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
-                '' // eventBanner (mist in query)
+                $row['Banner']
             );
             $event->eventID = $row['ID'];
             $event->hoofdEventID = $row['hoofdEventID'];
@@ -238,7 +241,7 @@ class EventsModel
 
             // Insert each time slot into the `event-tijd` table
             $sqlEventTime = "INSERT INTO `event-tijd` (Event_ID, Land, Plaats, Straatnaam, Huisnummer, Postcode, Datum, BeginTijd, EindTijd, sector) 
-                            VALUES (:eventID, Land, Plaats, Straatnaam, Huisnummer, Postcode, :date, :BeginTijd, :EindTijd, Sector)";
+                            VALUES (:eventID, :Land, :Plaats, :Straatnaam, :Huisnummer, :Postcode, :date, :BeginTijd, :EindTijd, :Sector)";
 
             $stmtEventTime = $db->prepare($sqlEventTime);
 

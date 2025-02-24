@@ -5,9 +5,10 @@ error_reporting(E_ALL);
 
 use App\Conn;
 use App\Models\EventsModel;
+use App\Models\UsersModel;
 
-$eventModel = new EventsModel();
-$events = $eventModel->generateEvents();
+//$eventModel = new EventsModel();
+$events = EventsModel::generateEvents();
 
 
 ?>

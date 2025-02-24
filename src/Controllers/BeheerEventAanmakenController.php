@@ -13,7 +13,7 @@ class BeheerEventAanmakenController extends Controller {
     public function sendEvent(){
         $eventName = $_POST['eventNaam'] ?? null;
         $eventInfo = $_POST['info'] ?? null;
-        $eventOrganizer = $_POST['organisater'] ?? null;
+        $eventOrganizer = $_SESSION['gebruiker']->ID ?? null;
         $eventBanner = $_POST['banner'] ?? null;
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
@@ -47,7 +47,7 @@ class BeheerEventAanmakenController extends Controller {
             'GebruikersID' => $_SESSION['GebruikersID'],
             'eventNaam' => $eventName,
             'info' => $eventInfo,
-            'organisater' => $eventOrganizer,
+            'organisator' => $eventOrganizer,
             'banner' => $eventBanner,
             'hoofdEvent' => $hoofdEvent,
             'eventID' => $eventID,
