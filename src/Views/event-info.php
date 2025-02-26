@@ -4,9 +4,7 @@
 
     if (isset($_GET['eventID'])) {
         $eventID = intval($_GET['eventID']);
-        $eventModel = new EventsModel();
-
-        $events = $eventModel::generateEvents();
+        $events = EventsModel::generateEvents();
         $event = null;
 
         foreach ($events as $e) {
