@@ -12,10 +12,12 @@ sudo mkdir /var/www/easyevents
 
 nu verander je de eigenaar zodat je dadelijk mag clonen als je dit niet doet krijg je een error
 sudo chown -R $USER:$USER /var/www/easyevents
+```
 
 # Maak een clone vanuit Gitlab
 ```Let op dat je op gilde 1.09 zit anders mag je geen verbinding maken met git server op school!
 git clone git@gitlab.gdcs.gildedevops.it:evenement/evenementen-app.git /var/www/easyevents/.
+```
 
 # Database fixes
 ```diff
