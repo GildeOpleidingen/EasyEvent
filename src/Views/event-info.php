@@ -61,18 +61,16 @@
                 </div>
                 <div class="modal-body">
                     <form id="activityForm">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="activity1" name="activities" value="Activity 1">
-                            <label class="form-check-label" for="activity1">Activity 1</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="activity2" name="activities" value="Activity 2">
-                            <label class="form-check-label" for="activity2">Activity 2</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="activity3" name="activities" value="Activity 3">
-                            <label class="form-check-label" for="activity3">Activity 3</label>
-                        </div>
+                        <?php if (!empty($activities)): ?>
+                            <?php foreach ($activities as $activity): ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="activity1" name="activities" value="Activity 1">
+                                <label class="form-check-label" for="activity1"><?= htmlspecialchars($activity->getName()) ?></label>
+                            </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>No events found.</p>
+                        <?php endif; ?>
                     </form>
                 </div>
                 <div class="modal-footer">

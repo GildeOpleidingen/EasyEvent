@@ -21,7 +21,9 @@ class EventInfoController extends Controller
         if (!$event) {
             $this->render('event-info', ['error' => 'Dit event model bestaat niet']);
         } 
+        $activities = $eventModel->getActivitiesById($id);
         $eventModel->setEvent($event);
+        $eventModel->setActivities($activities);
         $this->render('event-info', (array)$eventModel);
     }
 }

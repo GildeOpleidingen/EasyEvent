@@ -8,6 +8,7 @@ use PDO;
 class SingleEventModel extends DBModel
 {
     public $event;
+    public $activities;
 
     public function __construct()
     {
@@ -20,6 +21,39 @@ class SingleEventModel extends DBModel
 
     public function getEvent(){
         return $this->event;
+    }
+
+    public function setActivities(array $activities){
+        $this->activities = $activities;
+    }
+
+    public function getActivities(){
+        return $this->activities;
+    }
+
+    public static function getActivitiesById(int $id)
+    {
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+
+        $sql = "SELECT * FROM planning
+                LEFT JOIN `event-tijd` ON planning.Event_Tijd_ID = `event-tijd`.ID
+                LEFT JOIN `activiteit` ON planning.ActiviteitID = `activiteit`.ID
+                WHERE`event-tijd`.Event_ID=:eventid";
+
+        $stmt = $db->prepare($sql);
+
+        if (!$stmt->execute(['eventid' => $id])) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+
+        $activities = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $activity = new ActivityModel($row['Naam']);
+            $activities[] = $activity;
+        }
+
+        return $activities;
     }
 
     public static function getEventById(int $id) {
