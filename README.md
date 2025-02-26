@@ -1,5 +1,5 @@
 # Stappen folder aanmaken in nginx
-eerst genereer je een ssh key die je in gitlab gooit in het project.
+```eerst genereer je een ssh key die je in gitlab gooit in het project.
 ssh-keygen -t ed25519 -C "Naam.Achternaam@student.gildeopleidingen.nl"
 druk overal op enter op alle vragen (of yes als er om gevraagd word)
 
@@ -14,7 +14,7 @@ nu verander je de eigenaar zodat je dadelijk mag clonen als je dit niet doet kri
 sudo chown -R $USER:$USER /var/www/easyevents
 
 # Maak een clone vanuit Gitlab
-Let op dat je op gilde 1.09 zit anders mag je geen verbinding maken met git server op school!
+```Let op dat je op gilde 1.09 zit anders mag je geen verbinding maken met git server op school!
 git clone git@gitlab.gdcs.gildedevops.it:evenement/evenementen-app.git /var/www/easyevents/.
 
 # Database fixes
