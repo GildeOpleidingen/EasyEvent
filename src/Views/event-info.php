@@ -1,29 +1,3 @@
-<?php
-    use App\Conn;
-    use App\Models\EventsModel;
-
-    if (isset($_GET['eventID'])) {
-        $eventID = intval($_GET['eventID']);
-        $eventModel = new EventsModel();
-
-        $events = $eventModel::generateEvents();
-        $event = null;
-
-        foreach ($events as $e) {
-            if ($e->getEventID() === $eventID) {
-                $event = $e;
-                break;
-            }
-        }
-
-        if (!$event) {
-            die('Event not found.');
-        }
-    } else {
-        die('No Event ID provided.');
-    }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,9 +23,13 @@
     <div class="container-fluid vh-100 d-flex flex-column">
         <?php require_once("./parts/nav.html"); ?>
         
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger"><?php echo $error; ?></div>
+        <?php endif; ?>
+
         <div class="flex-grow-1 position-relative d-flex align-items-center justify-content-center rounded-4 mb-4 bg-dark" 
             style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>'); background-size: cover; background-position: center;">
-            
+
             <div class="position-absolute top-0 start-0 w-100 h-100 rounded-4 bg-dark opacity-50"></div>
             
             <div class="position-relative text-white px-3">

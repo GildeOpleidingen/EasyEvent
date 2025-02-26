@@ -5,20 +5,11 @@ namespace App\Models;
 use PDO;
 use PDOException;
 
-class LoginModel
+class LoginModel extends DBModel
 {
-    protected $db;
 
-    public function __construct()
-    {
-        try {
-            $this->db = new PDO('mysql:host=10.250.0.103;dbname=easyevent;charset=utf8mb4', 'easyevent', 'a[ez-4.wBhai48M8', [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            ]);
-        } catch (PDOException $e) {
-            error_log("Database Connection Error: " . $e->getMessage());
-            die("Er is een fout opgetreden. Probeer het later opnieuw.");
-        }
+    function __construct() {
+        parent::__construct();
     }
 
     public function login($gebruikersnaam, $wachtwoord)
@@ -30,7 +21,6 @@ class LoginModel
                 $stmt->execute();
 
                 $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
-
                 if ($gebruiker) {
                     if (password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
                         $_SESSION['Gebruikersnaam'] = $gebruiker['E-mail'];

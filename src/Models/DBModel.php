@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App;
 use Dotenv\Dotenv;
+use PDO;
+use PDOException;
 
 class DBModel
 {
@@ -14,14 +16,18 @@ class DBModel
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
         $dotenv->load();
 
-        $host = getenv('DB_HOST');
-        $dbname = getenv('DB_NAME');
-        $username = getenv('DB_USER');
-        $password = getenv('DB_PASS');
+        $host = $_ENV['DB_HOST'];
+        $dbname = $_ENV['DB_NAME'];
+        $username = $_ENV['DB_USER'];
+        $password = $_ENV['DB_PASS'];
 
-        $this->db = new \PDO("mysql:host=$host;dbname=$dbname", $username, $password, [
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-        ]);
+        try{
+            $this->db = new PDO("mysql:host=$host;dbname=$dbname", $username, $password, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ]);
+        } catch (PDOException $ex){
+            echo $ex->getMessage();
+        }
     }
 }
 ?>

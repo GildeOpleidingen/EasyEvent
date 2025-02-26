@@ -5,24 +5,24 @@ namespace App\Models;
 use App\Conn;
 use PDO;
 
-class EventsModel extends DBModel
+class SingleEventModel extends DBModel
 {
-    public $events;
+    public $event;
 
     public function __construct()
     {
 
     }
 
-    public function setEvents(array $events){
-        $this->events = $events;
+    public function setEvent(EventModel $event){
+        $this->event = $event;
     }
 
-    public function getEvents(){
-        return $this->events;
+    public function getEvent(){
+        return $this->event;
     }
 
-    public static function generateEvents() {
+    public static function getEventById(int $id) {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
     
@@ -33,15 +33,15 @@ class EventsModel extends DBModel
                     event.HoofdEvent AS hoofdEventID
                 FROM 
                     event 
-                LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID";
+                LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID
+                WHERE event.ID=:eventid";
 
         $stmt = $db->prepare($sql);
 
-        if (!$stmt->execute()) {
+        if (!$stmt->execute(['eventid' => $id])) {
             die('Query failed: ' . implode(' ', $stmt->errorInfo()));
         }
     
-        $events = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $event = new EventModel(
                 $row['eventName'],
@@ -52,9 +52,7 @@ class EventsModel extends DBModel
             );
             $event->eventID = $row['ID'];
             $event->hoofdEventID = $row['hoofdEventID'];
-            $events[] = $event;
+            return $event;
         }
-    
-        return $events;
     }
 }
