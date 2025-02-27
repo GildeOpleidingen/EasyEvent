@@ -10,7 +10,7 @@ class UserModel //
     private $email;
     private $telefoon;
     private $postcode;
-    private $rol;
+    private $roles;
     private $plaatsnaam; 
     private $huisnummer; 
 
@@ -22,7 +22,7 @@ class UserModel //
         $this->email = $data['E-mail'] ?? null;
         $this->telefoon = $data['Telefoon'] ?? null;
         $this->postcode = $data['Postcode'] ?? null;
-        $this->rol = $data['Rol'] ?? null;
+        $this->roles[] = RolModel::getRolesByUserId($this->id) ?? null;
         $this->plaatsnaam = $data['Plaatsnaam'] ?? null; 
         $this->huisnummer = $data['Huisnummer'] ?? null; 
     }
@@ -43,8 +43,8 @@ class UserModel //
     public function getPostcode() { return $this->postcode; }
     public function setPostcode($postcode) { $this->postcode = $postcode; }
 
-    public function getRol() { return $this->rol; }
-    public function setRol($rol) { $this->rol = $rol; }
+    public function getRoles() { return $this->roles; }
+    public function setRol($roles) { $this->roles[] = $roles; }
 
     public function getPlaatsnaam() { return $this->plaatsnaam; }
     public function setPlaatsnaam($plaatsnaam) { $this->plaatsnaam = $plaatsnaam; }
