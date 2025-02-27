@@ -7,38 +7,92 @@ use PDO;
 
 class SingleEventModel extends DBModel
 {
+    public $gebruikerID;
     public $event;
     public $activities;
+    public $organisations;
+    public $active_roles;
 
     public function __construct()
     {
 
     }
 
-    public function setEvent(EventModel $event){
-        $this->event = $event;
+    public function setGebruikerId(int $gebruikerID){
+        $this->gebruikerID = $gebruikerID;
     }
 
-    public function getEvent(){
-        return $this->event;
+    public function setEvent(EventModel $event){
+        $this->event = $event;
     }
 
     public function setActivities(array $activities){
         $this->activities = $activities;
     }
 
-    public function getActivities(){
-        return $this->activities;
+    public function setOrganisations(array $organisations){
+        $this->organisations = $organisations;
     }
 
-    public static function getActivitiesById(int $id)
+    public function setRoles(array $active_roles){
+        $this->active_roles = $active_roles;
+    }
+
+    public static function getOrganisations()
     {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT * FROM planning
-                LEFT JOIN `event-tijd` ON planning.Event_Tijd_ID = `event-tijd`.ID
-                LEFT JOIN `activiteit` ON planning.ActiviteitID = `activiteit`.ID
+        $sql = "SELECT * FROM `organisatie`";
+
+        $stmt = $db->prepare($sql);
+
+        if (!$stmt->execute()) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+
+        $organisations = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $organisation = new OrganisationModel($row['ID'], $row['Organtisatie']);
+            $organisations[] = $organisation;
+        }
+
+        return $organisations;
+    }
+
+    public static function getRolesByUserID(int $gebruiker_id)
+    {
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+
+        $sql = "SELECT `kpl_gebruiker_rol`.gebruiker_ID, `kpl_gebruiker_rol`.rol_ID, `rol`.Rol FROM `kpl_gebruiker_rol`
+                LEFT JOIN `rol` ON kpl_gebruiker_rol.rol_ID = `rol`.ID
+                WHERE`kpl_gebruiker_rol`.gebruiker_ID=:gebruikerID";
+
+        $stmt = $db->prepare($sql);
+
+        if (!$stmt->execute(['gebruikerID' => $gebruiker_id])) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+
+        $roles = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $role = new RolModel($row['rol_ID'], $row['gebruiker_ID'], $row['Rol']);
+            $roles[] = $role;
+        }
+
+        return $roles;
+    }
+
+    public static function getActivitiesByEventId(int $id)
+    {
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+
+        $sql = "SELECT `kpl_activiteit_event_tijd`.BeginTijd, `kpl_activiteit_event_tijd`.EindTijd,
+                 `activiteit`.ID, `activiteit`.Naam FROM `kpl_activiteit_event_tijd`
+                LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
+                LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
                 WHERE`event-tijd`.Event_ID=:eventid";
 
         $stmt = $db->prepare($sql);
@@ -49,7 +103,7 @@ class SingleEventModel extends DBModel
 
         $activities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $activity = new ActivityModel($row['Naam']);
+            $activity = new ActivityModel($row['ID'], $row['Naam'], $row['BeginTijd'], $row['EindTijd']);
             $activities[] = $activity;
         }
 
