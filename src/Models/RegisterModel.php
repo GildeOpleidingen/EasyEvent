@@ -22,6 +22,7 @@ class RegisterModel extends DBModel
         }
     }
 
+    
     //registreren gebruiker in de db
     public function register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $verif)
     {
@@ -32,9 +33,6 @@ class RegisterModel extends DBModel
             //bereid de query
             $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, is_geverifieerd) 
                                         VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :is_geverifieerd)");
-            
-            //TODO haal rollen op en geef deze mee.
-            $rol = 1;
             $is_geverifieerd = 1;
 
             $stmt->bindParam(':voornaam', $voornaam);
@@ -45,12 +43,17 @@ class RegisterModel extends DBModel
             $stmt->bindParam(':gebruikersnaam', $email);
             $stmt->bindparam('is_geverifieerd', $is_geverifieerd);
 
-            $stmt->execute();
+            if($stmt->execute())
+            {
+                $last_id = $this->db->lastInsertId();
 
-            //bereid de query
-            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, is_geverifieerd) 
-            VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :is_geverifieerd)");
-
+                //Koppel de gebruiker rol aan deze nieuwe gebruiker.
+                $rol = RolModel::getRoleIDByName('Gebruiker');
+                $stmt = $this->db->prepare("INSERT INTO `kpl_gebruiker_rol`(`gebruiker_ID`, `rol_ID`) VALUES (:gebruikerId, :rolId)");
+                $stmt->bindParam('gebruikerId', $last_id);
+                $stmt->bindParam('rolId', $rol);
+                $stmt->execute();
+            }
         } catch (\PDOException $e) {
             echo "Fout bij registratie: " . $e->getMessage();
         }

@@ -86,29 +86,6 @@ class SingleEventModel extends DBModel
         return $organisations;
     }
 
-    public static function getRolesByUserID(int $gebruiker_id)
-    {
-        $mysql = Conn::getInstance();
-        $db = $mysql->getPDO();
-
-        $sql = "SELECT `kpl_gebruiker_rol`.gebruiker_ID, `kpl_gebruiker_rol`.rol_ID, `rol`.Rol FROM `kpl_gebruiker_rol`
-                LEFT JOIN `rol` ON kpl_gebruiker_rol.rol_ID = `rol`.ID
-                WHERE`kpl_gebruiker_rol`.gebruiker_ID=:gebruikerID";
-
-        $stmt = $db->prepare($sql);
-
-        if (!$stmt->execute(['gebruikerID' => $gebruiker_id])) {
-            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
-        }
-
-        $roles = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $role = new RolModel($row['rol_ID'], $row['gebruiker_ID'], $row['Rol']);
-            $roles[] = $role;
-        }
-
-        return $roles;
-    }
 
     public static function getActiveActivitiesByEventIdAndUserId(int $id, int $gebruiker_id)
     {
@@ -146,14 +123,14 @@ class SingleEventModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.BeginTijd, t.EindTijd, t.ID, t.Naam, t.Gebruiker_ID
+        $sql = "SELECT t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.BeginTijd, t.EindTijd, t.ID, t.Naam, t.Gebruiker_ID, t.Organisatie_ID
                 FROM (SELECT kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
                                 kpl_activiteit_event_tijd.event_tijd_ID,
                                 `planning`.BeginTijd,
                                 `planning`.EindTijd,
                                 `activiteit`.ID,
                                 `activiteit`.Naam,
-                                `planning`.`Gebruiker_ID`
+                                `planning`.`Gebruiker_ID`,
                                 `planning`.`Organisatie_ID`
                                 FROM `kpl_activiteit_event_tijd`
                                 LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
@@ -169,7 +146,7 @@ class SingleEventModel extends DBModel
                                     kpl_activiteit_event_tijd.EindTijd,
                                     `activiteit`.ID,
                                     `activiteit`.Naam,
-                                    NULL as Gebruiker_ID
+                                    NULL as Gebruiker_ID,
                                     NULL as Organisatie_ID FROM `kpl_activiteit_event_tijd`
                                     LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
                                     LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID

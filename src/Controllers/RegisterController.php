@@ -192,9 +192,7 @@ class RegisterController extends Controller
                 $registerData['telefoon'],
                 $registerData['email'],
                 $registerData['wachtwoord'],
-                $registerData['gebruikersnaam'],
-                $registerData['rol'],
-                $registerData['is_geverifieerd']
+                $registerData['gebruikersnaam']
             );
 
             unset($_SESSION['register_data']);

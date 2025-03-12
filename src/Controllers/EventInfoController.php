@@ -28,8 +28,9 @@ class EventInfoController extends Controller
         {
             $user = unserialize($_SESSION['gebruiker']);
             $eventModel->setGebruikerId($user->getId());
+
             $activities = $eventModel->getActivitiesByEventIdAndUserId($id, $user->getId());
-            $active_roles = $eventModel->getRolesByUserID($user->getId());
+            $active_roles = $user->getRoles();
             $eventModel->setRoles($active_roles);
 
             $organisations = $eventModel->getOrganisations();
