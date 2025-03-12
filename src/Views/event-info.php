@@ -27,6 +27,10 @@
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php endif; ?>
 
+        <?php if (isset($success)): ?>
+            <div class="alert alert-danger"><?php echo $success; ?></div>
+        <?php endif; ?>
+
         <div class="flex-grow-1 position-relative d-flex align-items-center justify-content-center rounded-4 mb-4 bg-dark" 
             style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>'); background-size: cover; background-position: center;">
 
@@ -55,66 +59,77 @@
     <div class="modal fade" id="activiteiten" tabindex="-1" aria-labelledby="activiteitenModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form id="activityForm" action="/event-info?eventID=<?= htmlspecialchars($event->getEventID()) ?>" Method="POST">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="activiteitenModalLabel">Selecteer Activiteiten</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <?php if (isset($gebruikerID)): ?>
+                <?php if (isset($gebruikerID)): ?>
+                    <form id="activityForm" action="/event-info" Method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="activiteitenModalLabel">Selecteer Activiteiten</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <input type="hidden" name="eventID" value="<?= htmlspecialchars($event->getEventID()) ?>" />
+                        <div class="modal-body">
                             <?php if (!empty($active_roles)): ?>
                                 Kies de rol waarin je aan de activiteit deelneemt.
                                 <?php foreach ($active_roles as $role): ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="<?= htmlspecialchars($role->getID()) ?>" name="role" value="<?= htmlspecialchars($role->getID()) ?>">
-                                    <label class="form-check-label" for="<?= htmlspecialchars($role->getID()) ?>"><?= htmlspecialchars($role->getName()) ?></label>
+                                    <input class="form-check-input" type="radio" id="role<?= htmlspecialchars($role->getID()) ?>" name="role" <?php if ($event->hasRole($role)) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($role->getID()) ?>">
+                                    <label class="form-check-label" for="role<?= htmlspecialchars($role->getID()) ?>"><?= htmlspecialchars($role->getName()) ?></label>
                                 </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <p>Geen rollen gevonden.</p>
                             <?php endif; ?>
-                        <?php endif; ?>
 
-                        <?php if (isset($gebruikerID)): ?>
                             <?php if (!empty($organisations)): ?>
                                 Kies de organisatie waarvoor je aan de activiteit deelneemt.
                                 <?php foreach ($organisations as $organisation): ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="<?= htmlspecialchars($organisation->getID()) ?>" name="organisation" value="<?= htmlspecialchars($organisation->getID()) ?>">
-                                    <label class="form-check-label" for="<?= htmlspecialchars($organisation->getID()) ?>"><?= htmlspecialchars($organisation->getName()) ?></label>
+                                    <input class="form-check-input" type="radio" id="organisation<?= htmlspecialchars($organisation->getID()) ?>" name="organisation" <?php if ($event->hasOrganisation($organisation)) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($organisation->getID()) ?>">
+                                    <label class="form-check-label" for="organisation<?= htmlspecialchars($organisation->getID()) ?>"><?= htmlspecialchars($organisation->getName()) ?></label>
                                 </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <p>Geen organisaties gevonden.</p>
                             <?php endif; ?>
-                        <?php endif; ?>
 
-                        <?php if (!empty($activities)): ?>
-                            Kies de activiteit waarin je aan wil deelnemen.
+                            <?php if (!empty($activities)): ?>
+                                Kies de activiteit waarin je aan wil deelnemen.
+                                <?php foreach ($activities as $activity): ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="activity<?= htmlspecialchars($activity->getID()) ?>" name="activities[<?= htmlspecialchars($activity->getID()) ?>][checked]" <?php if ($activity->hasUser()) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($activity->getID()) ?>">
+                                    <label class="form-check-label" for="activity<?= htmlspecialchars($activity->getID()) ?>"><?= htmlspecialchars($activity->getName()) ?></label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="text" name="activities[<?= htmlspecialchars($activity->getID()) ?>][startTime]" value="<?= htmlspecialchars($activity->getBeginTijd()) ?>" />
+                                    <input type="text" name="activities[<?= htmlspecialchars($activity->getID()) ?>][endTime]" value="<?= htmlspecialchars($activity->getEindTijd()) ?>" />
+                                </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>Geen activiteiten gevonden.</p>
+                            <?php endif; ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Inschrijven</button>
+                        </div>
+                    </form>
+                <?php endif; ?>
+                <?php if (!isset($gebruikerID)): ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="activiteitenModalLabel">Activiteiten</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <?php if (!empty($activities)): ?>
                             <?php foreach ($activities as $activity): ?>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="<?= htmlspecialchars($activity->getID()) ?>" name="activities[]" value="<?= htmlspecialchars($activity->getID()) ?>">
-                                <label class="form-check-label" for="<?= htmlspecialchars($activity->getID()) ?>"><?= htmlspecialchars($activity->getName()) ?></label>
-                                <p>
-                                    <?= htmlspecialchars($activity->getBeginTijd()) ?>
-                                </p>
-                                <p>
-                                    <?= htmlspecialchars($activity->getEindTijd()) ?>
-                                </p>
-                            </div>
+                                <p class="" id="<?= htmlspecialchars($activity->getID()) ?>"><?= htmlspecialchars($activity->getName()) ?></p>
                             <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>Geen activiteiten gevonden.</p>
-                        <?php endif; ?>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Inschrijven</button>
-                    </div>
-                </form>
+                            <?php else: ?>
+                                <p>Geen activiteiten gevonden.</p>
+                            <?php endif; ?>
+                        </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/animaties.js"></script>

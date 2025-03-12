@@ -6,6 +6,7 @@ use App\Controller;
 use App\Conn;
 use App\Models\SingleEventModel;
 use App\Models\UserModel;
+use App\Models\PlanningsModel;
 
 class EventInfoController extends Controller
 {
@@ -21,12 +22,13 @@ class EventInfoController extends Controller
         $event = $eventModel->getEventById($id);
         if (!$event) {
             $this->render('event-info', ['error' => 'Dit event model bestaat niet']);
-        } 
-        $activities = $eventModel->getActivitiesByEventId($id);
+        }
+        $activities = [];
         if (isset($_SESSION['gebruiker']))
         {
             $user = unserialize($_SESSION['gebruiker']);
             $eventModel->setGebruikerId($user->getId());
+            $activities = $eventModel->getActivitiesByEventIdAndUserId($id, $user->getId());
             $active_roles = $eventModel->getRolesByUserID($user->getId());
             $eventModel->setRoles($active_roles);
 
@@ -41,18 +43,42 @@ class EventInfoController extends Controller
 
     public function update()
     {
-        if (!isset($_GET['eventID'])) {
+        if (!isset($_POST['eventID'])) {
             header('Location: /events');
             exit();
         }
 
-        $id = intval($_GET['eventID']);
+        if (!isset($_SESSION['gebruiker']))
+        {
+            header('Location: /events');
+            exit();
+        }
+
+        $user = unserialize($_SESSION['gebruiker']);
+
+        $id = intval($_POST['eventID']);
+
         $role = isset($_POST['role']) ? $_POST['role'] : null;
+        $organisatieId = isset($_POST['organisation']) ? $_POST['organisation'] : null;
         $activities = isset($_POST['activities']) ? $_POST['activities'] : null;
 
-        // TODO validate Vrijwilliger aantal of Begeleider Aantal
+        $planning = new PlanningsModel($user->getId(), $role, $activities, $organisatieId);
 
-        print_r($_POST['activities']);
-        die();
+        $eventModel = new SingleEventModel();
+        $user = unserialize($_SESSION['gebruiker']);
+        $activeActivities = $eventModel->getActiveActivitiesByEventIdAndUserId($id, $user->getId());
+
+
+        if ($planning->validate()) {
+            $event = $eventModel->getEventById($id);
+            $eventModel->setEvent($event);
+            //TODO
+            //$eventModel->setActivities($activities);
+            $eventModel->setMessage('Gebruiker is toegevoegd aan de activiteit.');
+            // TODO Check if there are relations / time  that need te be removed or added or changed.
+            $this->render('event-info', (array)$eventModel);
+        } else {
+            $this->render('event-info', ['error' => 'Gebruiker kon niet worden toegevoegd.']);
+        }
     }
 }

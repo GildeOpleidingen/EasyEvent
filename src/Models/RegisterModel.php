@@ -30,9 +30,10 @@ class RegisterModel extends DBModel
             $hashedPassword = password_hash($wachtwoord, PASSWORD_DEFAULT);
 
             //bereid de query
-            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, Rol, is_geverifieerd) 
-                                        VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :rol, :is_geverifieerd)");
+            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, is_geverifieerd) 
+                                        VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :is_geverifieerd)");
             
+            //TODO haal rollen op en geef deze mee.
             $rol = 1;
             $is_geverifieerd = 1;
 
@@ -42,10 +43,14 @@ class RegisterModel extends DBModel
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':wachtwoord', $hashedPassword);
             $stmt->bindParam(':gebruikersnaam', $email);
-            $stmt->bindParam('rol', $rol);
             $stmt->bindparam('is_geverifieerd', $is_geverifieerd);
 
             $stmt->execute();
+
+            //bereid de query
+            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, is_geverifieerd) 
+            VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :is_geverifieerd)");
+
         } catch (\PDOException $e) {
             echo "Fout bij registratie: " . $e->getMessage();
         }
