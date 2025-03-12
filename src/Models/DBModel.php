@@ -5,6 +5,7 @@ namespace App\Models;
 use App;
 use Dotenv\Dotenv;
 
+
 class DBModel
 {
     protected $db;
