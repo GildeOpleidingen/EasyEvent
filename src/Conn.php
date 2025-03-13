@@ -14,7 +14,7 @@ namespace App
 
         // Constructor to initialize the connection parameters
         private function __construct(){
-            $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../', 'default.env');
             $dotenv->load();
             $host = $_ENV['DB_HOST'];
             $dbname = $_ENV['DB_NAME'];
