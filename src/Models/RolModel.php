@@ -72,7 +72,7 @@ class RolModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT `rol_ID` FROM `kpl_gebruiker_rol` WHERE `gebruiker_ID` = :gebruikerID";
+        $sql = "SELECT `rol_ID`, `Rol` FROM `kpl_gebruiker_rol` LEFT JOIN `rol` ON kpl_gebruiker_rol.rol_ID = `rol`.ID WHERE `gebruiker_ID` = :gebruikerID";
 
         $stmt = $db->prepare($sql);
 
@@ -80,10 +80,10 @@ class RolModel extends DBModel
             die('Query failed: ' . implode(' ', $stmt->errorInfo()));
         }
 
-        $roleIDs = [];
+        $roles = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $roleIDs[] = $row['rol_ID'];
+            $roles[] = new RolModel($row['rol_ID'],  $row['Rol']);
         }
-        return $roleIDs;
+        return $roles;
     }
 }

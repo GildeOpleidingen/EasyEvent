@@ -71,8 +71,11 @@
                                 Kies de rol waarin je aan de activiteit deelneemt.
                                 <?php foreach ($active_roles as $role): ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="role<?= htmlspecialchars($role->getID()) ?>" name="role" <?php if ($event->hasRole($role)) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($role->getID()) ?>">
-                                    <label class="form-check-label" for="role<?= htmlspecialchars($role->getID()) ?>"><?= htmlspecialchars($role->getName()) ?></label>
+                                    <?php
+                                    /** @var RolModel $role */
+                                    $role = $role[0]; ?>
+                                    <input class="form-check-input" type="radio" id="role<?=  htmlspecialchars($role->getName()) ?>" name="role" <?php if ($event::hasRole($activities, $role)) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($role->getID()) ?>">
+                                    <label class="form-check-label" for="role<?= htmlspecialchars($role->getName()) ?>"><?= htmlspecialchars($role->getName()) ?></label>
                                 </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -83,8 +86,8 @@
                                 Kies de organisatie waarvoor je aan de activiteit deelneemt.
                                 <?php foreach ($organisations as $organisation): ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="organisation<?= htmlspecialchars($organisation->getID()) ?>" name="organisation" <?php if ($event->hasOrganisation($organisation)) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($organisation->getID()) ?>">
-                                    <label class="form-check-label" for="organisation<?= htmlspecialchars($organisation->getID()) ?>"><?= htmlspecialchars($organisation->getName()) ?></label>
+                                    <input class="form-check-input" type="radio" id="organisation<?= htmlspecialchars($organisation->getName()) ?>" name="organisation" <?php if ($event::hasOrganisation($activities, $organisation)) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($organisation->getID()) ?>">
+                                    <label class="form-check-label" for="organisation<?= htmlspecialchars($organisation->getName()) ?>"><?= htmlspecialchars($organisation->getName()) ?></label>
                                 </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -132,8 +135,8 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="../../js/animaties.js"></script>
-    <script src="../../js/bootstrap.bundle.js"></script>
+    <script src="/js/animaties.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
 </body>
 </html>
 

@@ -36,6 +36,9 @@ class EventInfoController extends Controller
             $organisations = $eventModel->getOrganisations();
             $eventModel->setOrganisations($organisations);
         }
+        else {
+            $activities = $eventModel->getActivitiesByEventId($id);
+        }
 
         $eventModel->setEvent($event);
         $eventModel->setActivities($activities);

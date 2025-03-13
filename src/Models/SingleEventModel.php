@@ -44,26 +44,6 @@ class SingleEventModel extends DBModel
         $this->active_roles = $active_roles;
     }
 
-    public function hasRole(RolModel $role)
-    {
-        foreach($activity as $this->activities)
-        {
-            
-        }
-    }
-
-    public function hasOrganisation(OrganisationModel $organisation)
-    {
-        foreach($activity as $this->activities)
-        {
-            if ($organisation->getID() == $activity->getOrganisationID())
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static function getOrganisations()
     {
         $mysql = Conn::getInstance();
@@ -86,6 +66,37 @@ class SingleEventModel extends DBModel
         return $organisations;
     }
 
+    public static function getActivitiesByEventId(int $id)
+    {
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+        $sql = "SELECT kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
+                                    kpl_activiteit_event_tijd.event_tijd_ID,
+                                    kpl_activiteit_event_tijd.BeginTijd,
+                                    kpl_activiteit_event_tijd.EindTijd,
+                                    `activiteit`.ID,
+                                    `activiteit`.Naam,
+                                    NULL as Gebruiker_ID,
+                                    NULL as Organisatie_ID,
+                                    NULL as Rol_ID FROM `kpl_activiteit_event_tijd`
+                                    LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
+                                    LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
+                                    WHERE`event-tijd`.Event_ID=:eventid";
+
+        $stmt = $db->prepare($sql);
+
+        if (!$stmt->execute(['eventid' => $id])) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+
+        $activities = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $activity = new ActivityModel($row['kpl_activiteit_event_tijd_ID'], $row['ID'], $row['event_tijd_ID'],
+             $row['Naam'], $row['BeginTijd'], $row['EindTijd'], null, null, null);
+            $activities[] = $activity;
+        }
+        return $activities;
+    }
 
     public static function getActiveActivitiesByEventIdAndUserId(int $id, int $gebruiker_id)
     {
@@ -97,7 +108,9 @@ class SingleEventModel extends DBModel
                                 `planning`.EindTijd,
                                 `activiteit`.ID,
                                 `activiteit`.Naam,
-                                `planning`.`Gebruiker_ID`
+                                `planning`.`Gebruiker_ID`,
+                                `planning`.`Organisatie_ID`,
+                                `planning`.`Rol_ID`
                                 FROM `kpl_activiteit_event_tijd`
                                 LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
                                 LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
@@ -112,7 +125,8 @@ class SingleEventModel extends DBModel
 
         $activities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $activity = new ActivityModel($row['kpl_activiteit_event_tijd_ID'], $row['ID'], $row['event_tijd_ID'], $row['Naam'], $row['BeginTijd'], $row['EindTijd'], $row['Gebruiker_ID']);
+            $activity = new ActivityModel($row['kpl_activiteit_event_tijd_ID'], $row['ID'], $row['event_tijd_ID'],
+             $row['Naam'], $row['BeginTijd'], $row['EindTijd'], $row['Gebruiker_ID'], $row['Organisatie_ID'], $row['Rol_ID']);
             $activities[] = $activity;
         }
         return $activities;
@@ -123,7 +137,7 @@ class SingleEventModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.BeginTijd, t.EindTijd, t.ID, t.Naam, t.Gebruiker_ID, t.Organisatie_ID
+        $sql = "SELECT t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.BeginTijd, t.EindTijd, t.ID, t.Naam, t.Gebruiker_ID, t.Organisatie_ID, t.Rol_ID
                 FROM (SELECT kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
                                 kpl_activiteit_event_tijd.event_tijd_ID,
                                 `planning`.BeginTijd,
@@ -131,7 +145,8 @@ class SingleEventModel extends DBModel
                                 `activiteit`.ID,
                                 `activiteit`.Naam,
                                 `planning`.`Gebruiker_ID`,
-                                `planning`.`Organisatie_ID`
+                                `planning`.`Organisatie_ID`,
+                                `planning`.`Rol_ID`
                                 FROM `kpl_activiteit_event_tijd`
                                 LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
                                 LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
@@ -147,7 +162,8 @@ class SingleEventModel extends DBModel
                                     `activiteit`.ID,
                                     `activiteit`.Naam,
                                     NULL as Gebruiker_ID,
-                                    NULL as Organisatie_ID FROM `kpl_activiteit_event_tijd`
+                                    NULL as Organisatie_ID,
+                                    NULL as Rol_ID FROM `kpl_activiteit_event_tijd`
                                     LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
                                     LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
                                     WHERE`event-tijd`.Event_ID=:eventid
@@ -164,7 +180,7 @@ class SingleEventModel extends DBModel
         $activities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $activity = new ActivityModel($row['kpl_activiteit_event_tijd_ID'], $row['ID'], $row['event_tijd_ID'],
-             $row['Naam'], $row['BeginTijd'], $row['EindTijd'], $row['Gebruiker_ID'], $row['Organisatie_ID']);
+             $row['Naam'], $row['BeginTijd'], $row['EindTijd'], $row['Gebruiker_ID'], $row['Organisatie_ID'], $row['Rol_ID']);
             $activities[] = $activity;
         }
         return $activities;

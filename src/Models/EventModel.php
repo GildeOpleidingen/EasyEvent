@@ -104,6 +104,31 @@ class EventModel
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // functions
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static function hasRole(array $activities, RolModel $role)
+    {
+        foreach($activities as $activity)
+        {
+            if ($activity->hasRole() && $role->getID() == $activity->getRolID())
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public static function hasOrganisation(array $activities, OrganisationModel $organisation)
+    {
+        foreach($activities as $activity)
+        {
+            if ($activity->hasOrganisation() && $organisation->getID() == $activity->getOrganisationID())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function validateModel() {
         //event
         $title;
