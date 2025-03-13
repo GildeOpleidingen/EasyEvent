@@ -138,7 +138,7 @@ class SingleEventModel extends DBModel
         $db = $mysql->getPDO();
 
         $sql = "SELECT t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.BeginTijd, t.EindTijd, t.ID, t.Naam, t.Gebruiker_ID, t.Organisatie_ID, t.Rol_ID
-                FROM (SELECT kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
+                FROM (SELECT    kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
                                 kpl_activiteit_event_tijd.event_tijd_ID,
                                 `planning`.BeginTijd,
                                 `planning`.EindTijd,
@@ -163,7 +163,8 @@ class SingleEventModel extends DBModel
                                     `activiteit`.Naam,
                                     NULL as Gebruiker_ID,
                                     NULL as Organisatie_ID,
-                                    NULL as Rol_ID FROM `kpl_activiteit_event_tijd`
+                                    NULL as Rol_ID
+                                    FROM `kpl_activiteit_event_tijd`
                                     LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
                                     LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
                                     WHERE`event-tijd`.Event_ID=:eventid
