@@ -1,27 +1,3 @@
-<?php
-    use App\Conn;
-    use App\Models\EventsModel;
-
-    if (isset($_GET['eventID'])) {
-        $eventID = intval($_GET['eventID']);
-        $events = EventsModel::generateEvents();
-        $event = null;
-
-        foreach ($events as $e) {
-            if ($e->getEventID() === $eventID) {
-                $event = $e;
-                break;
-            }
-        }
-
-        if (!$event) {
-            die('Event not found.');
-        }
-    } else {
-        die('No Event ID provided.');
-    }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,9 +23,17 @@
     <div class="container-fluid vh-100 d-flex flex-column">
         <?php require_once("./parts/nav.html"); ?>
         
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger"><?php echo $error; ?></div>
+        <?php endif; ?>
+
+        <?php if (isset($success)): ?>
+            <div class="alert alert-danger"><?php echo $success; ?></div>
+        <?php endif; ?>
+
         <div class="flex-grow-1 position-relative d-flex align-items-center justify-content-center rounded-4 mb-4 bg-dark" 
             style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>'); background-size: cover; background-position: center;">
-            
+
             <div class="position-absolute top-0 start-0 w-100 h-100 rounded-4 bg-dark opacity-50"></div>
             
             <div class="position-relative text-white px-3">
@@ -75,45 +59,84 @@
     <div class="modal fade" id="activiteiten" tabindex="-1" aria-labelledby="activiteitenModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="activiteitenModalLabel">Selecteer Activiteiten</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="activityForm">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="activity1" name="activities" value="Activity 1">
-                            <label class="form-check-label" for="activity1">Activity 1</label>
+                <?php if (isset($gebruikerID)): ?>
+                    <form id="activityForm" action="/event-info" Method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="activiteitenModalLabel">Selecteer Activiteiten</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="activity2" name="activities" value="Activity 2">
-                            <label class="form-check-label" for="activity2">Activity 2</label>
+                        <input type="hidden" name="eventID" value="<?= htmlspecialchars($event->getEventID()) ?>" />
+                        <div class="modal-body">
+                            <?php if (!empty($active_roles)): ?>
+                                Kies de rol waarin je aan de activiteit deelneemt.
+                                <?php foreach ($active_roles as $role): ?>
+                                <div class="form-check">
+                                    <?php
+                                    /** @var RolModel $role */
+                                    $role = $role[0]; ?>
+                                    <input class="form-check-input" type="radio" id="role<?=  htmlspecialchars($role->getName()) ?>" name="role" <?php if ($event::hasRole($activities, $role)) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($role->getID()) ?>">
+                                    <label class="form-check-label" for="role<?= htmlspecialchars($role->getName()) ?>"><?= htmlspecialchars($role->getName()) ?></label>
+                                </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>Geen rollen gevonden.</p>
+                            <?php endif; ?>
+
+                            <?php if (!empty($organisations)): ?>
+                                Kies de organisatie waarvoor je aan de activiteit deelneemt.
+                                <?php foreach ($organisations as $organisation): ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="organisation<?= htmlspecialchars($organisation->getName()) ?>" name="organisation" <?php if ($event::hasOrganisation($activities, $organisation)) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($organisation->getID()) ?>">
+                                    <label class="form-check-label" for="organisation<?= htmlspecialchars($organisation->getName()) ?>"><?= htmlspecialchars($organisation->getName()) ?></label>
+                                </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>Geen organisaties gevonden.</p>
+                            <?php endif; ?>
+
+                            <?php if (!empty($activities)): ?>
+                                Kies de activiteit waarin je aan wil deelnemen.
+                                <?php foreach ($activities as $activity): ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="activity<?= htmlspecialchars($activity->getID()) ?>" name="activities[<?= htmlspecialchars($activity->getID()) ?>][checked]" <?php if ($activity->hasUser()) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($activity->getID()) ?>">
+                                    <label class="form-check-label" for="activity<?= htmlspecialchars($activity->getID()) ?>"><?= htmlspecialchars($activity->getName()) ?></label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="text" name="activities[<?= htmlspecialchars($activity->getID()) ?>][startTime]" value="<?= htmlspecialchars($activity->getBeginTijd()) ?>" />
+                                    <input type="text" name="activities[<?= htmlspecialchars($activity->getID()) ?>][endTime]" value="<?= htmlspecialchars($activity->getEindTijd()) ?>" />
+                                </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>Geen activiteiten gevonden.</p>
+                            <?php endif; ?>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="activity3" name="activities" value="Activity 3">
-                            <label class="form-check-label" for="activity3">Activity 3</label>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Inschrijven</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="submitActivities()">Bevestig</button>
-                </div>
+                <?php endif; ?>
+                <?php if (!isset($gebruikerID)): ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="activiteitenModalLabel">Activiteiten</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <?php if (!empty($activities)): ?>
+                            <?php foreach ($activities as $activity): ?>
+                                <p class="" id="<?= htmlspecialchars($activity->getID()) ?>"><?= htmlspecialchars($activity->getName()) ?></p>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>Geen activiteiten gevonden.</p>
+                            <?php endif; ?>
+                        </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="../../js/animaties.js"></script>
-    <script src="../../js/bootstrap.bundle.js"></script>
-
-    <script>
-        function submitActivities() {
-            const selectedActivities = Array.from(document.querySelectorAll('input[name="activities]:checked')).map(input => input.value);
-            console.log('Selected activities: ', selectedActivities);
-            alert("Selected activities: " + selectedActivities.join(', '));
-        }
-    </script>
+    <script src="/js/animaties.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
 </body>
 </html>
 

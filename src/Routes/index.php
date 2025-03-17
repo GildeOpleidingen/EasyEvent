@@ -32,6 +32,7 @@ $router->post('/register', RegisterController::class, 'register');
 $router->post('/verify-code', RegisterController::class, 'verifyCode');
 $router->get('/events', EventsController::class, 'index');
 $router->get('/event-info', EventInfoController::class, 'index');
+$router->post('/event-info', EventInfoController::class, 'update', true);
 $router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index', true);
 $router->post('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'sendEvent', true);
 $router->get('/beheer/event-aanmaken-stap-2', BeheerEventAanmakenController::class, 'index', true);

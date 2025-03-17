@@ -22,6 +22,7 @@ class RegisterModel extends DBModel
         }
     }
 
+    
     //registreren gebruiker in de db
     public function register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $verif)
     {
@@ -30,10 +31,8 @@ class RegisterModel extends DBModel
             $hashedPassword = password_hash($wachtwoord, PASSWORD_DEFAULT);
 
             //bereid de query
-            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, Rol, is_geverifieerd) 
-                                        VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :rol, :is_geverifieerd)");
-            
-            $rol = 1;
+            $stmt = $this->db->prepare("INSERT INTO `gebruiker` (Voornaam, Achternaam, Telefoon, `E-mail`, Wachtwoord, Gebruikersnaam, is_geverifieerd) 
+                                        VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :gebruikersnaam, :is_geverifieerd)");
             $is_geverifieerd = 1;
 
             $stmt->bindParam(':voornaam', $voornaam);
@@ -42,10 +41,19 @@ class RegisterModel extends DBModel
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':wachtwoord', $hashedPassword);
             $stmt->bindParam(':gebruikersnaam', $email);
-            $stmt->bindParam('rol', $rol);
             $stmt->bindparam('is_geverifieerd', $is_geverifieerd);
 
-            $stmt->execute();
+            if($stmt->execute())
+            {
+                $last_id = $this->db->lastInsertId();
+
+                //Koppel de gebruiker rol aan deze nieuwe gebruiker.
+                $rol = RolModel::getRoleIDByName('Gebruiker');
+                $stmt = $this->db->prepare("INSERT INTO `kpl_gebruiker_rol`(`gebruiker_ID`, `rol_ID`) VALUES (:gebruikerId, :rolId)");
+                $stmt->bindParam('gebruikerId', $last_id);
+                $stmt->bindParam('rolId', $rol);
+                $stmt->execute();
+            }
         } catch (\PDOException $e) {
             echo "Fout bij registratie: " . $e->getMessage();
         }

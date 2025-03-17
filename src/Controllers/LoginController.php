@@ -37,18 +37,18 @@ class LoginController extends Controller
     {
         $gebruikersnaam = trim($_POST['Gebruikersnaam'] ?? '');
         $wachtwoord = trim($_POST['wachtwoord'] ?? '');
-        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+        //$recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
         if (empty($gebruikersnaam) || empty($wachtwoord)) {
             $this->render('login', ['error' => 'Vul alle velden in.']);
             return;
         }
 
-        $recaptchaSecret = '6LdGioIqAAAAADKUk1OCnriLFES0x2-r5RmU29Gx';
-        if (!$this->verifyRecaptcha($recaptchaSecret, $recaptchaResponse)) {
-            $this->render('login', ['error' => 'reCAPTCHA verificatie is mislukt.']);
-            return;
-        }
+        // $recaptchaSecret = '6LdGioIqAAAAADKUk1OCnriLFES0x2-r5RmU29Gx';
+        // if (!$this->verifyRecaptcha($recaptchaSecret, $recaptchaResponse)) {
+        //     $this->render('login', ['error' => 'reCAPTCHA verificatie is mislukt.']);
+        //     return;
+        // }
 
         $result = $this->model->login($gebruikersnaam, $wachtwoord);
 
