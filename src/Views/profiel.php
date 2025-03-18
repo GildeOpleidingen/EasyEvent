@@ -46,7 +46,6 @@ use App\Conn;
 
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                <h2><?= $greeting, $email; ?></h2>
                 
                 <div class="card position-relative mt-5">
                     <div class="card-body text-start ms-5">
@@ -141,18 +140,17 @@ use App\Conn;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addressForm" method="POST" action="/profiel">
+                <form id="addressForm" method="POST" action="/profiel/updateAdresGegevens">
                         <div class="mb-3">
                             <label for="newPostcode" class="form-label">Postcode</label>
-                            <input type="text" class="form-control" id="newPostcode" name="newPostcode" required>
+                            <input type="text" class="form-control" id="newPostcode" name="newPostCode" maxlength="8" required>
                         </div>
                         <div class="mb-3">
                             <label for="newCity" class="form-label">Plaatsnaam</label>
-                            <input type="text" class="form-control" id="newCity" name="newCity" required>
-                        </div>
+                            <input type="text" class="form-control" id="newCity" name="newCity" maxlength="100" required>
                         <div class="mb-3">
                             <label for="newHouseNumber" class="form-label">Huisnummer</label>
-                            <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" required>
+                            <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" maxlength="6" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Opslaan</button>
                     </form>

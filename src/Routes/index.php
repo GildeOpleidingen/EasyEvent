@@ -16,7 +16,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 $router = new Router();
 
 $router->get('/', HomeController::class, 'index');
@@ -38,6 +37,8 @@ $router->get('/beheer/event-aanmaken-stap-2', BeheerEventAanmakenController::cla
 $router->post('/beheer/event-aanmaken-stap-2', BeheerEventAanmakenController::class, 'sendEvent', true);
 $router->get('/beheer/', BeheerHomeController::class, 'index');
 $router->get('/profiel', ProfielController::class, 'index', true);
+$router->post('/profiel', ProfielController::class, 'updateTelefoon', true);
+$router->post('/profiel/updateAdresGegevens', ProfielController::class, 'updateAdresGegevens', true);
 $router->get('/beheer/bekijk-events', BeheerBekijkEventController::class, 'index', true);
 
 $router->dispatch();
