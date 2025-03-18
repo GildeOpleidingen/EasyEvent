@@ -102,8 +102,8 @@
                                     <label class="form-check-label" for="activity<?= htmlspecialchars($activity->getID()) ?>"><?= htmlspecialchars($activity->getName()) ?></label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="text" name="activities[<?= htmlspecialchars($activity->getID()) ?>][startTime]" value="<?= htmlspecialchars($activity->getBeginTijd()) ?>" />
-                                    <input type="text" name="activities[<?= htmlspecialchars($activity->getID()) ?>][endTime]" value="<?= htmlspecialchars($activity->getEindTijd()) ?>" />
+                                    <input type="text" readonly name="activities[<?= htmlspecialchars($activity->getID()) ?>][startTime]" value="<?= htmlspecialchars($activity->getBeginTijd()) ?>" />
+                                    <input type="text" readonly name="activities[<?= htmlspecialchars($activity->getID()) ?>][endTime]" value="<?= htmlspecialchars($activity->getEindTijd()) ?>" />
                                 </div>
                                 <?php endforeach; ?>
                             <?php else: ?>

@@ -64,20 +64,21 @@ class EventInfoController extends Controller
 
         $role = isset($_POST['role']) ? $_POST['role'] : null;
         $organisatieId = isset($_POST['organisation']) ? $_POST['organisation'] : null;
-        $activities = isset($_POST['activities']) ? $_POST['activities'] : null;
+        $postedActivities = isset($_POST['activities']) ? $_POST['activities'] : null;
 
-        $planning = new PlanningsModel($user->getId(), $role, $activities, $organisatieId);
+        $activeActivities = $eventModel->getActiveActivitiesByEventIdAndUserId($id, $user->getId());
+        $activities = $eventModel->getActivitiesByEventId($id);
+        $planning = new PlanningsModel($user->getId(), $role, $postedActivities, $organisatieId, $activities, $activeActivities);
 
         $eventModel = new SingleEventModel();
         $user = unserialize($_SESSION['gebruiker']);
-        $activeActivities = $eventModel->getActiveActivitiesByEventIdAndUserId($id, $user->getId());
-
 
         if ($planning->validate()) {
             $event = $eventModel->getEventById($id);
             $eventModel->setEvent($event);
-            //TODO
+
             //$eventModel->setActivities($activities);
+            $planningsModel->sendPlanning($planningsModel);
             $eventModel->setMessage('Gebruiker is toegevoegd aan de activiteit.');
             // TODO Check if there are relations / time  that need te be removed or added or changed.
             $this->render('event-info', (array)$eventModel);
