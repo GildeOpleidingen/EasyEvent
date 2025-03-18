@@ -29,10 +29,8 @@ class EventsModel extends DBModel
         $sql = "SELECT 
                     event.ID, event.EventNaam AS eventName, 
                     event.Info AS eventInfo, 
-                    Organisator,
                     `event-tijd`.Datum AS eventDate,
-                    event.HoofdEvent AS hoofdEventID,
-                    Banner
+                    event.HoofdEvent AS hoofdEventID
                 FROM 
                     event 
                 LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID";
@@ -48,10 +46,9 @@ class EventsModel extends DBModel
             $event = new EventModel(
                 $row['eventName'],
                 $row['eventInfo'],
-                $row['Organisator'],
                 '', // eventLocatie (mist in query)
                 [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
-                $row['Banner']
+                '' // eventBanner (mist in query)
             );
             $event->eventID = $row['ID'];
             $event->hoofdEventID = $row['hoofdEventID'];
