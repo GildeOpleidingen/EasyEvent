@@ -1,16 +1,59 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\UserModel;
 use App\Controller;
 
 class ProfielController extends Controller
 {
-    private $model;
+    public function index()
+    {
+        if (!isset($_SESSION['gebruiker'])) {
+            return $this->render('login', ['error' => 'Je moet ingelogd zijn om je profiel te bekijken.']);
+        }
 
-    public function index() {
-        $this->render('profiel');
-    
+        $gebruiker = unserialize($_SESSION['gebruiker']);
+        $gebruiker = UserModel::getById($gebruiker->getId());
+
+        if (!$gebruiker) {
+            return $this->render('login', ['error' => 'Gebruiker niet gevonden. Log opnieuw in.']);
+        }
+
+        return $this->render('profiel', ['gebruiker' => $gebruiker]);
     }
 
+    public function updateTelefoon()
+    {
+        if (!isset($_SESSION['gebruiker']) || empty($_POST['newPhone'])) {
+            return $this->render('profiel', ['error' => 'Ongeldige invoer']);
+        }
 
+        $gebruiker = unserialize($_SESSION['gebruiker']);
+        $gebruiker->updateTelefoon(trim($_POST['newPhone']));
+
+        return $this->render('profiel', [
+            'gebruiker' => $gebruiker,
+            'success' => 'Telefoonnummer bijgewerkt'
+        ]);
+    }
+
+    public function updateAdresGegevens()
+    {
+        if (!isset($_SESSION['gebruiker'])) {
+            return $this->render('profiel', ['error' => 'Je moet ingelogd zijn om je adresgegevens te wijzigen.']);
+        }
+
+        $gebruiker = unserialize($_SESSION['gebruiker']);
+        
+        $newPostCode = trim($_POST['newPostCode']) ?: null;
+        $newCity = trim($_POST['newCity']) ?: null;
+        $newHouseNumber = trim($_POST['newHouseNumber']) ?: null;
+
+        $gebruiker->updateAdresGegevens($newPostCode, $newCity, $newHouseNumber);
+
+        return $this->render('profiel', [
+            'gebruiker' => $gebruiker,
+            'success' => 'Adresgegevens succesvol bijgewerkt'
+        ]);
+    }
 }

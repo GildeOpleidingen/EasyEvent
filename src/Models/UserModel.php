@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
-class UserModel //
+use App\Conn;
+use PDO;
+
+class UserModel
 {
     private $id;
     private $voornaam;
@@ -11,8 +14,8 @@ class UserModel //
     private $telefoon;
     private $postcode;
     private $roles;
-    private $plaatsnaam; 
-    private $huisnummer; 
+    private $plaatsnaam;
+    private $huisnummer;
 
     public function __construct(array $data)
     {
@@ -22,33 +25,74 @@ class UserModel //
         $this->email = $data['E-mail'] ?? null;
         $this->telefoon = $data['Telefoon'] ?? null;
         $this->postcode = $data['Postcode'] ?? null;
-        $this->roles[] = RolModel::getRolesByUserId($this->id) ?? null;
-        $this->plaatsnaam = $data['Plaatsnaam'] ?? null; 
-        $this->huisnummer = $data['Huisnummer'] ?? null; 
+        $this->roles = isset($data['ID']) ? RolModel::getRolesByUserId($data['ID']) : [];
+        $this->plaatsnaam = $data['Plaatsnaam'] ?? null;
+        $this->huisnummer = $data['Huisnummer'] ?? null;
     }
 
-    public function getId() { return $this->id; }
-    public function getVoornaam() { return $this->voornaam; }
-    public function setVoornaam($voornaam) { $this->voornaam = $voornaam; }
+        public function getId()
+    {
+        return $this->id;
+    }
 
-    public function getAchternaam() { return $this->achternaam; }
-    public function setAchternaam($achternaam) { $this->achternaam = $achternaam; }
+    public static function getById($id)
+    {
+        $db = Conn::getPDO();
+        $stmt = $db->prepare("SELECT * FROM gebruiker WHERE Id = ?");
+        $stmt->execute([$id]);
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    public function getEmail() { return $this->email; }
-    public function setEmail($email) { $this->email = $email; }
+        return $userData ? new self($userData) : null;
+    }
 
-    public function getTelefoon() { return $this->telefoon; }
-    public function setTelefoon($telefoon) { $this->telefoon = $telefoon; }
+    public function updateTelefoon($newPhone)
+    {
+        $db = Conn::getPDO();
+        $stmt = $db->prepare("UPDATE gebruiker SET Telefoon = ? WHERE Id = ?");
+        $stmt->execute([$newPhone, $this->id]);
+        $this->telefoon = $newPhone;
+    }
 
-    public function getPostcode() { return $this->postcode; }
-    public function setPostcode($postcode) { $this->postcode = $postcode; }
+    public function updateAdresGegevens($newPostCode, $newCity, $newHouseNumber)
+    {
+        $db = Conn::getPDO();
 
-    public function getRoles() { return $this->roles; }
-    public function setRol($roles) { $this->roles[] = $roles; }
+        $query = "UPDATE gebruiker SET ";
 
-    public function getPlaatsnaam() { return $this->plaatsnaam; }
-    public function setPlaatsnaam($plaatsnaam) { $this->plaatsnaam = $plaatsnaam; }
+        $updateVelden = [];
 
-    public function getHuisnummer() { return $this->huisnummer; }
-    public function setHuisnummerr($huisnummer) { $this->huisnummer = $huisnummer; }
+        if (!empty($newPostCode)) {
+            $updateVelden[] = "Postcode = :postcode";
+        }
+
+        if (!empty($newCity)) {
+            $updateVelden[] = "Plaatsnaam = :plaatsnaam";
+        }
+
+        if (!empty($newHouseNumber)) {
+            $updateVelden[] = "Huisnummer = :huisnummer";
+        }
+
+        $query .= implode(', ', $updateVelden);
+        $query .= " WHERE Id = :id"; 
+        $stmt = $db->prepare($query);
+
+        if (!empty($newPostCode)) {
+            $stmt->bindParam(':postcode', $newPostCode);
+        }
+        if (!empty($newCity)) {
+            $stmt->bindParam(':plaatsnaam', $newCity);
+        }
+        if (!empty($newHouseNumber)) {
+            $stmt->bindParam(':huisnummer', $newHouseNumber);
+        }
+
+        $stmt->bindParam(':id', $this->id);
+        $stmt->execute();
+
+        $this->postcode = $newPostCode;
+        $this->plaatsnaam = $newCity;
+        $this->huisnummer = $newHouseNumber;
+    }
+
 }
