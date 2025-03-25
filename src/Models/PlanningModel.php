@@ -22,4 +22,14 @@ class PlanningModel extends DBModel
     {
         return $this->activiteit_event_tijd_id;
     }
+
+    public function getBeginTijd()
+    {
+        return $this->beginTijd;
+    }
+
+    public function getEindTijd()
+    {
+        return $this->eindTijd;
+    }
 }

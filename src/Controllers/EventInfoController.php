@@ -23,7 +23,6 @@ class EventInfoController extends Controller
         if (!$event) {
             $this->render('event-info', ['error' => 'Dit event model bestaat niet']);
         }
-        $activities = [];
         if (isset($_SESSION['gebruiker']))
         {
             $user = unserialize($_SESSION['gebruiker']);
@@ -64,23 +63,18 @@ class EventInfoController extends Controller
 
         $role = isset($_POST['role']) ? $_POST['role'] : null;
         $organisatieId = isset($_POST['organisation']) ? $_POST['organisation'] : null;
-        $activities = isset($_POST['activities']) ? $_POST['activities'] : null;
-
-        $planning = new PlanningsModel($user->getId(), $role, $activities, $organisatieId);
-
+        $postedActivities = isset($_POST['activities']) ? $_POST['activities'] : null;
         $eventModel = new SingleEventModel();
-        $user = unserialize($_SESSION['gebruiker']);
-        $activeActivities = $eventModel->getActiveActivitiesByEventIdAndUserId($id, $user->getId());
-
+        $activeActivities = $eventModel->getPlanningByEventIdAndUserId($id, $user->getId());
+        $activities = $eventModel->getActivitiesByEventId($id);
+        $planning = new PlanningsModel($user->getId(), $role, $postedActivities, $organisatieId, $activities, $activeActivities);
 
         if ($planning->validate()) {
             $event = $eventModel->getEventById($id);
             $eventModel->setEvent($event);
-            //TODO
-            //$eventModel->setActivities($activities);
+            $planning->sendPlanning($planning);
             $eventModel->setMessage('Gebruiker is toegevoegd aan de activiteit.');
-            // TODO Check if there are relations / time  that need te be removed or added or changed.
-            $this->render('event-info', (array)$eventModel);
+            header('Location: /event-info?eventID='.$id.'');
         } else {
             $this->render('event-info', ['error' => 'Gebruiker kon niet worden toegevoegd.']);
         }
