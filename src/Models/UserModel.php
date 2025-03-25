@@ -30,10 +30,14 @@ class UserModel
         $this->huisnummer = $data['Huisnummer'] ?? null;
     }
 
-        public function getId()
-    {
-        return $this->id;
-    }
+    public function getId() { return $this->id; }
+    public function getVoornaam() { return $this->voornaam; }
+    public function getAchternaam() { return $this->achternaam; }
+    public function getEmail() { return $this->email; }
+    public function getTelefoon() { return $this->telefoon; }
+    public function getPostcode() { return $this->postcode; }
+    public function getPlaatsnaam() { return $this->plaatsnaam; }
+    public function getHuisnummer() { return $this->huisnummer; }
 
     public static function getById($id)
     {
@@ -94,5 +98,58 @@ class UserModel
         $this->plaatsnaam = $newCity;
         $this->huisnummer = $newHouseNumber;
     }
+
+    public function updateWachtwoord($currentPassword, $newPassword, $confirmPassword)
+{
+    if (!$currentPassword || !$newPassword || !$confirmPassword) {
+        return "Alle velden zijn verplicht.";
+    }
+
+    $db = Conn::getPDO();  
+    $stmt = $db->prepare("SELECT Wachtwoord FROM gebruiker WHERE ID = :id");
+    $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$result) {
+        return "Gebruiker niet gevonden.";
+    }
+
+    if (!password_verify($currentPassword, $result['Wachtwoord'])) {
+        return "Onjuist wachtwoord.";
+    }
+
+    if (password_verify($newPassword, $result['Wachtwoord'])) {
+        return "Je nieuwe wachtwoord mag niet hetzelfde zijn als je huidige wachtwoord.";
+    }
+
+    if ($newPassword !== $confirmPassword) {
+        return "Nieuwe wachtwoorden komen niet overeen.";
+    }
+
+    if (strlen($newPassword) < 8) { 
+        return "Wachtwoord moet minimaal 8 tekens lang zijn.";
+    }
+
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    $stmt = $db->prepare("UPDATE gebruiker SET Wachtwoord = :wachtwoord WHERE ID = :id");
+    $stmt->bindParam(':wachtwoord', $hashedPassword, PDO::PARAM_STR);
+    $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+
+    if ($stmt->execute()) {
+        return "Wachtwoord succesvol bijgewerkt.";
+    } else {
+        return "Fout bij het bijwerken van het wachtwoord.";
+    }
+}
+
+
+
+
+
+    
+
+    
 
 }

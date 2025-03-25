@@ -56,4 +56,20 @@ class ProfielController extends Controller
             'success' => 'Adresgegevens succesvol bijgewerkt'
         ]);
     }
+
+    public function updateWachtwoord()
+    {
+        if (!isset($_SESSION['gebruiker'])) {
+            return $this->render('profiel', ['error' => 'Je moet ingelogd zijn om je wachtwoord te wijzigen.']);
+        }
+
+        $gebruiker = unserialize($_SESSION['gebruiker']);
+
+        try {
+            $message = $gebruiker->updateWachtwoord($_POST['currentPassword'], $_POST['newPassword'], $_POST['confirmPassword']);
+            return $this->render('profiel', ['gebruiker' => $gebruiker, 'success' => $message]);
+        } catch (Exception $e) {
+            return $this->render('profiel', ['error' => 'wachtwoord komt niet overeen']);
+        }
+    }
 }

@@ -39,6 +39,8 @@ $router->get('/beheer/', BeheerHomeController::class, 'index');
 $router->get('/profiel', ProfielController::class, 'index', true);
 $router->post('/profiel', ProfielController::class, 'updateTelefoon', true);
 $router->post('/profiel/updateAdresGegevens', ProfielController::class, 'updateAdresGegevens', true);
+$router->post('/profiel/updateWachtwoord', ProfielController::class, 'updateWachtwoord', true);
+$router->post('/profiel/logout', LoginController::class, 'logout');
 $router->get('/beheer/bekijk-events', BeheerBekijkEventController::class, 'index', true);
 
 $router->dispatch();
