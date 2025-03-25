@@ -71,9 +71,6 @@
                                 Kies de rol waarin je aan de activiteit deelneemt.
                                 <?php foreach ($active_roles as $role): ?>
                                 <div class="form-check">
-                                    <?php
-                                    /** @var RolModel $role */
-                                    $role = $role[0]; ?>
                                     <input class="form-check-input" type="radio" id="role<?=  htmlspecialchars($role->getName()) ?>" name="role" <?php if ($event::hasRole($activities, $role)) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($role->getID()) ?>">
                                     <label class="form-check-label" for="role<?= htmlspecialchars($role->getName()) ?>"><?= htmlspecialchars($role->getName()) ?></label>
                                 </div>

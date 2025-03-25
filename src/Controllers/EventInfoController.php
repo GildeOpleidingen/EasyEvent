@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controller;
 use App\Conn;
+use App\Models\RolModel;
 use App\Models\SingleEventModel;
 use App\Models\UserModel;
 use App\Models\PlanningsModel;
@@ -29,7 +30,7 @@ class EventInfoController extends Controller
             $eventModel->setGebruikerId($user->getId());
 
             $activities = $eventModel->getActivitiesByEventIdAndUserId($id, $user->getId());
-            $active_roles = $user->getRoles();
+            $active_roles = RolModel::getRolesByUserId($user->getId());
             $eventModel->setRoles($active_roles);
 
             $organisations = $eventModel->getOrganisations();
@@ -74,7 +75,7 @@ class EventInfoController extends Controller
             $eventModel->setEvent($event);
             $planning->sendPlanning($planning);
             $eventModel->setMessage('Gebruiker is toegevoegd aan de activiteit.');
-            header('Location: /event-info?eventID='.$id.'');
+            $this->redirect('/event-info?eventID='.$id . '');
         } else {
             $this->render('event-info', ['error' => 'Gebruiker kon niet worden toegevoegd.']);
         }
