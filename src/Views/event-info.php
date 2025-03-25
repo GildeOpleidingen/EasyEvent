@@ -108,7 +108,7 @@
                             <?php endif; ?>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Inschrijven</button>
+                            <button type="submit" class="btn btn-primary" <?php if (empty($activities)): ?> disabled="disabled" <?php endif; ?>>Inschrijven</button>
                         </div>
                     </form>
                 <?php endif; ?>

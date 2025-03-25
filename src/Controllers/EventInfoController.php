@@ -14,7 +14,7 @@ class EventInfoController extends Controller
     public function index()
     {
         if (!isset($_GET['eventID'])) {
-            header('Location: /events');
+            $this->redirect('/events');
             exit();
         }
 
@@ -47,14 +47,8 @@ class EventInfoController extends Controller
 
     public function update()
     {
-        if (!isset($_POST['eventID'])) {
-            header('Location: /events');
-            exit();
-        }
-
-        if (!isset($_SESSION['gebruiker']))
-        {
-            header('Location: /events');
+        if (!isset($_POST['eventID']) || !isset($_SESSION['gebruiker'])) {
+            $this->redirect('/events');
             exit();
         }
 
@@ -64,7 +58,7 @@ class EventInfoController extends Controller
 
         $role = isset($_POST['role']) ? $_POST['role'] : null;
         $organisatieId = isset($_POST['organisation']) ? $_POST['organisation'] : null;
-        $postedActivities = isset($_POST['activities']) ? $_POST['activities'] : null;
+        $postedActivities = isset($_POST['activities']) ? $_POST['activities'] : [];
         $eventModel = new SingleEventModel();
         $activeActivities = $eventModel->getPlanningByEventIdAndUserId($id, $user->getId());
         $activities = $eventModel->getActivitiesByEventId($id);
@@ -75,7 +69,7 @@ class EventInfoController extends Controller
             $eventModel->setEvent($event);
             $planning->sendPlanning($planning);
             $eventModel->setMessage('Gebruiker is toegevoegd aan de activiteit.');
-            $this->redirect('/event-info?eventID='.$id . '');
+            $this->redirect('/event-info?eventID='.$id);
         } else {
             $this->render('event-info', ['error' => 'Gebruiker kon niet worden toegevoegd.']);
         }
