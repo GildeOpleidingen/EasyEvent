@@ -100,7 +100,7 @@ class SingleEventModel extends DBModel
         return $activities;
     }
 
-    public static function getActiveActivitiesByEventIdAndUserId(int $id, int $gebruiker_id)
+    public static function getPlanningByEventIdAndUserId(int $id, int $gebruiker_id)
     {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
@@ -143,7 +143,7 @@ class SingleEventModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT t.ID, t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.BeginTijd, t.EindTijd, t.VrijwilligerAantal, t.BegeleiderAantal, t.ActiviteitID, t.Naam, t.Gebruiker_ID, t.Organisatie_ID, t.Rol_ID
+        $sql = "SELECT t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.ID, t.BeginTijd, t.EindTijd, t.VrijwilligerAantal, t.BegeleiderAantal, t.ActiviteitID, t.Naam, t.Gebruiker_ID, t.Organisatie_ID, t.Rol_ID
                 FROM (SELECT    kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
                                 kpl_activiteit_event_tijd.event_tijd_ID,
                                 `planning`.`ID`,
@@ -182,7 +182,7 @@ class SingleEventModel extends DBModel
                                     WHERE`event-tijd`.Event_ID=:eventid
 
                     ) as t
-                GROUP BY t.kpl_activiteit_event_tijd_ID";
+                 GROUP BY t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.ID, t.BeginTijd, t.EindTijd, t.VrijwilligerAantal, t.BegeleiderAantal, t.ActiviteitID, t.Naam, t.Gebruiker_ID, t.Organisatie_ID, t.Rol_ID";
 
         $stmt = $db->prepare($sql);
 
@@ -191,12 +191,27 @@ class SingleEventModel extends DBModel
         }
 
         $activities = [];
+        $plannedActivities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $activity = new ActivityModel($row['kpl_activiteit_event_tijd_ID'], $row['ActiviteitID'], $row['event_tijd_ID'],
              $row['Naam'], $row['BeginTijd'], $row['EindTijd'], $row['VrijwilligerAantal'], $row['BegeleiderAantal'],
              $row['ID'], $row['Gebruiker_ID'], $row['Organisatie_ID'], $row['Rol_ID']);
+            if ($activity->getPlannedID() !== null) {
+                $plannedActivities[] = $activity;
+            }
             $activities[] = $activity;
         }
+
+        foreach ($plannedActivities as $pActivity) {
+            foreach ($activities as $key => $activity) {
+                if ($activity->getPlannedID() == null && $activity->getActivityID() === $pActivity->getActivityID()
+                    && $activity->getID() === $pActivity->getID()
+                    && $activity->getEventTijdID() === $pActivity->getEventTijdID()) {
+                    unset($activities[$key]);
+                }
+            }
+        }
+
         return $activities;
     }
 

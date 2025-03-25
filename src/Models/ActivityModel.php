@@ -78,6 +78,11 @@ class ActivityModel extends DBModel
         return $this->activiteit_event_tijd_id;
     }
 
+    public function getEventTijdID()
+    {
+        return $this->event_tijd_id;
+    }
+
     public function getBeginTijd()
     {
         return $this->beginTijd;
@@ -86,5 +91,10 @@ class ActivityModel extends DBModel
     public function getEindTijd()
     {
         return $this->eindTijd;
+    }
+
+    public function getPlannedID()
+    {
+        return $this->plannedID;
     }
 }

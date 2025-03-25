@@ -60,7 +60,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <?php if (isset($gebruikerID)): ?>
-                    <form id="activityForm" action="/event-info" Method="POST">
+                    <form id="activityForm" action="/event-info?eventID=<?= $event->getEventID() ?>" Method="POST">
                         <div class="modal-header">
                             <h5 class="modal-title" id="activiteitenModalLabel">Selecteer Activiteiten</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
