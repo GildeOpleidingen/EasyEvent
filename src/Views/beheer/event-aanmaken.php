@@ -51,21 +51,21 @@ error_reporting(E_ALL);
                 </div>
 
                 <div class="mb-3">
-                    <label for="eventCategory" class="form-label">Categorie <span class="verplicht">*</span></label>
-                    <select class="form-control" id="eventCategory" name="category" required>
-                        <option value="" disabled selected>Selecteer een categorie</option>
+                    <label for="eventSector" class="form-label">Sector <span class="verplicht">*</span></label>
+                    <select class="form-control" id="eventSector" name="Sector" required>
+                        <option value="" disabled selected>Selecteer een sector</option>
                         <option value="Sport">Sport</option>
                         <option value="Cultuur">Cultuur</option>
                         <option value="School">School</option>
                         <option value="Gamen">Gamen</option>
                     </select>
-                    <div class="invalid-feedback">Selecteer een categorie.</div>
+                    <div class="invalid-feedback">Selecteer een sector.</div>
                 </div>
 
                 <div class="mb-3 row">
                     <div class="col-md-6">
                         <label for="eventCountry" class="form-label">Land <span class="verplicht">*</span></label>
-                        <select class="form-control" id="eventCountry" name="Country" required>
+                        <select class="form-control" id="eventCountry" name="Land" required>
                             <option value="Netherland" selected>Nederland</option>
                             <option value="Belgium">België</option>
                             <option value="Germany">Duitsland</option>
@@ -75,24 +75,24 @@ error_reporting(E_ALL);
                     </div>
                     <div class="col-md-6">
                         <label for="Placename" class="form-label">Plaatsnaam <span class="verplicht">*</span></label>
-                        <input type="text" class="form-control" id="eventPlacename" name="Placename" placeholder="Amsterdam" required>
+                        <input type="text" class="form-control" id="eventPlacename" name="Plaats" placeholder="Amsterdam" required>
                         <div class="invalid-feedback">Voer een locatie in.</div>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-md-7">
                         <label for="Streetname" class="form-label">Straatnaam</label>
-                        <input type="text" class="form-control" id="eventStreetname" name="Streetname" placeholder="Kalverstraat">
+                        <input type="text" class="form-control" id="eventStreetname" name="Straatnaam" placeholder="Kalverstraat">
                         <div class="invalid-feedback">Voer een locatie in.</div>
                     </div>
                     <div class="col-md-3">
                         <label for="Address" class="form-label">Postcode <span class="verplicht">*</span></label>
-                        <input type="text" class="form-control" id="eventAddress" name="Address" placeholder="1234 AB" required>
+                        <input type="text" class="form-control" id="eventAddress" name="Postcode" placeholder="1234 AB" required>
                         <div class="invalid-feedback">Voer een geldig postcode in.</div>
                     </div>
                     <div class="col-md-2">
                         <label for="Homenumber" class="form-label">Huisnummer</label>
-                        <input type="text" class="form-control" id="eventHomenumber" name="Homenumber" placeholder="1">
+                        <input type="text" class="form-control" id="eventHomenumber" name="Huisnummer" placeholder="1">
                         <div class="invalid-feedback">Voer een locatie in.</div>
                     </div>
                 </div>

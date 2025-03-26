@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controller;
 use App\Models\EventsModel;
+use App\Models\EventModel;
 use App\Models\UsersModel;
 
 class BeheerEventAanmakenController extends Controller {
@@ -13,7 +14,13 @@ class BeheerEventAanmakenController extends Controller {
     public function sendEvent(){
         $eventName = $_POST['eventNaam'] ?? null;
         $eventInfo = $_POST['info'] ?? null;
-        $eventOrganizer = $_POST['organisator'] ?? null;
+        $eventOrganizer = $_SESSION['GebruikersID'] ?? null;
+        $Land = $_POST['Land'] ?? null;
+        $Plaats = $_POST['Plaats'] ?? null;
+        $Straatnaam = $_POST['Straatnaam'] ?? null;
+        $Huisnummer = $_POST['Huisnummer'] ?? null;
+        $Postcode = $_POST['Postcode'] ?? null;
+        $Sector = $_POST['Sector'] ?? '';
         $eventBanner = $_POST['banner'] ?? null;
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
@@ -34,13 +41,19 @@ class BeheerEventAanmakenController extends Controller {
             return;
         }
 
-        $eventModel = new EventsModel($eventName, $eventInfo, $eventBanner, ['date' => $date[0], 'BeginTijd' => $startTime[0], 'EindTijd' => $endTime[0]]);
+        $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, ['date' => $date[0], 'BeginTijd' => $startTime[0], 'EindTijd' => $endTime[0]], $eventBanner);
         $errors = $eventModel->validateModel();
         // Sla de gegevens tijdelijk op in de sessie
         $_SESSION['register_data'] = [
             'GebruikersID' => $_SESSION['GebruikersID'],
             'eventNaam' => $eventName,
             'info' => $eventInfo,
+            'land' => $Land,
+            'plaats' => $Plaats,
+            'straatNaam' => $Straatnaam,
+            'huisNummer' => $Huisnummer,
+            'postcode' => $Postcode,
+            'sector' => $Sector,
             'organisator' => $eventOrganizer,
             'banner' => $eventBanner,
             'hoofdEvent' => $hoofdEvent,
@@ -49,7 +62,7 @@ class BeheerEventAanmakenController extends Controller {
             'startTime' => $startTime,
             'endTime' => $endTime
         ];
-
+       // var_dump($eventModel->event);
         $result = $eventModel->sendEvent($eventModel);
 
         if ($result) {
