@@ -51,20 +51,22 @@ $events = $eventModel->generateEvents();
                 <input type="text" id="search-input-top" class="form-control rounded-2 mb-3" placeholder="Search events..." onkeyup="filterEvents();">
                 <!-- Event Items -->
                 <?php if (!empty($events)): ?>
-                    <?php foreach ($events as $event): ?>
-                        <div class="event-item" style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>');">
-                            <div class="event-date"><?= htmlspecialchars($event->getEventTime()[0]['date'] ?? 'Datum onbekend') ?></div>
-                            <h3><?= htmlspecialchars($event->getEventName()) ?></h3>
-                            <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
-                            <div class="more-info">
-                                <a href="event-info?eventID=<?= htmlspecialchars($event->getEventID()) ?>" class="btn btn-primary">
-                                    Leer meer <i class="bi bi-chevron-right text-white"></i>
-                                </a>
+                    <div class="accordion" id="eventsAccordion">
+                        <?php foreach ($events as $index => $event): ?>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading<?= $index ?>">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
+                                        <?= htmlspecialchars($event->getEventName()) ?>
+                                    </button>
+                                </h2>
+                                <div class="accordion-collapse collapse" id="collapse<?= $index ?>" data-bs-parent="eventsAccordion">
+                                    <div class="accordion-body">
+                                        <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No events found.</p>
+                        <?php endforeach; ?>
+                    </div>
                 <?php endif; ?>
 
             </div>
