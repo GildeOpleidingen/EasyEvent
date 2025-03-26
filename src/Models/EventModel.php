@@ -32,7 +32,7 @@ class EventModel
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
         $this->eventOrganizer = $eventOrganizer;
-        $this->eventLand = $Land;
+        $this->Land = $Land;
         $this->Plaats = $Plaats;
         $this->Straatnaam = $Straatnaam;
         $this->Huisnummer = $Huisnummer;
@@ -244,7 +244,6 @@ class EventModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
         
-        var_dump($event->eventOrganizer);
         // SQL to insert event data into the `event` table, now including `hoofdEvent`
         $sqlEvent = "INSERT INTO event (Eventnaam, Info, Organisator, Banner) VALUES (:eventName, :eventInfo, :eventOrganisator, :eventBanner)";
 
@@ -252,7 +251,7 @@ class EventModel
         $stmtEvent = $db->prepare($sqlEvent);
         $stmtEvent->bindParam(':eventName', $event->eventName);
         $stmtEvent->bindParam(':eventInfo', $event->eventInfo);
-        $stmtEvent->bindParam(':eventOrganisator', $event->eventOrganisator);
+        $stmtEvent->bindParam(':eventOrganisator', $event->eventOrganizer);
         $stmtEvent->bindParam(':eventBanner', $event->eventBanner);
 
         if ($stmtEvent->execute()) {

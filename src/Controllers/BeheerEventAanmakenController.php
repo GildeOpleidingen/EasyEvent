@@ -15,6 +15,11 @@ class BeheerEventAanmakenController extends Controller {
         $eventName = $_POST['eventNaam'] ?? null;
         $eventInfo = $_POST['info'] ?? null;
         $eventOrganizer = $_SESSION['GebruikersID'] ?? null;
+        // Check if eventOrganizer is set and is an integer
+        if (!isset($eventOrganizer) || !is_int($eventOrganizer)) {
+            $this->render('beheer/home', ['error' => 'Organisator is niet geldig.']);
+            return;
+        }
         $Land = $_POST['Land'] ?? null;
         $Plaats = $_POST['Plaats'] ?? null;
         $Straatnaam = $_POST['Straatnaam'] ?? null;
