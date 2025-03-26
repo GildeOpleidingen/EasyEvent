@@ -10,6 +10,7 @@ use App\Controllers\RegisterController;
 use App\Controllers\EventsController;
 use App\Controllers\EventInfoController;
 use App\Controllers\ProfielController;
+use App\Controllers\UserController;
 use App\Router;
 
 ini_set('display_errors', 1);
@@ -43,5 +44,7 @@ $router->post('/profiel/updateAdresGegevens', ProfielController::class, 'updateA
 $router->post('/profiel/updateWachtwoord', ProfielController::class, 'updateWachtwoord', true);
 $router->post('/profiel/logout', LoginController::class, 'logout');
 $router->get('/beheer/bekijk-events', BeheerBekijkEventController::class, 'index', true);
+$router->get('/beheer/user-overzicht', UserController::class, 'index', true);
+
 
 $router->dispatch();
