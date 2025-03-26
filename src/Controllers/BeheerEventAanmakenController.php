@@ -26,7 +26,7 @@ class BeheerEventAanmakenController extends Controller {
         $Huisnummer = $_POST['Huisnummer'] ?? null;
         $Postcode = $_POST['Postcode'] ?? null;
         $Sector = $_POST['Sector'] ?? '';
-        $eventBanner = $_POST['banner'] ?? null;
+        $eventBanner = base64_encode($_POST['banner'] ?? null);
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
         $date = $_POST['datum'] ?? null;
