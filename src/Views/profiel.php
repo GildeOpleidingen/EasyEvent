@@ -43,10 +43,19 @@ use App\Conn;
     ?>
     <div class="container-fluid vh-100">
         <?php require_once('./parts/nav.html'); ?>
+        <?php if(isset($error)): ?>
+    <div class="error-message">
+        <?php echo $error; ?>
+    </div>
+    <?php endif; ?>
 
+    <?php if(isset($success)): ?>
+        <div class="success-message">
+            <?php echo $success; ?>
+        </div>
+    <?php endif; ?>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                <h2><?= $greeting, $email; ?></h2>
                 
                 <div class="card position-relative mt-5">
                     <div class="card-body text-start ms-5">
@@ -81,9 +90,8 @@ use App\Conn;
             </div>
         </div>
     </div>
-
-    <!-- Password Modal -->
-    <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <!-- Password Modal -->
+        <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -91,18 +99,18 @@ use App\Conn;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="passwordForm">
+                    <form id="passwordForm" action="/profiel/updateWachtwoord" method="POST">
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label">Huidig wachtwoord</label>
-                            <input type="password" class="form-control" id="currentPassword" required>
+                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
                         </div>
                         <div class="mb-3">
                             <label for="newPassword" class="form-label">Nieuw wachtwoord</label>
-                            <input type="password" class="form-control" id="newPassword" required>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
                         </div>
                         <div class="mb-3">
                             <label for="confirmPassword" class="form-label">Bevestig nieuw wachtwoord</label>
-                            <input type="password" class="form-control" id="confirmPassword" required>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Opslaan</button>
                     </form>
@@ -110,7 +118,6 @@ use App\Conn;
             </div>
         </div>
     </div>
-
     <!-- Phone Modal -->
     <div class="modal fade" id="phoneModal" tabindex="-1" aria-labelledby="phoneModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -141,18 +148,17 @@ use App\Conn;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addressForm" method="POST" action="/profiel">
+                <form id="addressForm" method="POST" action="/profiel/updateAdresGegevens">
                         <div class="mb-3">
                             <label for="newPostcode" class="form-label">Postcode</label>
-                            <input type="text" class="form-control" id="newPostcode" name="newPostcode" required>
+                            <input type="text" class="form-control" id="newPostcode" name="newPostCode" maxlength="8" required>
                         </div>
                         <div class="mb-3">
                             <label for="newCity" class="form-label">Plaatsnaam</label>
-                            <input type="text" class="form-control" id="newCity" name="newCity" required>
-                        </div>
+                            <input type="text" class="form-control" id="newCity" name="newCity" maxlength="100" required>
                         <div class="mb-3">
                             <label for="newHouseNumber" class="form-label">Huisnummer</label>
-                            <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" required>
+                            <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" maxlength="6" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Opslaan</button>
                     </form>

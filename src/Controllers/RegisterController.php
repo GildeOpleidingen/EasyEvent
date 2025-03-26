@@ -16,7 +16,7 @@ class RegisterController extends Controller
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-
+        //TODO Get all roles and present to view.
 
         if (isset($_SESSION['verificationCode'])) {
             $this->render('register', ['step' => 'verify']); 
@@ -25,7 +25,7 @@ class RegisterController extends Controller
         }
     }
         
-        public function register()
+    public function register()
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -192,9 +192,7 @@ class RegisterController extends Controller
                 $registerData['telefoon'],
                 $registerData['email'],
                 $registerData['wachtwoord'],
-                $registerData['gebruikersnaam'],
-                $registerData['rol'],
-                $registerData['is_geverifieerd']
+                $registerData['gebruikersnaam']
             );
 
             unset($_SESSION['register_data']);

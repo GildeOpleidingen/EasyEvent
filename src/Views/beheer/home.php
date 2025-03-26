@@ -37,7 +37,7 @@
                         <h5>Bekijk verenigingen</h5>
                     </div>
                 </a>
-                <a class="col-6 col-md-4 text-decoration-none" href="#">
+                <a class="col-6 col-md-4 text-decoration-none" href="./user-overzicht">
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-person mb-2 fs-1"></i>
                         <h5>Bekijk gebruikers</h5>
