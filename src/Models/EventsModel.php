@@ -30,6 +30,8 @@ class EventsModel extends DBModel
                     event.ID, event.EventNaam AS eventName, 
                     event.Info AS eventInfo, 
                     `event-tijd`.Datum AS eventDate,
+                    `event-tijd`.Plaats AS Plaats,
+                    `event-tijd`.Straatnaam AS Straatnaam,
                     event.HoofdEvent AS hoofdEventID
                 FROM 
                     event 
@@ -44,11 +46,17 @@ class EventsModel extends DBModel
         $events = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $event = new EventModel(
+                0, // Set a default value for eventOrganizer
                 $row['eventName'],
                 $row['eventInfo'],
-                '', // eventLocatie (mist in query)
+                '', // eventLocatie (missing in query)
+                $row['Plaats'] ?? 'Unknown', // Pass the correct value for Plaats, default to 'Unknown' if null
+                $row['Straatnaam'] ?? 'Unknown', // Pass the correct value for Straatnaam, default to 'Unknown' if null
+                '', // Huisnummer (missing in query)
+                '', // Postcode (missing in query)
+                '', // Sector (missing in query)
                 [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
-                '' // eventBanner (mist in query)
+                '' // eventBanner (missing in query)
             );
             $event->eventID = $row['ID'];
             $event->hoofdEventID = $row['hoofdEventID'];

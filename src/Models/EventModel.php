@@ -29,9 +29,9 @@ class EventModel
     private $pdo;
 
     public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', string $Sector = '', array $eventTime = [], string $eventBanner = ''){
+        $this->eventOrganizer = $eventOrganizer;
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
-        $this->eventOrganizer = $eventOrganizer;
         $this->Land = $Land;
         $this->Plaats = $Plaats;
         $this->Straatnaam = $Straatnaam;
@@ -255,6 +255,7 @@ class EventModel
         $stmtEvent->bindParam(':eventBanner', $event->eventBanner);
 
         if ($stmtEvent->execute()) {
+            error_log("Event insertion successful: " . json_encode($event));
             // Retrieve the last inserted ID for the event
             $event->eventID = $db->lastInsertId();
 
@@ -281,8 +282,11 @@ class EventModel
                     return "The time slot insertion failed!";
                 }
             }
+            // echo "Successfully added event and all time slots!";
             return "Successfully added event and all time slots!";
         }
+        error_log("Event insertion failed: " . implode(", ", $stmtEvent->errorInfo()));
+        // echo "Insertion into `event` table failed!";
         return "Insertion into `event` table failed!";
     }
 

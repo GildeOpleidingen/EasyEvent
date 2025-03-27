@@ -71,7 +71,10 @@ class BeheerEventAanmakenController extends Controller {
         $result = $eventModel->sendEvent($eventModel);
 
         if ($result) {
+            // Debugging statement to confirm redirection
+            error_log("Redirecting to event aanmaken stap 2");
             $this->render('beheer/event-aanmaken-stap-2', ['success' => 'Evenement succesvol aangemaakt!']);
+            return; // Ensure to return after rendering
         } else {
             $this->render('beheer/event-aanmaken-stap-2', ['error' => 'Er is een fout opgetreden bij het aanmaken van het evenement.']);
         }
