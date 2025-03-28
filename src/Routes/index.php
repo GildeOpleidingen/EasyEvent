@@ -45,6 +45,6 @@ $router->post('/profiel/updateWachtwoord', ProfielController::class, 'updateWach
 $router->post('/profiel/logout', LoginController::class, 'logout');
 $router->get('/beheer/bekijk-events', BeheerBekijkEventController::class, 'index', true);
 $router->get('/beheer/user-overzicht', UserController::class, 'index', true);
-
+$router->get('/beheer/user-aanmaken', UserController::class, 'add', true);
 
 $router->dispatch();
