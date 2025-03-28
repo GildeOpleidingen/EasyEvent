@@ -25,25 +25,25 @@
             <h1 class="mb-2" id="greeting"></h1>
             <p class="mb-4">Bekijk wat je kan doen als &lt;rol&gt;</p>
             <div class="row g-3">
-                <a class="col-6 col-md-4 text-decoration-none" href="#">
+                <a class="col-6 col-md-4 text-decoration-none" href="/beheer/event">
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-calendar3 mb-2 fs-1"></i>
                         <h5>Bekijk evenementen</h5>
                     </div>
                 </a>
-                <a class="col-6 col-md-4 text-decoration-none" href="#">
+                <a class="col-6 col-md-4 text-decoration-none" href="">
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-people mb-2 fs-1"></i>
                         <h5>Bekijk verenigingen</h5>
                     </div>
                 </a>
-                <a class="col-6 col-md-4 text-decoration-none" href="./user-overzicht">
+                <a class="col-6 col-md-4 text-decoration-none" href="/beheer/user-overzicht">
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-person mb-2 fs-1"></i>
                         <h5>Bekijk gebruikers</h5>
                     </div>
                 </a>
-                <a class="col-6 col-md-4 text-decoration-none" href="./event-aanmaken">
+                <a class="col-6 col-md-4 text-decoration-none" href="/beheer/event-aanmaken">
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-calendar-plus mb-2 fs-1"></i>
                         <h5>Maak een nieuw evenement aan</h5>
@@ -55,7 +55,7 @@
                         <h5>Voeg een nieuwe vereniging toe</h5>
                     </div>
                 </a>
-                <a class="col-6 col-md-4 text-decoration-none" href="#">
+                <a class="col-6 col-md-4 text-decoration-none" href="/beheer/user-aanmaken">
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-person-plus mb-2 fs-1"></i>
                         <h5>Maak een nieuwe gebruiker aan</h5>
