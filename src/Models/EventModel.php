@@ -7,8 +7,6 @@ use PDO;
 
 class EventModel
 {
-    protected $db;
-
     public int $eventID;
     public string $eventName;
     public string $eventInfo;
@@ -19,9 +17,6 @@ class EventModel
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $hoofdEventID;
-    private $events = [];
-    private $mysql;
-    private $pdo;
 
     public function __construct(string $eventName = '', string $eventInfo = '', string $eventPlace = '', array $eventTime = [], string $eventBanner = ''){
         $this->eventName = $eventName;
@@ -29,11 +24,6 @@ class EventModel
         $this->eventPlace = $eventPlace;
         $this->eventTime[] = $eventTime;
         $this->eventBanner = $eventBanner;
-
-        $mysql = Conn::getInstance();
-        $pdo = $mysql->getPDO();
-
-        // sql to push event to db
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,6 +55,9 @@ class EventModel
     }
     public function addHoofdEventID(array $hoofdEventID){
         $this->hoofdEventID = $this->hoofdEventID;
+    }
+    public function addEventID(string $eventID){
+        $this->eventID = $eventID;
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

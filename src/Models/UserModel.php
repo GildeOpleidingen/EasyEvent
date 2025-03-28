@@ -16,6 +16,7 @@ class UserModel
     private $roles;
     private $plaatsnaam;
     private $huisnummer;
+    private array $organisations;
 
     public function __construct(array $data)
     {
@@ -144,12 +145,34 @@ class UserModel
     }
 }
 
+    /**
+     * @param mixed|null $voornaam
+     */
+    public function setVoornaam(mixed $voornaam): void
+    {
+        $this->voornaam = $voornaam;
+    }
 
+    /**
+     * @param mixed|null $achternaam
+     */
+    public function setAchternaam(mixed $achternaam): void
+    {
+        $this->achternaam = $achternaam;
+    }
 
+    /**
+     * @param mixed|null $telefoon
+     */
+    public function setTelefoon(mixed $telefoon): void
+    {
+        $this->telefoon = $telefoon;
+    }
 
+    public function setOrganisations(array $organisations): void
+    {
+        $this->organisations = $organisations;
+    }
 
-    
-
-    
 
 }

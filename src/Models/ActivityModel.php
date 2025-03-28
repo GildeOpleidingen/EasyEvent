@@ -20,22 +20,8 @@ class ActivityModel extends DBModel
     public string $beginTijd;
     public string $eindTijd;
 
-    public function __construct(int $activiteit_event_tijd_id, int $activiteit_id, int $event_tijd_id,
-     string $naam, string $beginTijd, string $eindTijd, int $maximum_vrijwilligers, int $maximum_begeleiders,
-     ?int $plannedID, ?int $gebruikerID, ?int $organisationID, ?int $rolID)
+    public function __construct()
     {
-        $this->activiteit_id = $activiteit_id;
-        $this->event_tijd_id = $event_tijd_id;
-        $this->plannedID = $plannedID;
-        $this->gebruikerID = $gebruikerID;
-        $this->organisationID = $organisationID;
-        $this->rolID = $rolID;
-        $this->activiteit_event_tijd_id = $activiteit_event_tijd_id;
-        $this->maximum_vrijwilligers = $maximum_vrijwilligers;
-        $this->maximum_begeleiders = $maximum_begeleiders;
-        $this->naam = $naam;
-        $this->beginTijd = $beginTijd;
-        $this->eindTijd = $eindTijd;
     }
 
     public function hasUser()
@@ -96,5 +82,65 @@ class ActivityModel extends DBModel
     public function getPlannedID()
     {
         return $this->plannedID;
+    }
+
+    public function setActiviteitId(int $activiteit_id): void
+    {
+        $this->activiteit_id = $activiteit_id;
+    }
+
+    public function setEventTijdId(int $event_tijd_id): void
+    {
+        $this->event_tijd_id = $event_tijd_id;
+    }
+
+    public function setActiviteitEventTijdId(int $activiteit_event_tijd_id): void
+    {
+        $this->activiteit_event_tijd_id = $activiteit_event_tijd_id;
+    }
+
+    public function setMaximumVrijwilligers(int $maximum_vrijwilligers): void
+    {
+        $this->maximum_vrijwilligers = $maximum_vrijwilligers;
+    }
+
+    public function setMaximumBegeleiders(int $maximum_begeleiders): void
+    {
+        $this->maximum_begeleiders = $maximum_begeleiders;
+    }
+
+    public function setPlannedID(?int $plannedID): void
+    {
+        $this->plannedID = $plannedID;
+    }
+
+    public function setGebruikerID(?int $gebruikerID): void
+    {
+        $this->gebruikerID = $gebruikerID;
+    }
+
+    public function setOrganisationID(?int $organisationID): void
+    {
+        $this->organisationID = $organisationID;
+    }
+
+    public function setRolID(?int $rolID): void
+    {
+        $this->rolID = $rolID;
+    }
+
+    public function setNaam(string $naam): void
+    {
+        $this->naam = $naam;
+    }
+
+    public function setBeginTijd(string $beginTijd): void
+    {
+        $this->beginTijd = $beginTijd;
+    }
+
+    public function setEindTijd(string $eindTijd): void
+    {
+        $this->eindTijd = $eindTijd;
     }
 }

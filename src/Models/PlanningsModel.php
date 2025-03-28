@@ -12,6 +12,7 @@ class PlanningsModel extends DBModel
     public array $planningModels = [];
     public array $defaultActivities = [];
     public array $oldActivities = [];
+    public array $activities = [];
     public int $organisatieId;
     public float $gewerkteUren;
 
@@ -28,10 +29,18 @@ class PlanningsModel extends DBModel
         foreach($plannedModels as $plannedModel) {
             if (isset($plannedModel['checked']))
             {
-                $this->planningModels[] = new PlanningModel($plannedModel['checked'], $plannedModel['startTime'], $plannedModel['endTime']);
+                $planned = new PlanningModel();
+                $planned->setActiviteitEventTijdId($plannedModel['checked']);
+                $planned->setBeginTijd($plannedModel['startTime']);
+                $planned->setEindTijd($plannedModel['endTime']);
+                $this->planningModels[] = $planned;
             }
         }
         $this->organisatieId = $organisatieId;
+    }
+
+    public function setActivities(array $activities){
+        $this->activities = $activities;
     }
 
     public static function removeOldPlannedModels(array $oldActivities)
@@ -134,5 +143,68 @@ class PlanningsModel extends DBModel
             return "Successfully added planning!";
         }
         return "Insertion into `planning` table failed!";
+    }
+
+    public static function getPlanning($eventID)
+    {
+        $mysql = Conn::getInstance();
+        $pdo = $mysql->getPDO();
+        $sql = "SELECT et.Datum as eventdatum,
+                               e.Eventnaam,
+                               et.BeginTijd as eventBeginTijd,
+                    et.EindTijd as eventEindTijd,
+                    a.Naam as activiteitNaam,
+                    aet.BeginTijd as activiteitBeginTijd,
+                    aet.EindTijd as activiteitEindTijd,
+                    p.BeginTijd as planningBeginTijd,
+                    p.EindTijd as planningEindTijd,
+                    g.Voornaam,
+                    g.Achternaam,
+                    g.Telefoon,
+                    o.Organtisatie,
+                    p.Betaalt,
+                    p.isGoedgekeurd
+                FROM `planning` p
+                JOIN gebruiker g on g.ID = p.Gebruiker_ID
+                JOIN organisatie o on o.ID = p.Organisatie_ID
+                JOIN kpl_activiteit_event_tijd aet on aet.kpl_activiteit_event_tijd_ID = p.activiteit_event_tijd_ID
+                JOIN `event-tijd` et on et.ID = aet.event_tijd_ID
+                JOIN activiteit a on a.ID = aet.activiteit_ID
+                JOIN `event` e on e.ID = et.Event_ID
+                AND e.ID = :eventid
+                ORDER by et.Datum, et.BeginTijd, aet.BeginTijd, p.BeginTijd
+                ";
+
+        $stmt = $pdo->prepare($sql);
+
+        if (!$stmt->execute(['eventid' => $eventID])) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+
+        $planned = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $event = new EventModel();
+            $event->setEventName($row['Eventnaam']);
+            $event->addEventTime([$row['eventdatum'], $row['eventBeginTijd'], $row['eventEindTijd']]);
+            $activity = new ActivityModel();
+            $activity->setNaam($row['activiteitNaam']);
+            $activity->setBeginTijd($row['activiteitBeginTijd']);
+            $activity->setEindTijd($row['activiteitEindTijd']);
+            $user = new UserModel([]);
+            $user->setVoornaam($row['Voornaam']);
+            $user->setAchternaam($row['Achternaam']);
+            $user->setTelefoon($row['Telefoon']);
+            $user->setOrganisations([$row['Organtisatie']]);
+            $plan = new PlanningModel();
+            $plan->setActivity($activity);
+            $plan->setUser($user);
+            $plan->setEvent($event);
+            $plan->setBeginTijd($row['planningBeginTijd']);
+            $plan->setEindTijd($row['planningEindTijd']);
+            $plan->setBetaalt($row['Betaalt']);
+            $plan->setIsGoedGekeurd($row['isGoedgekeurd']);
+            $planned[] = $plan;
+        }
+        return $planned;
     }
 }
