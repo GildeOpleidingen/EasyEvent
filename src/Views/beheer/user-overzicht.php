@@ -1,5 +1,5 @@
 <?php
-use App\Models\EventsModel;
+use App\Models\UserModel;
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -18,10 +18,8 @@ error_reporting(E_ALL);
     <!-- css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/event-info.css">
     <link rel="stylesheet" href="/css/nav.css">
-    <link rel="stylesheet" href="/css/event-aanmaken.css">
-
+ 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
@@ -30,10 +28,19 @@ error_reporting(E_ALL);
         <div class="container my-4 pb-4">
             <h1 class="text-center mb-4">Gebruikers overzicht</h1>
 
-            <!-- Form 1: Event Details -->
-            <form id="formEventDetails" class="needs-validation" novalidate action="<?php $_PHP_SELF ?>" method="POST">
-                <!-- TODO: overzicht van gebruikers ophalen uit database en tonen in tabel (grid) -->
-                TODO: overzicht van gebruikers ophalen uit database en tonen in tabel (grid)
+            <!-- Form 1: User Details -->
+            <form id="formUserDetails" novalidate action="<?php $_PHP_SELF ?>" method="POST">
+                <?php
+                    $user = new UserModel();
+                
+                    $allUsers = $user->getAllUsers();
+               
+                    echo "<table><tr><th>Naam</th><th>Email</th><th>Telefoon</th><th>Kledingmaat</th><th>Geverifieerd</th><th>Rollen</th></tr>";
+                    foreach($allUsers as $key => $value)
+                    {
+                        echo "<tr><td>".$value->getVoornaam()." ".$value->getAchternaam()."</td><td>".$value->getEmail()."</td><td>".$value->getTelefoon()."</td><td>".$value->getkledingMaat()."</td><td>".$value->getkledingMaat()."</td><td>".$value->getRoles()."</td></tr>";
+                    }
+                ?>
             </form>
         </div>
     </div>
