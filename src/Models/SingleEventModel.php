@@ -9,6 +9,7 @@ class SingleEventModel extends DBModel
 {
     public $message;
     public $gebruikerID;
+
     public $event;
     public $activities;
     public $organisations;
@@ -93,8 +94,15 @@ class SingleEventModel extends DBModel
 
         $activities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $activity = new ActivityModel($row['kpl_activiteit_event_tijd_ID'], $row['ActiviteitID'], $row['event_tijd_ID'],
-             $row['Naam'], $row['BeginTijd'], $row['EindTijd'], $row['VrijwilligerAantal'], $row['BegeleiderAantal'], null, null, null, null);
+            $activity = new ActivityModel();
+            $activity->setActiviteitEventTijdId($row['kpl_activiteit_event_tijd_ID']);
+            $activity->setActiviteitId($row['ActiviteitID']);
+            $activity->setEventTijdId($row['event_tijd_ID']);
+            $activity->setNaam($row['Naam']);
+            $activity->setBeginTijd($row['BeginTijd']);
+            $activity->setEindTijd($row['EindTijd']);
+            $activity->setMaximumVrijwilligers($row['VrijwilligerAantal']);
+            $activity->setMaximumBegeleiders($row['BegeleiderAantal']);
             $activities[] = $activity;
         }
         return $activities;
@@ -130,9 +138,19 @@ class SingleEventModel extends DBModel
 
         $activities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $activity = new ActivityModel($row['kpl_activiteit_event_tijd_ID'], $row['ActiviteitID'], $row['event_tijd_ID'],
-             $row['Naam'], $row['BeginTijd'], $row['EindTijd'], $row['VrijwilligerAantal'], $row['BegeleiderAantal'],
-             $row['ID'], $row['Gebruiker_ID'], $row['Organisatie_ID'], $row['Rol_ID']);
+            $activity = new ActivityModel();
+            $activity->setActiviteitEventTijdId($row['kpl_activiteit_event_tijd_ID']);
+            $activity->setActiviteitId($row['ActiviteitID']);
+            $activity->setEventTijdId($row['event_tijd_ID']);
+            $activity->setNaam($row['Naam']);
+            $activity->setBeginTijd($row['BeginTijd']);
+            $activity->setEindTijd($row['EindTijd']);
+            $activity->setMaximumVrijwilligers($row['VrijwilligerAantal']);
+            $activity->setMaximumBegeleiders($row['BegeleiderAantal']);
+            $activity->setGebruikerID($row['Gebruiker_ID']);
+            $activity->setOrganisationID($row['Organisatie_ID']);
+            $activity->setRolID($row['Rol_ID']);
+            $activity->setPlannedID($row['ID']);
             $activities[] = $activity;
         }
         return $activities;
@@ -193,9 +211,19 @@ class SingleEventModel extends DBModel
         $activities = [];
         $plannedActivities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $activity = new ActivityModel($row['kpl_activiteit_event_tijd_ID'], $row['ActiviteitID'], $row['event_tijd_ID'],
-             $row['Naam'], $row['BeginTijd'], $row['EindTijd'], $row['VrijwilligerAantal'], $row['BegeleiderAantal'],
-             $row['ID'], $row['Gebruiker_ID'], $row['Organisatie_ID'], $row['Rol_ID']);
+            $activity = new ActivityModel();
+            $activity->setActiviteitEventTijdId($row['kpl_activiteit_event_tijd_ID']);
+            $activity->setActiviteitId($row['ActiviteitID']);
+            $activity->setEventTijdId($row['event_tijd_ID']);
+            $activity->setNaam($row['Naam']);
+            $activity->setBeginTijd($row['BeginTijd']);
+            $activity->setEindTijd($row['EindTijd']);
+            $activity->setMaximumVrijwilligers($row['VrijwilligerAantal']);
+            $activity->setMaximumBegeleiders($row['BegeleiderAantal']);
+            $activity->setGebruikerID($row['Gebruiker_ID']);
+            $activity->setOrganisationID($row['Organisatie_ID']);
+            $activity->setRolID($row['Rol_ID']);
+            $activity->setPlannedID($row['ID']);
             if ($activity->getPlannedID() !== null) {
                 $plannedActivities[] = $activity;
             }

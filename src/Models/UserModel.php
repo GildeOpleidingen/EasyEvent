@@ -16,6 +16,9 @@ class UserModel
     private $roles;
     private $plaatsnaam;
     private $huisnummer;
+
+    private array $organisations;
+
     private $is_geverifieerd;
     private $ouder_ID;
     private $kledingmaat;
@@ -59,7 +62,6 @@ class UserModel
     public function setKledingmaat($value) {$this->kledingmaat = $value;}
     public function setOuderId($value) {$this->ouder_ID = $value;}
     public function setRoles($value) {$this->roles = $value;}
-    
 
     public static function getById($id)
     {
@@ -122,50 +124,54 @@ class UserModel
     }
 
     public function updateWachtwoord($currentPassword, $newPassword, $confirmPassword)
-{
-    if (!$currentPassword || !$newPassword || !$confirmPassword) {
-        return "Alle velden zijn verplicht.";
+    {
+        if (!$currentPassword || !$newPassword || !$confirmPassword) {
+            return "Alle velden zijn verplicht.";
+        }
+
+        $db = Conn::getPDO();
+        $stmt = $db->prepare("SELECT Wachtwoord FROM gebruiker WHERE ID = :id");
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return "Gebruiker niet gevonden.";
+        }
+
+        if (!password_verify($currentPassword, $result['Wachtwoord'])) {
+            return "Onjuist wachtwoord.";
+        }
+
+        if (password_verify($newPassword, $result['Wachtwoord'])) {
+            return "Je nieuwe wachtwoord mag niet hetzelfde zijn als je huidige wachtwoord.";
+        }
+
+        if ($newPassword !== $confirmPassword) {
+            return "Nieuwe wachtwoorden komen niet overeen.";
+        }
+
+        if (strlen($newPassword) < 8) {
+            return "Wachtwoord moet minimaal 8 tekens lang zijn.";
+        }
+
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        $stmt = $db->prepare("UPDATE gebruiker SET Wachtwoord = :wachtwoord WHERE ID = :id");
+        $stmt->bindParam(':wachtwoord', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return "Wachtwoord succesvol bijgewerkt.";
+        } else {
+            return "Fout bij het bijwerken van het wachtwoord.";
+        }
     }
 
-    $db = Conn::getPDO();  
-    $stmt = $db->prepare("SELECT Wachtwoord FROM gebruiker WHERE ID = :id");
-    $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$result) {
-        return "Gebruiker niet gevonden.";
+    public function setOrganisations(array $organisations): void
+    {
+        $this->organisations = $organisations;
     }
-
-    if (!password_verify($currentPassword, $result['Wachtwoord'])) {
-        return "Onjuist wachtwoord.";
-    }
-
-    if (password_verify($newPassword, $result['Wachtwoord'])) {
-        return "Je nieuwe wachtwoord mag niet hetzelfde zijn als je huidige wachtwoord.";
-    }
-
-    if ($newPassword !== $confirmPassword) {
-        return "Nieuwe wachtwoorden komen niet overeen.";
-    }
-
-    if (strlen($newPassword) < 8) { 
-        return "Wachtwoord moet minimaal 8 tekens lang zijn.";
-    }
-
-    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
-    $stmt = $db->prepare("UPDATE gebruiker SET Wachtwoord = :wachtwoord WHERE ID = :id");
-    $stmt->bindParam(':wachtwoord', $hashedPassword, PDO::PARAM_STR);
-    $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
-
-    if ($stmt->execute()) {
-        return "Wachtwoord succesvol bijgewerkt.";
-    } else {
-        return "Fout bij het bijwerken van het wachtwoord.";
-    }
-}
-
 
     public static function getAllUsers() {
         $mysql = Conn::getInstance();

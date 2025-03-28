@@ -1,6 +1,6 @@
 <?php
 
-use App\Controllers\BeheerBekijkEventController;
+use App\Controllers\PlanningController;
 use App\Controllers\BeheerEventAanmakenController;
 use App\Controllers\BeheerHomeController;
 use App\Controllers\HomeController;
@@ -43,7 +43,8 @@ $router->post('/profiel', ProfielController::class, 'updateTelefoon', true);
 $router->post('/profiel/updateAdresGegevens', ProfielController::class, 'updateAdresGegevens', true);
 $router->post('/profiel/updateWachtwoord', ProfielController::class, 'updateWachtwoord', true);
 $router->post('/profiel/logout', LoginController::class, 'logout');
-$router->get('/beheer/bekijk-events', BeheerBekijkEventController::class, 'index', true);
+$router->get('/beheer/event', EventsController::class, 'adminIndex', true);
+$router->get('/beheer/event/planning', PlanningController::class, 'index', true);
 $router->get('/beheer/user-overzicht', UserController::class, 'index', true);
 $router->get('/beheer/user-aanmaken', UserController::class, 'add', true);
 
