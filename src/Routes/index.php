@@ -48,5 +48,7 @@ $router->get('/beheer/event/planning', PlanningController::class, 'index', true)
 $router->get('/beheer/user-overzicht', UserController::class, 'index', true);
 $router->get('/beheer/user-aanmaken', UserController::class, 'add', true);
 $router->post('/beheer/user-aanmaken', UserController::class, 'saveUser', true);
+$router->get('/beheer/user/delete', UserController::class, 'delete', true);
+
 
 $router->dispatch();

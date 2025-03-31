@@ -40,6 +40,21 @@ class UserController extends Controller {
         } else {
             $this->render('beheer/user-overzicht', ['error' => 'Er is een fout opgetreden bij het aanmaken van de gebruiker.']);
         }
-
     } 
+
+    public function delete(){
+        if (!isset($_GET['userID'])) {
+            $this->redirect('/beheer/user-overzicht');
+            exit();
+        }
+        if (!isset($_SESSION['gebruiker']))
+        {
+            $this->redirect('/login');
+            exit();
+        }
+        $id = intval($_GET['userID']);
+        $user = new UserModel();
+        $user->delete($id);
+        $this->redirect('/beheer/user-overzicht');
+    }
 }

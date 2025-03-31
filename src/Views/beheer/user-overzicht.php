@@ -45,6 +45,7 @@ error_reporting(E_ALL);
                         <th scope="col">Kledingmaat</th>
                         <th scope="col">Geverifieerd</th>
                         <th scope="col">Rollen</th>
+                        <th scope="col">Actie</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -71,6 +72,9 @@ error_reporting(E_ALL);
                             </td>
                             <td>
                                 <?=$value->getRoles() ?>
+                            </td>
+                            <td>
+                                <a href="/beheer/user/delete?userID=<?=$value->getId()?>" onclick="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen? Je kunt NIET meer terug!');">delete</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

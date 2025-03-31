@@ -273,7 +273,23 @@ class UserModel
         else{
             die('Query failed: ' . implode(' ', $stmt->errorInfo()));
         }
-        
     }
 
+    public function delete($id){
+        $db = Conn::getPDO();
+        $stmt = $db->prepare("DELETE FROM `kpl_gebruiker_rol` WHERE gebruiker_ID = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        if ($stmt->execute()){
+            $stmt = $db->prepare("DELETE FROM gebruiker WHERE ID = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    
+            if ($stmt->execute()) {
+                return "Gebruiker succesvol verwijdert.";
+            } else {
+                return "Fout bij het verwijderen van gebruiker met id: " . $id;
+            }            
+        } else {
+            return "Fout bij het verwijderen van de rollen voor gebruiker met id: " . $id;
+        }
+    }
 }
