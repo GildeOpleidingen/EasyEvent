@@ -88,11 +88,11 @@ error_reporting(E_ALL);
                     $rol = new RolModel();
                     $allRoles = $rol->getAllRoles();
                 ?>
-                
+         
                 <div class="mb-3">
                     <label for="rol" class="form-label">Rol <span class="verplicht">*</span></label>
-                    <select class="form-control" id="rol" name="rol" required>
-                    <option value="" disabled selected>Selecteer een rol</option>
+                    <select class="form-control" id="rol" name="rol[]" required multiple>
+                    <!-- <option value="" disabled selected>Selecteer een rol</option> -->
                     <?php foreach($allRoles as $key => $rol): ?>?>
                         <option value="<?=$rol->getID() ?>"><?=$rol->getName() ?></option>
                     <?php endforeach; ?>

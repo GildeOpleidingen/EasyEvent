@@ -29,7 +29,7 @@ class UserController extends Controller {
         $um->setPlaatsnaam($_POST['plaatsnaam'] ?? null);
         $um->setWachtwoord($_POST['wachtwoord']);
         $um->setGebruikersnaam($_POST['gebruikersNaam']);
-        $um->setRoles([$_POST['rol']] ?? []);
+        $um->setRoles($_POST['rol'] ?? []);
         $um->setKledingmaat($_POST['kledingmaat'] ?? null);
         $um->setProfielfoto($_POST['profielfoto'] ?? null);
 
