@@ -10,18 +10,29 @@ class EventModel
     public int $eventID;
     public string $eventName;
     public string $eventInfo;
-    public string $eventPlace;
-    private int $eventOrganizer;
+    public string $Land;
+    public string $Plaats;
+    public string $Straatnaam;
+    public string $Huisnummer;
+    public string $Postcode;
+    public int $eventOrganizer;
     public string $eventBanner;
+    public string $Sector;
     public $eventTime = [];   //[[date, startTime,endTime],[date, startTime,endTime]]
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $hoofdEventID;
 
-    public function __construct(string $eventName = '', string $eventInfo = '', string $eventPlace = '', array $eventTime = [], string $eventBanner = ''){
+    public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', string $Sector = '', array $eventTime = [], string $eventBanner = ''){
+        $this->eventOrganizer = $eventOrganizer;
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
-        $this->eventPlace = $eventPlace;
+        $this->Land = $Land;
+        $this->Plaats = $Plaats;
+        $this->Straatnaam = $Straatnaam;
+        $this->Huisnummer = $Huisnummer;
+        $this->Postcode = $Postcode;
+        $this->Sector = $Sector;
         $this->eventTime[] = $eventTime;
         $this->eventBanner = $eventBanner;
     }
@@ -35,8 +46,23 @@ class EventModel
     public function setEventInfo(string $eventInfo){
         $this->eventInfo = $eventInfo;
     }
-    public function setEventPlace(string $eventPlace){
-        $this->eventPlace = $eventPlace;
+    public function setEventCountry(string $Land){
+        $this->Land = $Land;
+    }
+    public function setEventPlace(string $Plaats){
+        $this->Plaats = $Plaats;
+    }
+    public function setEventStreet(string $Straatnaam){
+        $this->Straatnaam = $Straatnaam;
+    }
+    public function setEventHouseNumber(string $Huisnummer){
+        $this->Huisnummer = $Huisnummer;
+    }
+    public function setEventPostcode(string $Postcode){
+        $this->Postcode = $Postcode;
+    }
+    public function setEventSector(string $Sector){
+        $this->eventSector = $Sector;
     }
     public function setEventOrganizer(int $eventOrganizer){
         $this->eventOrganizer = $eventOrganizer;
@@ -72,8 +98,23 @@ class EventModel
     public function getEventInfo(){
         return $this->eventInfo;
     }
+    public function getEventCountry(){
+        return $this->Land;
+    }
     public function getEventPlace(){
-        return $this->eventPlace;
+        return $this->Plaats;
+    }
+    public function getEventStreet(){
+        return $this->Straatnaam;
+    }
+    public function getEventHouseNumber(){
+        return $this->Huisnummer;
+    }
+    public function getEventPostcode(){
+        return $this->Postcode;
+    }
+    public function getEventSector(){
+        return $this->eventSector;
     }
     public function getEventOrganizer(){
         return $this->eventOrganizer;
@@ -97,7 +138,7 @@ class EventModel
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // functions
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static function hasRole(array $activities, RolModel $role)
+    public static function hasRole(array $activities, RolModel $rol)
     {
         foreach($activities as $activity)
         {
@@ -195,39 +236,50 @@ class EventModel
     {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
-    
+        
         // SQL to insert event data into the `event` table, now including `hoofdEvent`
-        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Banner) VALUES (:eventName, :eventInfo, :eventBanner)";
+        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Organisator, Banner) VALUES (:eventName, :eventInfo, :eventOrganisator, :eventBanner)";
 
         // Prepare and execute the query for the `event` table
         $stmtEvent = $db->prepare($sqlEvent);
         $stmtEvent->bindParam(':eventName', $event->eventName);
         $stmtEvent->bindParam(':eventInfo', $event->eventInfo);
+        $stmtEvent->bindParam(':eventOrganisator', $event->eventOrganizer);
         $stmtEvent->bindParam(':eventBanner', $event->eventBanner);
 
         if ($stmtEvent->execute()) {
+            error_log("Event insertion successful: " . json_encode($event));
             // Retrieve the last inserted ID for the event
             $event->eventID = $db->lastInsertId();
 
             // Insert each time slot into the `event-tijd` table
-            $sqlEventTime = "INSERT INTO `event-tijd` (Event_ID, Datum, BeginTijd, EindTijd) 
-                            VALUES (:eventID, :date, :BeginTijd, :EindTijd)";
+            $sqlEventTime = "INSERT INTO `event-tijd` (Event_ID, Land, Plaats, Straatnaam, Huisnummer, Postcode, Datum, BeginTijd, EindTijd, Sector) 
+                            VALUES (:eventID, :Land, :Plaats, :Straatnaam, :Huisnummer, :Postcode, :date, :BeginTijd, :EindTijd, :Sector)";
 
             $stmtEventTime = $db->prepare($sqlEventTime);
 
             foreach ($event->eventTime as $timeSlot) {
                 $stmtEventTime->bindParam(':eventID', $event->eventID);
+                $stmtEventTime->bindParam(':Land', $event->Land);
+                $stmtEventTime->bindParam(':Plaats', $event->Plaats);
+                $stmtEventTime->bindParam(':Straatnaam', $event->Straatnaam);
+                $stmtEventTime->bindParam(':Huisnummer', $event->Huisnummer);
+                $stmtEventTime->bindParam(':Postcode', $event->Postcode);
                 $stmtEventTime->bindParam(':date', $timeSlot['date']);
                 $stmtEventTime->bindParam(':BeginTijd', $timeSlot['BeginTijd']);
                 $stmtEventTime->bindParam(':EindTijd', $timeSlot['EindTijd']);
+                $stmtEventTime->bindParam(':Sector', $event->Sector);
 
                 if (!$stmtEventTime->execute()) {
                     // Rollback if the time slot insertion fails
                     return "The time slot insertion failed!";
                 }
             }
+            // echo "Successfully added event and all time slots!";
             return "Successfully added event and all time slots!";
         }
+        error_log("Event insertion failed: " . implode(", ", $stmtEvent->errorInfo()));
+        // echo "Insertion into `event` table failed!";
         return "Insertion into `event` table failed!";
     }
 
