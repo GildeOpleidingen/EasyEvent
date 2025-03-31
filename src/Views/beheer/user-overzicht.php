@@ -34,13 +34,49 @@ error_reporting(E_ALL);
                     $user = new UserModel();
                 
                     $allUsers = $user->getAllUsers();
-               
-                    echo "<table><tr><th>Naam</th><th>Email</th><th>Telefoon</th><th>Kledingmaat</th><th>Geverifieerd</th><th>Rollen</th></tr>";
-                    foreach($allUsers as $key => $value)
-                    {
-                        echo "<tr><td>".$value->getVoornaam()." ".$value->getAchternaam()."</td><td>".$value->getEmail()."</td><td>".$value->getTelefoon()."</td><td>".$value->getkledingMaat()."</td><td>".$value->getkledingMaat()."</td><td>".$value->getRoles()."</td></tr>";
-                    }
                 ?>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Voornaam</th>
+                        <th scope="col">Achternaam</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Telefoon</th>
+                        <th scope="col">Kledingmaat</th>
+                        <th scope="col">Geverifieerd</th>
+                        <th scope="col">Rollen</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <?php foreach($allUsers as $key => $value): ?>
+                        <tr>
+                            <td>
+                                <?=$value->getVoornaam() ?>
+                            </td>
+                            <td>
+                                <?=$value->getAchternaam() ?>
+                            </td>
+                            <td>
+                                <?=$value->getEmail() ?>
+                            </td>
+                            <td>
+                                <?=$value->getTelefoon() ?>
+                            </td>
+                            <td>
+                                <?=$value->getkledingMaat() ?>
+                            </td>
+                            <td>
+                                <?=$value->getIsGeverifieerd() ?>
+                            </td>
+                            <td>
+                                <?=$value->getRoles() ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            
             </form>
         </div>
     </div>

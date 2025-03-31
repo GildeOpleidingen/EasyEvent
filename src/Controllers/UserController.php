@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Controller;
-use App\Models\EventsModel;
 use App\Models\UserModel;
 
 class UserController extends Controller {
@@ -11,4 +10,36 @@ class UserController extends Controller {
         $usermodel = new UserModel();
         $this->render("beheer/user-overzicht", (array)$usermodel);
     }
+
+    public function add(): void {
+        $usermodel = new UserModel();
+        $this->render("beheer/user-aanmaken", (array)$usermodel);
+    }
+
+
+    public function saveUser(){
+        $um = new UserModel();
+        $um->setVoornaam($_POST['voorNaam']);
+        $um->setAchternaam($_POST['achterNaam']);
+        $um->setEmail($_POST['email']);
+        $um->setTelefoon($_POST['telefoon']);
+        $um->setPostcode($_POST['postcode'] ?? null);
+        $um->setHuisnummer($_POST['huisnummer'] ?? null);
+     
+        $um->setPlaatsnaam($_POST['plaatsnaam'] ?? null);
+        $um->setWachtwoord($_POST['wachtwoord']);
+        $um->setGebruikersnaam($_POST['gebruikersNaam']);
+        $um->setRoles([$_POST['rol']] ?? []);
+        $um->setKledingmaat($_POST['kledingmaat'] ?? null);
+        $um->setProfielfoto($_POST['profielfoto'] ?? null);
+
+        $result = $um->save($um);
+
+        if ($result) {
+            $this->render('beheer/user-overzicht', ['success' => 'Gebruiker succesvol aangemaakt!']);
+        } else {
+            $this->render('beheer/user-overzicht', ['error' => 'Er is een fout opgetreden bij het aanmaken van de gebruiker.']);
+        }
+
+    } 
 }

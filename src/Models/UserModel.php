@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Conn;
+use Dotenv\Parser\Value;
 use PDO;
 
 class UserModel
@@ -16,6 +17,9 @@ class UserModel
     private $roles;
     private $plaatsnaam;
     private $huisnummer;
+    private $wachtwoord;
+    private $gebruikersNaam;
+    private $profielfoto;
 
     private array $organisations;
 
@@ -52,16 +56,25 @@ class UserModel
     public function getKledingmaat() { return $this->kledingmaat; }
     public function getIsGeverifieerd() { return $this->is_geverifieerd; }
     public function getRoles() { return $this->roles; }
+    private function getWachtwoord() { return $this->wachtwoord;}
+    public function getGebruikersNaam() {return $this->gebruikersNaam;}
 
     public function setID($value) {$this->id = $value;}
     public function setVoornaam($value) {$this->voornaam = $value;}
     public function setAchternaam($value) {$this->achternaam = $value;}
     public function setEmail($value) {$this->email = $value;}
     public function setTelefoon($value) {$this->telefoon = $value;}
+    public function setPostcode($value) {$this->postcode = $value;}
+
+    public function setHuisnummer($value) {$this->huisnummer = $value;}
+    public function setPlaatsnaam($value) {$this->plaatsnaam = $value;}
+    public function setGebruikersnaam($value) {$this->gebruikersNaam = $value;}
+    public function setProfielfoto($value) {$this->profielfoto = $value;}
     public function setIsGeverifieerd($value) {$this->is_geverifieerd = $value;}
     public function setKledingmaat($value) {$this->kledingmaat = $value;}
     public function setOuderId($value) {$this->ouder_ID = $value;}
     public function setRoles($value) {$this->roles = $value;}
+    public function setWachtwoord($value){$this->wachtwoord = password_hash($value, PASSWORD_DEFAULT);}
 
     public static function getById($id)
     {
@@ -177,13 +190,13 @@ class UserModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT g.ID, g.Voornaam, g.Achternaam, g.`E-mail`, g.Telefoon, g.Is_Geverifieerd, g.KledingMaat, g.Ouder_ID, GROUP_CONCAT(r.Rol SEPARATOR ', ') as Rollen
+        $sql = "SELECT g.ID, g.Voornaam, g.Achternaam, g.`E-mail`, g.Telefoon, IF(g.Is_Geverifieerd = 1, 'Ja', 'Nee') AS Is_Geverifieerd, k.KledingMaat, g.Ouder_ID, GROUP_CONCAT(r.Rol SEPARATOR ', ') as Rollen
                 FROM kpl_gebruiker_rol gr 
                 JOIN gebruiker g on g.ID = gr.gebruiker_ID
                 JOIN rol r on r.ID = gr.rol_ID
+                LEFT JOIN Kleding k on k.ID = g.KledingMaat
                 GROUP by g.id
                 ORDER BY g.Achternaam, g.Voornaam";
-        // var_dump($sql);
         $stmt = $db->prepare($sql);
 
         if (!$stmt->execute()) {
@@ -207,6 +220,60 @@ class UserModel
         }
 
         return $allusers;
+    }
+
+    public static function save(self $um){
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+        
+        $vn = $um->getVoornaam();
+        $an = $um->getAchternaam();
+        $em = $um->getEmail();
+        $tel = $um->getTelefoon();
+        $pc = $um->getPostcode();
+        $pln = $um->getPlaatsnaam();
+        $ww = $um->getWachtwoord();
+        $gn = $um->getGebruikersNaam();
+        $hnr= $um->getHuisnummer();
+        // $isgev= 1;
+        $km = $um->getKledingmaat();
+
+        //rol
+        $rollen = $um->getRoles();
+
+        $sql = "INSERT INTO `gebruiker`(`Voornaam`, `Achternaam`, `E-mail`, `Telefoon`, `Postcode`, `Plaatsnaam`, 
+            `Wachtwoord`, `Gebruikersnaam`, `Huisnummer`, `KledingMaat`)
+            VALUES (:vn, :an, :em, :tel, :pc, :pln, :ww, :gn, :hnr, :km)";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":vn",$vn);
+        $stmt->bindParam(":an", $an);
+        $stmt->bindParam(":em", $em);
+        $stmt->bindParam(":tel", $tel);
+        $stmt->bindParam(":pc", $pc);
+        $stmt->bindParam(":pln", $pln);
+        $stmt->bindParam(":ww", $ww);
+        $stmt->bindParam(":gn", $gn);
+        $stmt->bindParam(":hnr", $hnr);
+        //  $stmt->bindParam(":isgev", $isgev);
+        $stmt->bindParam(":km", $km);
+        
+        if($stmt->execute())
+        {
+            $last_id = $db->lastInsertId();
+        
+            foreach($rollen as $rol){
+                //Koppel de gebruiker rol aan deze nieuwe gebruiker.
+                $stmt = $db->prepare("INSERT INTO `kpl_gebruiker_rol`(`gebruiker_ID`, `rol_ID`) VALUES (:gebruikerId, :rolId)");
+                $stmt->bindParam('gebruikerId', $last_id);
+                $stmt->bindParam('rolId', $rol);
+                $stmt->execute();
+            }
+        }
+        else{
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+        
     }
 
 }
