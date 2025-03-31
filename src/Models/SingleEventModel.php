@@ -191,27 +191,41 @@ class SingleEventModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
     
-        $sql = "SELECT event.ID, event.EventNaam AS eventName, 
+        $sql = "SELECT event.ID, event.Eventnaam AS eventName, 
                     event.Info AS eventInfo, 
                     `event-tijd`.Datum AS eventDate,
-                    event.HoofdEvent AS hoofdEventID
+                    event.HoofdEvent AS hoofdEventID,
+                    event.Organisator AS organisator,
+                    `event-tijd`.Land AS Land,
+                    `event-tijd`.Plaats AS Plaats,
+                    `event-tijd`.Huisnummer AS Huisnummer,
+                    `event-tijd`.Postcode AS Postcode,
+                    `event-tijd`.Straatnaam AS Straatnaam,
+                    `event-tijd`.Sector AS Sector,
+                    event.Banner AS Banner
                 FROM event 
                 LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID
-                WHERE event.ID=:eventid";
-
+                ";
         $stmt = $db->prepare($sql);
 
-        if (!$stmt->execute(['eventid' => $id])) {
+        if (!$stmt->execute()) {
             die('Query failed: ' . implode(' ', $stmt->errorInfo()));
         }
     
+        $events = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $event = new EventModel(
+                (int)$row['organisator'],
                 $row['eventName'],
                 $row['eventInfo'],
-                '', // eventLocatie (mist in query)
+                $row['Land'] ?? 'Unknown',
+                $row['Plaats'] ?? 'Unknown',
+                $row['Straatnaam'] ?? 'Unknown',
+                $row['Huisnummer'] ?? 'Unknown',
+                $row['Postcode'] ?? 'Unknown',
+                $row['Sector'] ?? 'Unknown',
                 [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
-                '' // eventBanner (mist in query)
+                $row['Banner'] ?? ''
             );
             $event->eventID = $row['ID'];
             $event->hoofdEventID = $row['hoofdEventID'];

@@ -40,7 +40,7 @@ class EventsModel extends DBModel
                     event.Banner AS Banner
                 FROM event 
                 LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID
-                "; // Removed GROUP BY clause
+                ";
         $stmt = $db->prepare($sql);
 
         if (!$stmt->execute()) {
