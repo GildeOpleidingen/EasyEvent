@@ -10,10 +10,8 @@ class RolModel extends DBModel
     public int $id;
     public string $name;
 
-    public function __construct(int $id, string $name)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->name = $name;
     }
 
     public function getName()
@@ -21,17 +19,27 @@ class RolModel extends DBModel
         return $this->name;
     }
 
+    public function setName($value)
+    {
+        $this->name = $value;
+    }
+
     public function getID()
     {
         return $this->id;
     }
 
+    public function setId($value)
+    {
+        $this->id = $value;
+    }
+    
     public static function getAllRoles()
     {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT ID, Rol FROM Rol";
+        $sql = "SELECT ID, Rol FROM rol";
 
         $stmt = $db->prepare($sql);
 
@@ -41,7 +49,9 @@ class RolModel extends DBModel
 
         $roles = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $role = new RolModel($row['rol_ID'],  $row['Rol']);
+            $role = new RolModel();
+            $role->setid($row['ID']);
+            $role->setName($row['Rol']);
             $roles[] = $role;
         }
         return $roles;
@@ -82,7 +92,10 @@ class RolModel extends DBModel
 
         $roles = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $roles[] = new RolModel($row['rol_ID'],  $row['Rol']);
+            $role = new RolModel();
+            $role->setid($row['rol_ID']);
+            $role->setName($row['Rol']);
+            $roles[] = $role;
         }
         return $roles;
     }

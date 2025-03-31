@@ -2,6 +2,7 @@
 use App\Models\EventsModel;
 use App\Models\UserModel;
 use App\Models\KledingModel;
+use App\Models\RolModel;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -82,24 +83,25 @@ error_reporting(E_ALL);
                     <input type="text" class="form-control" id="gebruikersNaam" name="gebruikersNaam" placeholder="Gebruikersnaam" required>
                     <div class="invalid-feedback">Voer een locatie in.</div>
                 </div>
-                <!-- TODO: uit database ophalen van de waardes en namen -->
+                
+                <?php
+                    $rol = new RolModel();
+                    $allRoles = $rol->getAllRoles();
+                ?>
+                
                 <div class="mb-3">
-                    <label for="rol" class="form-label">Rol</label>
-                    <select class="form-control" id="rol" name="rol">
-                        <!-- <option value="" disabled selected>Selecteer een rol</option> -->
-                        <option value="1">Gebruiker</option>
-                        <option value="2">Admin</option>
-                        <option value="3">Organisator</option>
-                        <option value="4">Begeleider</option>
-                        <option value="5">Speler</option>
+                    <label for="rol" class="form-label">Rol <span class="verplicht">*</span></label>
+                    <select class="form-control" id="rol" name="rol" required>
+                    <option value="" disabled selected>Selecteer een rol</option>
+                    <?php foreach($allRoles as $key => $rol): ?>?>
+                        <option value="<?=$rol->getID() ?>"><?=$rol->getName() ?></option>
+                    <?php endforeach; ?>
                     </select>
                     <div class="invalid-feedback">Selecteer een rol.</div>
                 </div>
 
-                 <!-- TODO: uit database ophalen van de waardes en namen -->
-                 <?php
+                <?php
                     $kleding = new kledingModel();
-                
                     $allKleding = $kleding->getAllKledingMaten();
                 ?>
                 <div class="mb-3">
