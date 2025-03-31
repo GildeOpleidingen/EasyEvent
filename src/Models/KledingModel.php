@@ -37,7 +37,7 @@ class KledingModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT ID, kledingmaat FROM kleding";
+        $sql = "SELECT ID, kledingmaat FROM Kleding";
 
         $stmt = $db->prepare($sql);
 
