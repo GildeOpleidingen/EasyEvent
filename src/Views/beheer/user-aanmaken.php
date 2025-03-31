@@ -1,6 +1,7 @@
 <?php
 use App\Models\EventsModel;
 use App\Models\UserModel;
+use App\Models\KledingModel;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -96,14 +97,18 @@ error_reporting(E_ALL);
                 </div>
 
                  <!-- TODO: uit database ophalen van de waardes en namen -->
+                 <?php
+                    $kleding = new kledingModel();
+                
+                    $allKleding = $kleding->getAllKledingMaten();
+                ?>
                 <div class="mb-3">
                     <label for="kledingmaat" class="form-label">Kledingmaat</label>
                     <select class="form-control" id="kledingmaat" name="kledingmaat">
                         <option value="" disabled selected>Selecteer een kledingmaat</option>
-                        <option value="10">XS - 44 (Heren)</option>
-                        <option value="11">S - 46 (Heren)</option>
-                        <option value="12">M - 48 (Heren)</option>
-                        <option value="13">M/L - 50 (Heren)/option>
+                        <?php foreach($allKleding as $key => $kledingmaat): ?>?>
+                            <option value="<?=$kledingmaat->getID() ?>"><?=$kledingmaat->getKledingmaat() ?></option>
+                        <?php endforeach; ?>
                     </select>
                     <div class="invalid-feedback">Selecteer een kledingmaat.</div>
                 </div>
