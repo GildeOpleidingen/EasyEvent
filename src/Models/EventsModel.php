@@ -53,8 +53,14 @@ class EventsModel extends DBModel
                 }
             }
             $event = new EventModel(
+                 0,
                 $row['eventName'],
                 $row['eventInfo'],
+                '',
+                '',
+                '',
+                '',
+                '',
                 '',
                 $eventDates,
                 ''
