@@ -17,7 +17,7 @@ class EventModel
     public string $Postcode;
     public int $eventOrganizer;
     public string $eventBanner;
-    public string $Sector;
+    public string $eventSector;
     public $eventTime = [];   //[[date, startTime,endTime],[date, startTime,endTime]]
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
@@ -32,7 +32,7 @@ class EventModel
         $this->Straatnaam = $Straatnaam;
         $this->Huisnummer = $Huisnummer;
         $this->Postcode = $Postcode;
-        $this->Sector = $Sector;
+        $this->eventSector = $Sector;
         $this->eventTime[] = $eventTime;
         $this->eventBanner = $eventBanner;
     }
@@ -142,7 +142,7 @@ class EventModel
     {
         foreach($activities as $activity)
         {
-            if ($activity->hasRole() && $role->getID() == $activity->getRolID())
+            if ($activity->hasRole() && $rol->getID() == $activity->getRolID())
             {
                 return true;
             }
@@ -268,7 +268,7 @@ class EventModel
                 $stmtEventTime->bindParam(':date', $timeSlot['date']);
                 $stmtEventTime->bindParam(':BeginTijd', $timeSlot['BeginTijd']);
                 $stmtEventTime->bindParam(':EindTijd', $timeSlot['EindTijd']);
-                $stmtEventTime->bindParam(':Sector', $event->Sector);
+                $stmtEventTime->bindParam(':Sector', $event->eventSector);
 
                 if (!$stmtEventTime->execute()) {
                     // Rollback if the time slot insertion fails
