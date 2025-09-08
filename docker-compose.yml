@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: 10.250.0.103
+      DB_NAME: easyevent
+      DB_USER: easyevent
+      DB_PASS: a[ez-4.wBhai48M8
+    volumes:
+      - .:/var/www/html
+    restart: always
+
+  db:
+    image: mariadb:11
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Admin
+      MYSQL_DATABASE: easyevent
+      MYSQL_USER: Admin
+      MYSQL_PASSWORD: Admin
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+

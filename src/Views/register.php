@@ -58,7 +58,22 @@
                                 <label for="email">E-mailadres</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="tel" id="telefoon" name="telefoon" class="form-control rounded-0" placeholder="Telefoonnummer" maxlength="20" required>
+<input 
+  type="tel" 
+  id="telefoon" 
+  name="telefoon" 
+  class="form-control rounded-0" 
+  placeholder="Telefoonnummer" 
+  maxlength="16" 
+  pattern="^\+?[0-9]{6,15}$" 
+  required
+  oninput="
+    this.value = this.value
+      .replace(/[^0-9+]/g,'')
+      .replace(/(?!^)\+/g,'')
+  "
+>
+
                                 <label for="telefoon">Telefoonnummer</label>
                             </div>
                             <div class="form-floating mb-3 position-relative">
