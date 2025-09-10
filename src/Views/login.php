@@ -47,7 +47,7 @@ use App\Conn;
                         </div>
                     <?php endif; ?>
 
-                    <form action="./login" method="POST" class="w-75">
+                    <form action="./login" method="POST" class="w-75" id="captcha-form">
                          <div class="form-floating mb-3">
                             <input type="email" id="emailadres" name="Gebruikersnaam" class="form-control rounded-0" placeholder="Emailadres">
                             <label for="emailadres">Emailadres</label>
