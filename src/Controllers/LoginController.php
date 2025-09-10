@@ -73,9 +73,9 @@ class LoginController extends Controller
                 header('Location: /events');
                 exit();
             }
-            } else {
-                $this->render('login', ['error' => 'Er is een probleem opgetreden. Probeer het later opnieuw.']);
-            }
+        } else {
+            $this->render('login', ['error' => 'Inlog gegevens zijn incorrect, probeer het opnieuw.']);
+        }
       
     }
 
