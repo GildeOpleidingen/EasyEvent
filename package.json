@@ -1,4 +1,12 @@
 {
+  "name": "easyevents",
+  "type": "module",
+  "scripts": {
+    "dev": "php -S localhost:8000 -t public",
+    "build": "tailwindcss -i ./css/style.css -o ./css/style.css",
+    "watch": "tailwindcss -i ./css/style.css -o ./css/style.css --watch",
+    "start": "npm run dev && npm run watch"
+  },
   "devDependencies": {
     "tailwindcss": "^3.4.17"
   },
