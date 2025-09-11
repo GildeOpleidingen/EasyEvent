@@ -37,7 +37,7 @@ class Router
                 $controller = new $controller();
                 $controller->$action();
             } else {
-                header('Location: HTTP://' . $_SERVER["HTTP_HOST"] . "/login");
+                header('Location: http://' . $_SERVER["HTTP_HOST"] . "/login");
             }
         } else {
             throw new \Exception("No route found for URI: $uri");

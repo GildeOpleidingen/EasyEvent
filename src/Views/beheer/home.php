@@ -20,7 +20,7 @@
 </head>
 <body>
     <div class="container-fluid vh-100 d-flex flex-column">
-        <?php require_once('./parts/nav-beheer.html'); ?>
+        <?php require_once('./parts/nav.html'); ?>
         <div class="container mt-4">
             <h1 class="mb-2" id="greeting"></h1>
             <p class="mb-4">Bekijk wat je kan doen als &lt;rol&gt;</p>
@@ -66,7 +66,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
     <script src="/js/form-validatie.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>

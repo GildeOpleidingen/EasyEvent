@@ -23,9 +23,6 @@ use App\Conn;
 
 </head>
 <body>
-    <div class="preloader">
-        <img src="../../images/logo.png" alt="" id="loader" class="loader">
-    </div>
 
     <div id="content">
         <?php require_once(__ROOT__."/parts/nav.html"); ?>
