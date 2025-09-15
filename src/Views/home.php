@@ -8,24 +8,24 @@ use App\Conn;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- favicons -->
-    <link rel="shortcut icon" href="/images/icons/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="/images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
-    <link rel="shortcut icon" href="/images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
+    <link rel="shortcut icon" href="./../../images/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./../../images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
+    <link rel="shortcut icon" href="./../../images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
 
     <title>EasyEvents</title>
 
     <!-- css -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/home.css">
-    <link rel="stylesheet" href="/css/nav.css">
-    <link rel="stylesheet" href="/css/event-aanmaken.css">
+    <link rel="stylesheet" href="./../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="./../../css/style.css">
+    <link rel="stylesheet" href="./../../css/home.css">
+    <link rel="stylesheet" href="./../../css/nav.css">
+    <link rel="stylesheet" href="./../../css/event-aanmaken.css">
 
 </head>
 <body>
-    <div class="preloader">
-        <img src="../../images/logo.png" alt="" id="loader" class="loader">
-    </div>
+<!--    <div class="preloader">-->
+<!--        <img src="../../images/logo.png" alt="" id="loader" class="loader">-->
+<!--    </div>-->
 
     <div id="content">
         <?php require_once(__ROOT__."/parts/nav.html"); ?>
