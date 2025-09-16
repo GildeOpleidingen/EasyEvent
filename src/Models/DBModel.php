@@ -2,11 +2,8 @@
 
 namespace App\Models;
 
-use App;
-use Dotenv\Dotenv;
 use PDO;
 use PDOException;
-
 
 class DBModel
 {
@@ -14,21 +11,18 @@ class DBModel
     
     public function __construct()
     {
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../../', '.env');
-        $dotenv->load();
+$host = $_ENV['DB_HOST'] ?? 'db';
+$dbname = $_ENV['DB_NAME'] ?? 'easyevent';
+$username = $_ENV['DB_USER'] ?? 'Admin';
+$password = $_ENV['DB_PASS'] ?? 'Admin';
 
-        $host = $_ENV['DB_HOST'];
-        $dbname = $_ENV['DB_NAME'];
-        $username = $_ENV['DB_USER'];
-        $password = $_ENV['DB_PASS'];
 
-        try{
-            $this->db = new PDO("mysql:host=$host;dbname=$dbname", $username, $password, [
+        try {
+            $this->db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ]);
-        } catch (PDOException $ex){
-            echo $ex->getMessage();
+        } catch (PDOException $ex) {
+            echo "Database connection failed: " . $ex->getMessage();
         }
     }
 }
-?>
