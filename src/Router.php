@@ -6,7 +6,7 @@ class Router
 {
     protected $routes = [];
 
-    private function addRoute($route, $controller, $action, $method, $isLoggedIn = false)
+    private function addRoute($route, $controller, $action, $method, $isLoggedIn = true)
     {
         $this->routes[$method][$route] = ['controller' => $controller, 'action' => $action, 'isLoggedIn' => $isLoggedIn];
     }
