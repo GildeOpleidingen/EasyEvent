@@ -28,7 +28,7 @@ use App\Conn;
         <?php require_once(__ROOT__."/parts/nav.html"); ?>
 
         <section class="hero d-flex align-items-center justify-content-center" style="min-height: 75vh;">
-            <div class="container text-center">
+            <div class="container text-center px-0 ps-3">
                 <div class="row">
                     <div class="col-lg-6 text-lg-start text-center mb-5 mb-lg-0">
                         <h1 class="display-4 fw-bold">PLAN <br> MET <br> EASY <br> EVENTS</h1>
