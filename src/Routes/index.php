@@ -37,7 +37,7 @@ $router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'in
 $router->post('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'sendEvent', true);
 $router->get('/beheer/event-aanmaken-stap-2', BeheerEventAanmakenController::class, 'index', true);
 $router->post('/beheer/event-aanmaken-stap-2', BeheerEventAanmakenController::class, 'sendEvent', true);
-$router->get('/beheer/', BeheerHomeController::class, 'index');
+$router->get('/beheer/', BeheerHomeController::class, 'index', true);
 $router->get('/profiel', ProfielController::class, 'index', true);
 $router->post('/profiel', ProfielController::class, 'updateTelefoon', true);
 $router->post('/profiel/updateAdresGegevens', ProfielController::class, 'updateAdresGegevens', true);

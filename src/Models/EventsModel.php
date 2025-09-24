@@ -8,6 +8,7 @@ use PDO;
 class EventsModel extends DBModel
 {
     public $events;
+    public $roles;
 
     public function __construct()
     {
