@@ -34,15 +34,15 @@ class UserModel
 
     public function setUserData(array $data)
     {
-        $this->id = $data['ID'] ?? null;
-        $this->voornaam = $data['Voornaam'] ?? null;
-        $this->achternaam = $data['Achternaam'] ?? null;
-        $this->email = $data['E-mail'] ?? null;
-        $this->telefoon = $data['Telefoon'] ?? null;
-        $this->postcode = $data['Postcode'] ?? null;
-        $this->roles = isset($data['ID']) ? RolModel::getRolesByUserId($data['ID']) : [];
-        $this->plaatsnaam = $data['Plaatsnaam'] ?? null;
-        $this->huisnummer = $data['Huisnummer'] ?? null;
+        $this->id = $data['id'] ?? null;
+        $this->voornaam = $data['voornaam'] ?? null;
+        $this->achternaam = $data['achternaam'] ?? null;
+        $this->email = $data['email'] ?? null;
+        $this->telefoon = $data['telefoon'] ?? null;
+        $this->postcode = $data['postcode'] ?? null;
+        $this->roles = isset($data['id']) ? RolModel::getRolesByUserId($data['id']) : [];
+        $this->plaatsnaam = $data['plaatsnaam'] ?? null;
+        $this->huisnummer = $data['huisnummer'] ?? null;
     }
 
     public function getId() { return $this->id; }
@@ -79,7 +79,7 @@ class UserModel
     public static function getById($id)
     {
         $db = Conn::getPDO();
-        $stmt = $db->prepare("SELECT * FROM gebruiker WHERE ID = ?");
+        $stmt = $db->prepare("SELECT * FROM gebruiker WHERE id = ?");
         $stmt->execute([$id]);
 
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);

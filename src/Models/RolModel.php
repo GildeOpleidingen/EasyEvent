@@ -39,7 +39,7 @@ class RolModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT id, Rol FROM rol";
+        $sql = "SELECT id, rol FROM rol";
 
         $stmt = $db->prepare($sql);
 
