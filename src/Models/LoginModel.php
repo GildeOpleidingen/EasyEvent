@@ -16,15 +16,15 @@ class LoginModel extends DBModel
     {
         if (!empty($gebruikersnaam) && !empty($wachtwoord)) {
             try {
-                $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
+                $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `email` = :email");
                 $stmt->bindParam(':email', $gebruikersnaam);
                 $stmt->execute();
 
                 $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($gebruiker) {
-                    if (password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
-                        $_SESSION['Gebruikersnaam'] = $gebruiker['E-mail'];
-                        $_SESSION['GebruikersID'] = $gebruiker['ID'];
+                    if (password_verify($wachtwoord, $gebruiker['wachtwoord'])) {
+                        $_SESSION['Gebruikersnaam'] = $gebruiker['email'];
+                        $_SESSION['GebruikersID'] = $gebruiker['id'];
                         return 'events';
                     } else {
                         return 'invalid'; 
@@ -44,7 +44,7 @@ class LoginModel extends DBModel
     public function getUserByEmail($email)
     {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
+            $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `email` = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 
@@ -58,7 +58,7 @@ class LoginModel extends DBModel
     public function userExists($email)
     {
         try {
-            $stmt = $this->db->prepare("SELECT COUNT(*) FROM `gebruiker` WHERE `E-mail` = :email");
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM `gebruiker` WHERE `email` = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 

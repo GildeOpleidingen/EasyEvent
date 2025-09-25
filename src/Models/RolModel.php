@@ -39,7 +39,7 @@ class RolModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT ID, Rol FROM rol";
+        $sql = "SELECT id, Rol FROM rol";
 
         $stmt = $db->prepare($sql);
 
@@ -50,8 +50,8 @@ class RolModel extends DBModel
         $roles = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $role = new RolModel();
-            $role->setid($row['ID']);
-            $role->setName($row['Rol']);
+            $role->setid($row['id']);
+            $role->setName($row['rol']);
             $roles[] = $role;
         }
         return $roles;
@@ -62,7 +62,7 @@ class RolModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT ID FROM rol WHERE Rol = :rolName";
+        $sql = "SELECT id FROM rol WHERE rol = :rolName";
 
         $stmt = $db->prepare($sql);
         
@@ -72,7 +72,7 @@ class RolModel extends DBModel
 
         $rolID = null;
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $rolID = $row['ID'];
+            $rolID = $row['id'];
         }
         return $rolID;
     }
@@ -82,7 +82,7 @@ class RolModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT `rol_ID`, `Rol` FROM `kpl_gebruiker_rol` LEFT JOIN `rol` ON kpl_gebruiker_rol.rol_ID = `rol`.ID WHERE `gebruiker_ID` = :gebruikerID";
+        $sql = "SELECT `rol_id`, `Rol` FROM `gebruiker_rol` LEFT JOIN `rol` ON gebruiker_rol.rol_id = `rol`.ID WHERE `gebruiker_id` = :gebruikerID";
 
         $stmt = $db->prepare($sql);
 
@@ -93,7 +93,7 @@ class RolModel extends DBModel
         $roles = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $role = new RolModel();
-            $role->setid($row['rol_ID']);
+            $role->setid($row['rol_id']);
             $role->setName($row['Rol']);
             $roles[] = $role;
         }
