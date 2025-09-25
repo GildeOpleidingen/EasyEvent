@@ -42,10 +42,13 @@ use App\Conn;
                     <p class="text-center ms-6">met je emailadres en wachtwoord</p>
 
                     <?php if (isset($error)): ?>
-                        <div class="alert alert-danger">
-                            <?php echo $error; ?>
-                        </div>
-                    <?php endif; ?>
+    <div class="alert alert-danger">
+        <?php echo htmlspecialchars($error); ?>
+    </div>
+<?php endif; ?>
+                    
+                    
+
 
                     <form action="./login" method="POST" class="w-75" id="captcha-form">
                          <div class="form-floating mb-3">
