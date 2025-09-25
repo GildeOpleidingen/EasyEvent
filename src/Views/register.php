@@ -73,7 +73,7 @@
                                 <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
                                 <i class="bi bi-eye-fill position-absolute icon-eye" data-toggle="herhaalWachtwoord"></i>
                             </div>
-<button type="submit" class="btn btn-primary w-100" onclick="captcha('SIGNUP', this)">Registreer</button>
+<button type="submit" class="btn btn-primary w-100" onclick="submit">Registreer</button>
 
                         </form>
                     </div>
