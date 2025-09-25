@@ -26,7 +26,6 @@ class BeheerEventAanmakenController extends Controller {
         $Huisnummer = $_POST['Huisnummer'] ?? null;
         $Postcode = $_POST['Postcode'] ?? null;
         $Sector = $_POST['Sector'] ?? '';
-        $eventBanner = base64_encode($_POST['banner'] ?? null);
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
         $date = $_POST['datum'] ?? null;
@@ -34,10 +33,9 @@ class BeheerEventAanmakenController extends Controller {
         $endTime = $_POST['eind-tijd'] ?? null;
 
         // Controleer of alle velden ingevuld zijn
-        if (empty($eventName) || empty($eventInfo) || empty($eventBanner)|| empty($date) || empty($startTime)|| empty($endTime)) {
+        if (empty($eventName) || empty($eventInfo) || empty($date) || empty($startTime)|| empty($endTime)) {
             var_dump($eventName);
             var_dump($eventInfo);
-            var_dump($eventBanner);
             var_dump($startTime);
             var_dump($_POST);
             var_dump($endTime);
@@ -46,7 +44,7 @@ class BeheerEventAanmakenController extends Controller {
             return;
         }
 
-        $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, ['date' => $date[0], 'BeginTijd' => $startTime[0], 'EindTijd' => $endTime[0]], $eventBanner);
+        $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, ['date' => $date[0], 'BeginTijd' => $startTime[0], 'EindTijd' => $endTime[0]]);
         $errors = $eventModel->validateModel();
         // Sla de gegevens tijdelijk op in de sessie
         $_SESSION['register_data'] = [
@@ -60,7 +58,6 @@ class BeheerEventAanmakenController extends Controller {
             'postcode' => $Postcode,
             'sector' => $Sector,
             'organisator' => $eventOrganizer,
-            'banner' => $eventBanner,
             'hoofdEvent' => $hoofdEvent,
             'eventID' => $eventID,
             'date' => $date,
