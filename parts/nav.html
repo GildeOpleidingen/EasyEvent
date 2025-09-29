@@ -11,10 +11,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
                 <?php if (isset($_SESSION['Gebruikersnaam'])): ?>
-                
+                <?php if ($roles):?>
                 <?php foreach ($roles as $role): ?>
                     <?php if ($role->getName() == "Admin" || $role->getName() == "Organisator") {$bevoegd = true;} ?>
                 <?php endforeach; ?>
+                <?php endif ?>
                 <?php if ($bevoegd): ?>
                 <li class="nav-item">
                     <a href="/beheer/" class="nav-link active">Beheer</a>
@@ -23,7 +24,6 @@
                 <li class="nav-item">
                     <a href="/events" class="nav-link active">Evenementen</a>
                 </li>
-                <?php if (isset($_SESSION['Gebruikersnaam'])): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" 
                         data-bs-toggle="dropdown" aria-expanded="false">
