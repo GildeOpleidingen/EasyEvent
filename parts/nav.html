@@ -1,3 +1,4 @@
+<?php $bevoegd = false; ?>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a href="/home" class="navbar-brand ms-5">
@@ -9,9 +10,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
+                <?php if (isset($_SESSION['Gebruikersnaam'])): ?>
+                
+                <?php foreach ($roles as $role): ?>
+                    <?php if ($role->getName() == "Admin" || $role->getName() == "Organisator") {$bevoegd = true;} ?>
+                <?php endforeach; ?>
+                <?php if ($bevoegd): ?>
                 <li class="nav-item">
                     <a href="/beheer/" class="nav-link active">Beheer</a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a href="/events" class="nav-link active">Evenementen</a>
                 </li>
