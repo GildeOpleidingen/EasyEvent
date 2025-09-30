@@ -79,11 +79,17 @@ class UserModel
     public static function getById($id)
     {
         $db = Conn::getPDO();
-        $stmt = $db->prepare("SELECT * FROM gebruiker WHERE Id = ?");
+        $stmt = $db->prepare("SELECT * FROM gebruiker WHERE ID = ?");
         $stmt->execute([$id]);
+
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$userData) {
+            return null;
+        }
+
         $um = new self();
-        return $userData ? $um->setUserData($userData) : null;
+        $um->setUserData($userData);
+        return $um;
     }
 
     public function updateTelefoon($newPhone)

@@ -168,16 +168,6 @@ endTime.addEventListener('input', validateTimes);
                     <i class="bi bi-plus text-white"></i>
                 </button>
 
-                <div class="mb-3">
-                    <label for="eventBanner" class="form-label">Banner <span class="verplicht">*</span></label>
-                    <input type="file" class="form-control" id="eventBanner" name="banner" accept="image/png" onchange="previewImage(event)" required>
-                    <div class="invalid-feedback">Kies een banner.</div>
-                </div>
-
-                <div class="mb-3">
-                    <img id="imagePreview" src="#" alt="Afbeelding Preview" class="img-fluid" style="display: none; max-height: 200px; object-fit: cover;">
-                </div>
-
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
                     <button type="submit" class="btn btn-primary" id="btnToForm2">Volgende</button>
@@ -244,7 +234,6 @@ $title;
 $description;
 $date = [];
 $location = [];
-$banner;
 
 //subevent
 $subEventCount = 0;
@@ -259,7 +248,7 @@ $activityTime = [];
 $activityPeople = [];
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location'])) {
     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
         $title = htmlspecialchars($_POST['title']);
     }
@@ -289,12 +278,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
             $errors[] = "De postcode moet bestaan uit 4 cijfers";
         }
     }
-    if (isset($_POST['banner'])) {
-        $img = file_get_contents($_POST['banner']);
-        $data = base64_encode($img);
-    }
-    if (!$title && !$description && !$location && !$date && !$banner) {
-        $event = new EventsModel($title,$description,$location,$date,$banner);
+    if (!$title && !$description && !$location && !$date) {
+        $event = new EventsModel($title,$description,$location,$date);
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["subEventTitle1"]) && isset($_POST["subEventDescription1"]) && isset($_POST["subEventDate1"])){
