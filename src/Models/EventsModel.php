@@ -66,7 +66,7 @@ class EventsModel extends DBModel
                 ''
             );
             $event->addEventID($row['id']);
-            $event->hoofdEventID = $row['hoofd_event'];
+            $event->hoofdEventID = $row['hoofdEventID'];
             $events[] = $event;
         }
 
@@ -110,19 +110,18 @@ class EventsModel extends DBModel
         $events = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $event = new EventModel(
-                (int)$row['organisator_id'],
-                $row['naam'],
+                (int)$row['organisator'],
+                $row['eventName'],
                 $row['eventInfo'],
-                $row['land'] ?? 'Unknown',
-                $row['plaats'] ?? 'Unknown',
-                $row['straatnaam'] ?? 'Unknown',
-                $row['huisnummer'] ?? 'Unknown',
-                $row['postcode'] ?? 'Unknown',
+                $row['Land'] ?? 'Unknown',
+                $row['Plaats'] ?? 'Unknown',
+                $row['Straatnaam'] ?? 'Unknown',
+                $row['Huisnummer'] ?? 'Unknown',
+                $row['Postcode'] ?? 'Unknown',
                 $row['Sector'] ?? 'Unknown',
                 [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
-                $row['Banner'] ?? ''
             );
-            $event->eventID = $row['ID'];
+            $event->eventID = $row['id'];
             $event->hoofdEventID = $row['hoofdEventID'];
             $events[] = $event;
         }

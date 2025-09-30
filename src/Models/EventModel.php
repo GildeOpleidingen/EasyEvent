@@ -238,14 +238,13 @@ class EventModel
         $db = $mysql->getPDO();
         
         // SQL to insert event data into the `event` table, now including `hoofdEvent`
-        $sqlEvent = "INSERT INTO event (Eventnaam, Info, Organisator, Banner) VALUES (:eventName, :eventInfo, :eventOrganisator, :eventBanner)";
+        $sqlEvent = "INSERT INTO event (naam, beschrijving, organisator_id) VALUES (:eventName, :eventInfo, :eventOrganisator)";
 
         // Prepare and execute the query for the `event` table
         $stmtEvent = $db->prepare($sqlEvent);
         $stmtEvent->bindParam(':eventName', $event->eventName);
         $stmtEvent->bindParam(':eventInfo', $event->eventInfo);
         $stmtEvent->bindParam(':eventOrganisator', $event->eventOrganizer);
-        $stmtEvent->bindParam(':eventBanner', $event->eventBanner);
 
         if ($stmtEvent->execute()) {
             error_log("Event insertion successful: " . json_encode($event));
@@ -253,8 +252,8 @@ class EventModel
             $event->eventID = $db->lastInsertId();
 
             // Insert each time slot into the `event-tijd` table
-            $sqlEventTime = "INSERT INTO `event-tijd` (Event_ID, Land, Plaats, Straatnaam, Huisnummer, Postcode, Datum, BeginTijd, EindTijd, Sector) 
-                            VALUES (:eventID, :Land, :Plaats, :Straatnaam, :Huisnummer, :Postcode, :date, :BeginTijd, :EindTijd, :Sector)";
+            $sqlEventTime = "INSERT INTO `event_tijd` (event_id, land, plaatsnaam, straatnaam, huisnummer, postcode, datum, begin_tijd, eind_tijd) 
+                            VALUES (:eventID, :Land, :Plaats, :Straatnaam, :Huisnummer, :Postcode, :date, :BeginTijd, :EindTijd)";
 
             $stmtEventTime = $db->prepare($sqlEventTime);
 
@@ -268,7 +267,6 @@ class EventModel
                 $stmtEventTime->bindParam(':date', $timeSlot['date']);
                 $stmtEventTime->bindParam(':BeginTijd', $timeSlot['BeginTijd']);
                 $stmtEventTime->bindParam(':EindTijd', $timeSlot['EindTijd']);
-                $stmtEventTime->bindParam(':Sector', $event->eventSector);
 
                 if (!$stmtEventTime->execute()) {
                     // Rollback if the time slot insertion fails
