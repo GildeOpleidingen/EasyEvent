@@ -10,6 +10,8 @@
       return;
     }
 
+    let activeTag = "all"; // default filter
+
     function getItems() {
       return Array.from(document.querySelectorAll(".ev-item"));
     }
@@ -17,13 +19,15 @@
     function filterEventsHandler() {
       try {
         const q = input.value.trim().toLowerCase();
-
         const items = getItems();
+
         if (items.length === 0) {
           console.warn("[searchbar] no .ev-item elements found in DOM.");
         }
 
         items.forEach((item) => {
+          const tag = (item.getAttribute("data-tag") || "geen").toLowerCase();
+
           const titleEl =
             item.querySelector(".accordion-button") ||
             item.querySelector(".accordion-header") ||
@@ -41,13 +45,15 @@
             : "";
           const desc = descEl ? (descEl.textContent || "").toLowerCase() : "";
 
-          const match = q === "" || title.includes(q) || desc.includes(q);
+          const textMatch = q === "" || title.includes(q) || desc.includes(q);
+          const tagMatch = activeTag === "all" || tag === activeTag;
 
-          if (match) {
+          if (textMatch && tagMatch) {
             item.classList.remove("d-none");
           } else {
             item.classList.add("d-none");
 
+            // collapse if open
             const openCollapse = item.querySelector(
               ".accordion-collapse.collapse.show"
             );
@@ -68,7 +74,14 @@
       }
     }
 
+    window.filterByTag = function (tag) {
+      activeTag = tag.toLowerCase();
+      console.log("[searchbar] filterByTag:", activeTag);
+      filterEventsHandler();
+    };
+
     input.addEventListener("input", filterEventsHandler);
+
     window.filterEvents = filterEventsHandler;
 
     console.log("[searchbar] ready — items:", getItems().length);

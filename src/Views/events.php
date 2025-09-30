@@ -10,7 +10,6 @@
 
     <title>EasyEvents | Events</title>
 
-
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/events.css">
@@ -24,17 +23,19 @@
     <?php require_once("./parts/nav.html"); ?>
 
     <div class="row g-4">
+
         <div class="col-12">
-            <div class="nav-buttons d-flex mb-3">
-                <button class="btn btn-primary">Alle</button>
-                <button class="btn btn-primary">Sport</button>
-                <button class="btn btn-primary">Cultuur</button>
-                <button class="btn btn-primary">School</button>
-                <button class="btn btn-primary">Gamen</button>
+            <div class="nav-buttons d-flex mb-3 gap-2">
+                <button class="btn btn-primary" onclick="filterByTag('all')">Alle</button>
+                <button class="btn btn-primary" onclick="filterByTag('sport')">Sport</button>
+                <button class="btn btn-primary" onclick="filterByTag('cultuur')">Cultuur</button>
+                <button class="btn btn-primary" onclick="filterByTag('school')">School</button>
+                <button class="btn btn-primary" onclick="filterByTag('gamen')">Gamen</button>
+                <button class="btn btn-primary" onclick="filterByTag('cultuur-en-sport')">Cultuur en Sport</button>
             </div>
         </div>
 
-        <!-- Event list column -->
+
         <div class="col-lg-8">
             <input
                 type="text"
@@ -47,7 +48,12 @@
             <?php if (!empty($events)): ?>
                 <div class="accordion" id="eventsAccordion">
                     <?php foreach ($events as $index => $event): ?>
-                        <div class="accordion-item ev-item">
+                        <?php
+
+                            $sector = strtolower($event->getEventSector() ?: 'geen');
+                            $sector = str_replace(' ', '-', $sector);
+                        ?>
+                        <div class="accordion-item ev-item" data-tag="<?= htmlspecialchars($sector) ?>">
                             <h2 class="accordion-header" id="heading<?= $index ?>">
                                 <button
                                     class="accordion-button collapsed"
@@ -67,73 +73,70 @@
                             >
                                 <div class="accordion-body">
                                     <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
+                                    <small class="text-muted">
+                                        Categorie: <?= htmlspecialchars($event->getEventSector()) ?>
+                                    </small>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
+            <?php else: ?>
+                <p class="text-muted">Geen evenementen gevonden.</p>
             <?php endif; ?>
         </div>
 
-
         <div class="col-lg-4 d-flex justify-content-center">
-
+            <div class="calendar p-3">
+                <div class="calendar-header d-flex justify-content-between align-items-center">
+                    <button class="btn btn-outline-light btn-sm" onclick="prevMonth()">&lt;</button>
+                    <h3 class="px-2" id="calendar-month-year"></h3>
+                    <button class="btn btn-outline-light btn-sm" onclick="nextMonth()">&gt;</button>
+                </div>
+                <table class="calendar-grid mt-4">
+                    <tr>
+                        <th>ma</th>
+                        <th>di</th>
+                        <th>wo</th>
+                        <th>do</th>
+                        <th>vr</th>
+                        <th>za</th>
+                        <th>zo</th>
+                    </tr>
+                    <tbody id="calendar-days">
+                        <!-- JavaScript genereert hier de kalenderdagen -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
+<script src="../../js/bootstrap.bundle.js"></script>
+<script src="../../js/script.js"></script>
+<script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="../../js/animaties.js"></script>
+<script src="../../js/searchbar.js"></script>
+<script src="../../js/tabs.js"></script>
+<script src="../../js/calendar.js"></script>
 
-            <div class="col-lg-4 d-flex justify-content-center">
-                <div class="calendar p-3">
-                    <div class="calendar-header d-flex justify-content-between align-items-center">
-                        <button class="btn btn-outline-light btn-sm" onclick="prevMonth()">&lt;</button>
-                        <h3 class="px-2" id="calendar-month-year"></h3>
-                        <button class="btn btn-outline-light btn-sm" onclick="nextMonth()">&gt;</button>
-                    </div>
-                    <table class="calendar-grid mt-4">
-                        <tr>
-                            <th>ma</th>
-                            <th>di</th>
-                            <th>wo</th>
-                            <th>do</th>
-                            <th>vr</th>
-                            <th>za</th>
-                            <th>zo</th>
-                        </tr>
-                        <tbody id="calendar-days">
-                            <!-- JavaScript gaat hier de kalenderdagen genereren -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<script>
+    function filterEvents() {
+        const searchQuery = document.getElementById("search-input-top").value.toLowerCase();
+        const events = document.querySelectorAll(".ev-item");
 
-        </div>
-    </div>
+        events.forEach(event => {
+            const title = event.querySelector(".accordion-button").innerText.toLowerCase();
+            const description = event.querySelector(".accordion-body p").innerText.toLowerCase();
 
-    <script src="../../js/bootstrap.bundle.js"></script>
-    <script src="../../js/script.js"></script>
-    <script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="../../js/animaties.js"></script>
-    <script src="../../js/searchbar.js"></script>
-    <script src="../../js/tabs.js"></script>
-    <script src="../../js/calendar.js"></script>
-    <script>
-        function filterEvents() {
-            const searchQuery = document.getElementById("search-input-top").value.toLowerCase();
-            const events = document.querySelectorAll(".event-item");
-
-            events.forEach(event => {
-                const title = event.querySelector("h3").innerText.toLowerCase();
-                const description = event.querySelector("p").innerText.toLowerCase();
-
-                if (title.includes(searchQuery) || description.includes(searchQuery)) {
-                    event.style.display = "block";
-                } else {
-                    event.style.display = "none";
-                }
-            });
-        }
-    </script>
+            if (title.includes(searchQuery) || description.includes(searchQuery)) {
+                event.classList.remove("d-none");
+            } else {
+                event.classList.add("d-none");
+            }
+        });
+    }
+</script>
 </body>
 </html>
