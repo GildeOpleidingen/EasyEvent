@@ -196,13 +196,13 @@ class UserModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT g.ID, g.Voornaam, g.Achternaam, g.`E-mail`, g.Telefoon, IF(g.Is_Geverifieerd = 1, 'Ja', 'Nee') AS Is_Geverifieerd, k.KledingMaat, g.Ouder_ID, GROUP_CONCAT(r.Rol SEPARATOR ', ') as Rollen
-                FROM kpl_gebruiker_rol gr 
-                JOIN gebruiker g on g.ID = gr.gebruiker_ID
-                JOIN rol r on r.ID = gr.rol_ID
-                LEFT JOIN Kleding k on k.ID = g.KledingMaat
+        $sql = "SELECT g.id, g.voornaam, g.achternaam, g.email, g.telefoon, IF(g.geverifieerd = 1, 'Ja', 'Nee') AS Is_Geverifieerd, k.id AS kleding_maat_id, g.ouder_id, GROUP_CONCAT(r.rol SEPARATOR ', ') as Rollen
+                FROM gebruiker_rol gr 
+                JOIN gebruiker g on g.ID = gr.gebruiker_id
+                JOIN rol r on r.ID = gr.rol_id
+                LEFT JOIN kleding_maat k on k.id = g.kleding_maat_id
                 GROUP by g.id
-                ORDER BY g.Achternaam, g.Voornaam";
+                ORDER BY g.achternaam, g.voornaam";
         $stmt = $db->prepare($sql);
 
         if (!$stmt->execute()) {
@@ -212,14 +212,14 @@ class UserModel
         $allusers = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $user = new UserModel();
-            $user->setID($row['ID']);
-            $user->setVoornaam($row['Voornaam']);
-            $user->setAchternaam($row['Achternaam']);
-            $user->setEmail($row['E-mail']);
-            $user->setTelefoon($row['Telefoon']);
+            $user->setID($row['id']);
+            $user->setVoornaam($row['voornaam']);
+            $user->setAchternaam($row['achternaam']);
+            $user->setEmail($row['email']);
+            $user->setTelefoon($row['telefoon']);
             $user->setIsGeverifieerd($row['Is_Geverifieerd']);
-            $user->setKledingmaat($row['KledingMaat']);
-            $user->setOuderId($row['Ouder_ID']);
+            $user->setKledingmaat($row['kleding_maat_id']);
+            $user->setOuderId($row['ouder_id']);
             $user->setRoles($row['Rollen']);
 
             $allusers[] = $user;
