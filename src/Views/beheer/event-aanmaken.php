@@ -87,7 +87,22 @@ error_reporting(E_ALL);
                     </div>
                     <div class="col-md-3">
                         <label for="Address" class="form-label">Postcode <span class="verplicht">*</span></label>
-                        <input type="text" class="form-control" id="eventAddress" name="Postcode" placeholder="1234 AB" required>
+                        <input 
+  type="text" 
+  class="form-control" 
+  id="eventAddress" 
+  name="Postcode" 
+  placeholder="1234 AB" 
+  required
+  maxlength="7" 
+  pattern="^[0-9]{4}\s[A-Za-z]{2}$"
+  oninput="
+    this.value = this.value.replace(/[^0-9A-Za-z]/g, '').toUpperCase();
+    if (this.value.length > 4) {
+      this.value = this.value.substring(0,4) + ' ' + this.value.substring(4);
+    }
+  "
+>
                         <div class="invalid-feedback">Voer een geldig postcode in.</div>
                     </div>
                     <div class="col-md-2">
@@ -100,23 +115,54 @@ error_reporting(E_ALL);
                 <div class="mb-3 row" id="eventDatesContainer">
                     <div class="col-md-4">
                         <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                        <input type="date" class="form-control" id="eventDate" name="datum[]" required>
+                        <input 
+  type="date" 
+  class="form-control" 
+  id="eventDate" 
+  name="datum[]" 
+  required
+>
+<script>
+  const dateInput = document.getElementById('eventDate');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.min = today;
+</script>
                         <div class="invalid-feedback">Selecteer een datum.</div>
                     </div>
 
-                    <div class="col-md-4">
-                        <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" id="eventBeginTime" name="begin-tijd[]" required>
-                        <div class="invalid-feedback">Voer een begintijd in.</div>
-                    </div>
+<div class="col-md-4">
+    <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
+    <input type="time" class="form-control" id="eventBeginTime" name="begin-tijd[]" required>
+    <div class="invalid-feedback">Voer een begintijd in.</div>
+</div>
 
-                    <div class="col-md-4 d-flex align-items-end">
-                        <div class="flex-grow-1">
-                            <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                            <input type="time" class="form-control" id="eventEndTime" name="eind-tijd[]" required>
-                            <div class="invalid-feedback">Voer een eindtijd in.</div>
-                        </div>
-                    </div>
+<div class="col-md-4 d-flex align-items-end">
+    <div class="flex-grow-1">
+        <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+        <input type="time" class="form-control" id="eventEndTime" name="eind-tijd[]" required>
+        <div class="invalid-feedback">Eindtijd moet na begintijd zijn.</div>
+    </div>
+</div>
+<!-- Validatie voor tijd -->
+<script>
+const beginTime = document.getElementById('eventBeginTime');
+const endTime = document.getElementById('eventEndTime');
+
+function validateTimes() {
+    if (beginTime.value && endTime.value) {
+        if (endTime.value <= beginTime.value) {
+            endTime.setCustomValidity('Eindtijd moet na begintijd zijn.');
+        } else {
+            endTime.setCustomValidity('');
+        }
+    } else {
+        endTime.setCustomValidity('');
+    }
+}
+
+beginTime.addEventListener('input', validateTimes);
+endTime.addEventListener('input', validateTimes);
+</script>
                 </div>
                 <button type="button" class="btn btn-primary mb-3" id="addDay">
                     <i class="bi bi-plus text-white"></i>

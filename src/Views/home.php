@@ -24,7 +24,7 @@ use App\Conn;
 </head>
 <body>
 
-    <div id="content">
+    <div class="container-fluid vh-100">
         <?php require_once(__ROOT__."/parts/nav.html"); ?>
 
         <section class="hero d-flex align-items-center justify-content-center" style="min-height: 75vh;">
