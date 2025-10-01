@@ -79,8 +79,8 @@ class EventModel
     public function addImage(array $image){
         $this->images[] = $image;
     }
-    public function addHoofdEventID(array $hoofdEventID){
-        $this->hoofdEventID = $this->hoofdEventID;
+    public function addHoofdEventID(int $hoofdEventID){
+        $this->hoofdEventID = $hoofdEventID;
     }
     public function addEventID(string $eventID){
         $this->eventID = $eventID;

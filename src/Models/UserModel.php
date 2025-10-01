@@ -57,7 +57,6 @@ class UserModel
     public function getIsGeverifieerd() { return $this->is_geverifieerd; }
     public function getRoles() { return $this->roles; }
     private function getWachtwoord() { return $this->wachtwoord;}
-    public function getGebruikersNaam() {return $this->gebruikersNaam;}
 
     public function setID($value) {$this->id = $value;}
     public function setVoornaam($value) {$this->voornaam = $value;}
@@ -68,7 +67,6 @@ class UserModel
 
     public function setHuisnummer($value) {$this->huisnummer = $value;}
     public function setPlaatsnaam($value) {$this->plaatsnaam = $value;}
-    public function setGebruikersnaam($value) {$this->gebruikersNaam = $value;}
     public function setProfielfoto($value) {$this->profielfoto = $value;}
     public function setIsGeverifieerd($value) {$this->is_geverifieerd = $value;}
     public function setKledingmaat($value) {$this->kledingmaat = $value;}
@@ -239,7 +237,6 @@ class UserModel
         $pc = $um->getPostcode();
         $pln = $um->getPlaatsnaam();
         $ww = $um->getWachtwoord();
-        $gn = $um->getGebruikersNaam();
         $hnr= $um->getHuisnummer();
         // $isgev= 1;
         $km = $um->getKledingmaat();
@@ -247,9 +244,9 @@ class UserModel
         //rol
         $rollen = $um->getRoles();
 
-        $sql = "INSERT INTO `gebruiker`(`Voornaam`, `Achternaam`, `E-mail`, `Telefoon`, `Postcode`, `Plaatsnaam`, 
-            `Wachtwoord`, `Gebruikersnaam`, `Huisnummer`, `KledingMaat`)
-            VALUES (:vn, :an, :em, :tel, :pc, :pln, :ww, :gn, :hnr, :km)";
+        $sql = "INSERT INTO `gebruiker`(`voornaam`, `achternaam`, `email`, `telefoon`, `postcode`, `plaatsnaam`, 
+            `wachtwoord`, `huisnummer`, `kleding_maat_id`)
+            VALUES (:vn, :an, :em, :tel, :pc, :pln, :ww, :hnr, :km)";
 
         $stmt = $db->prepare($sql);
         $stmt->bindParam(":vn",$vn);
@@ -259,7 +256,6 @@ class UserModel
         $stmt->bindParam(":pc", $pc);
         $stmt->bindParam(":pln", $pln);
         $stmt->bindParam(":ww", $ww);
-        $stmt->bindParam(":gn", $gn);
         $stmt->bindParam(":hnr", $hnr);
         //  $stmt->bindParam(":isgev", $isgev);
         $stmt->bindParam(":km", $km);
@@ -270,7 +266,7 @@ class UserModel
         
             foreach($rollen as $rol){
                 //Koppel de gebruiker rol aan deze nieuwe gebruiker.
-                $stmt = $db->prepare("INSERT INTO `kpl_gebruiker_rol`(`gebruiker_ID`, `rol_ID`) VALUES (:gebruikerId, :rolId)");
+                $stmt = $db->prepare("INSERT INTO `gebruiker_rol`(`gebruiker_id`, `rol_id`) VALUES (:gebruikerId, :rolId)");
                 $stmt->bindParam('gebruikerId', $last_id);
                 $stmt->bindParam('rolId', $rol);
                 $stmt->execute();
@@ -283,7 +279,7 @@ class UserModel
 
     public function delete($id){
         $db = Conn::getPDO();
-        $stmt = $db->prepare("DELETE FROM `kpl_gebruiker_rol` WHERE gebruiker_ID = :id");
+        $stmt = $db->prepare("DELETE FROM `gebruiker_rol` WHERE gebruiker_ID = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()){
             $stmt = $db->prepare("DELETE FROM gebruiker WHERE ID = :id");

@@ -12,18 +12,18 @@ class LoginModel extends DBModel
         parent::__construct();
     }
 
-    public function login($gebruikersnaam, $wachtwoord)
+    public function login($email, $wachtwoord)
     {
-        if (!empty($gebruikersnaam) && !empty($wachtwoord)) {
+        if (!empty($email) && !empty($wachtwoord)) {
             try {
                 $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `email` = :email");
-                $stmt->bindParam(':email', $gebruikersnaam);
+                $stmt->bindParam(':email', $email);
                 $stmt->execute();
 
                 $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($gebruiker) {
                     if (password_verify($wachtwoord, $gebruiker['wachtwoord'])) {
-                        $_SESSION['Gebruikersnaam'] = $gebruiker['email'];
+                        $_SESSION['GebruikerEmail'] = $gebruiker['email'];
                         $_SESSION['GebruikersID'] = $gebruiker['id'];
                         return 'events';
                     } else {

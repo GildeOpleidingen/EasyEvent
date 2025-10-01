@@ -78,11 +78,6 @@ error_reporting(E_ALL);
                     <input type="password" class="form-control" id="wachtwoord" name="wachtwoord" placeholder="Wachtwoord" required>
                     <div class="invalid-feedback">Voer een wachtwoord in.</div>
                 </div>
-                <div class="mb-3">
-                    <label for="gebruikersNaam" class="form-label">Gebruikersnaam <span class="verplicht">*</span></label>
-                    <input type="text" class="form-control" id="gebruikersNaam" name="gebruikersNaam" placeholder="Gebruikersnaam" required>
-                    <div class="invalid-feedback">Voer een locatie in.</div>
-                </div>
                 
                 <?php
                     $rol = new RolModel();

@@ -27,7 +27,7 @@ class LoginController extends Controller
 
     public function index()
     {
-        if (isset($_SESSION['Gebruikersnaam'])) {
+        if (isset($_SESSION['GebruikerEmail'])) {
             header('Location: /events');
             exit();
         }
