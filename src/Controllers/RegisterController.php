@@ -190,7 +190,6 @@ class RegisterController extends Controller
                 $registerData['telefoon'],
                 $registerData['email'],
                 $registerData['wachtwoord'],
-                $registerData['gebruikersnaam']
             );
 
             unset($_SESSION['register_data']);

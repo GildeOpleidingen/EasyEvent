@@ -24,7 +24,7 @@ class RegisterModel extends DBModel
 
     
     //registreren gebruiker in de db
-    public function register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $verif)
+    public function register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $verif = 1)
     {
         try {
             
@@ -33,14 +33,13 @@ class RegisterModel extends DBModel
             //bereid de query
             $stmt = $this->db->prepare("INSERT INTO `gebruiker` (voornaam, achternaam, telefoon, email, wachtwoord, geverifieerd) 
                                         VALUES (:voornaam, :achternaam, :telefoon, :email, :wachtwoord, :is_geverifieerd)");
-            $is_geverifieerd = 1;
 
             $stmt->bindParam(':voornaam', $voornaam);
             $stmt->bindParam(':achternaam', $achternaam);
             $stmt->bindParam(':telefoon', $telefoon);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':wachtwoord', $hashedPassword);
-            $stmt->bindparam('is_geverifieerd', $is_geverifieerd);
+            $stmt->bindparam('is_geverifieerd', $verif);
 
             if($stmt->execute())
             {
