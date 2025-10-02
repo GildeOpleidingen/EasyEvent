@@ -9,8 +9,14 @@ use App\Models\UsersModel;
 
 class BeheerEventAanmakenController extends Controller {
     public function index() {
+
         $this->render("beheer/event-aanmaken");
     }
+
+    public function step2() {
+        $this->render("beheer/event-aanmaken-stap-2");
+    }
+
     public function sendEvent(){
         $eventName = $_POST['eventNaam'] ?? null;
         $eventInfo = $_POST['info'] ?? null;
@@ -80,4 +86,14 @@ class BeheerEventAanmakenController extends Controller {
         }
 
     } 
+
+    public function sendEventStep2()
+    {
+        $this->redirection('beheer/event');
+    }
+
+    public function editEvent() {
+
+        $this->render("beheer/event-aanmaken");
+    }
 }
