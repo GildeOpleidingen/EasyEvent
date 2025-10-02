@@ -28,7 +28,7 @@ use App\Models\EventsModel;
             <h1 class="text-center mb-4">Event Aanmaken</h1>
 
             <!-- Form 2: Activities -->
-            <form id="formActivities" class="needs-validation" style="display: none;" novalidate method="POST">
+            <form id="formActivities" class="needs-validation" novalidate method="POST">
                 <div id="activitiesContainer">
                     <div class="activity-item mb-3">
                         <div class="row">

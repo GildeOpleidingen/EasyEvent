@@ -21,6 +21,12 @@ class Router
         $this->addRoute($route, $controller, $action, "POST");
     }
 
+
+    public function delete($route, $controller, $action, $isLoggedIn = false)
+    {
+        $this->addRoute($route, $controller, $action, `DELETE`, $isLoggedIn);
+    }
+
     public function dispatch()
     {
         $uri = strtok($_SERVER['REQUEST_URI'], '?');
@@ -37,7 +43,7 @@ class Router
                 $controller = new $controller();
                 $controller->$action();
             } else {
-                header('Location: HTTP://' . $_SERVER["HTTP_HOST"] . "/login");
+                header('Location: http://' . $_SERVER["HTTP_HOST"] . "/login");
             }
         } else {
             throw new \Exception("No route found for URI: $uri");

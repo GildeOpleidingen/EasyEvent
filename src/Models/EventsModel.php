@@ -8,6 +8,7 @@ use PDO;
 class EventsModel extends DBModel
 {
     public $events;
+    public $roles;
 
     public function __construct()
     {
@@ -119,5 +120,23 @@ class EventsModel extends DBModel
         }
     
         return $events;
+    }
+
+    public static function delete($id){
+        // $db = Conn::getPDO();
+        // $stmt = $db->prepare("DELETE FROM `kpl_activiteit_event_tijd` WHERE gebruiker_ID = :id");
+        // $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        // if ($stmt->execute()){
+        //     $stmt = $db->prepare("DELETE FROM `event` WHERE ID = :id");
+        //     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    
+        //     if ($stmt->execute()) {
+        //         return "Gebruiker succesvol verwijdert.";
+        //     } else {
+        //         return "Fout bij het verwijderen van gebruiker met id: " . $id;
+        //     }            
+        // } else {
+        //     return "Fout bij het verwijderen van de rollen voor gebruiker met id: " . $id;
+        // }
     }
 }

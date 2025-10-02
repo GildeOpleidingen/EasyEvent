@@ -19,11 +19,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
+    <?php $bevoegd = false; ?>
+
     <div class="container-fluid vh-100 d-flex flex-column">
-        <?php require_once('./parts/nav-beheer.html'); ?>
+        <?php require_once('./parts/nav.html'); ?>
         <div class="container mt-4">
             <h1 class="mb-2" id="greeting"></h1>
-            <p class="mb-4">Bekijk wat je kan doen als &lt;rol&gt;</p>
+            <p class="mb-4">
+               Bekijk wat je kan doen als
+                <strong>
+                <?php foreach ($roles as $role): ?>
+                    <?php echo $role->getName() . ", " ?>
+                    <?php if ($role->getName() == "Admin") {$bevoegd = true;} ?>
+                <?php endforeach; ?>
+                </strong>
+            </p>
             <div class="row g-3">
                 <a class="col-6 col-md-4 text-decoration-none" href="/beheer/event">
                     <div class="p-4 bg-light text-center shadow rounded">
@@ -37,12 +47,15 @@
                         <h5>Bekijk verenigingen</h5>
                     </div>
                 </a>
+                <?php if ($bevoegd): ?>
                 <a class="col-6 col-md-4 text-decoration-none" href="/beheer/user-overzicht">
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-person mb-2 fs-1"></i>
                         <h5>Bekijk gebruikers</h5>
                     </div>
                 </a>
+                <?php endif; ?>
+
                 <a class="col-6 col-md-4 text-decoration-none" href="/beheer/event-aanmaken">
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-calendar-plus mb-2 fs-1"></i>
@@ -55,18 +68,20 @@
                         <h5>Voeg een nieuwe vereniging toe</h5>
                     </div>
                 </a>
+                <?php if ($bevoegd): ?>
                 <a class="col-6 col-md-4 text-decoration-none" href="/beheer/user-aanmaken">
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-person-plus mb-2 fs-1"></i>
                         <h5>Maak een nieuwe gebruiker aan</h5>
                     </div>
                 </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
     <script src="/js/form-validatie.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>
@@ -83,7 +98,7 @@
                 greetingText = "Goedenavond";
             }
 
-            greetingElement.textContent = `${greetingText}, <naam>`;
+            greetingElement.textContent = `${greetingText}, <?php echo $firstName?>`;
         });
     </script>
 

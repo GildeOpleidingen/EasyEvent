@@ -26,14 +26,16 @@ error_reporting(E_ALL);
 </head>
 <body>
 <div class="container-fluid vh-100 d-flex flex-column">
-    <?php require_once('./parts/nav-beheer.html'); ?>
+    <?php require_once('./parts/nav.html'); ?>
     <div class="container my-4 pb-4">
-        <h1 class="text-center mb-4">Planning overzicht</h1>
+        <h1 class="text-center mb-4">Planning overzicht
+
+        <?= $activities[0]->getEvent()->getEventName(); ?>
+        </h1>
         <?php if (!empty($activities)): ?>
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Event</th>
                     <th scope="col">Activiteit</th>
                     <th scope="col">Activiteit Start Tijd</th>
                     <th scope="col">Activiteit Eind Tijd</th>
@@ -49,9 +51,6 @@ error_reporting(E_ALL);
                 <tbody>
                 <?php foreach ($activities as $index => $plan): ?>
                     <tr>
-                        <td>
-                            <?=htmlspecialchars($plan->getEvent()->getEventName()) ?>
-                        </td>
                         <td>
                             <?=htmlspecialchars($plan->getActivity()->getName()) ?>
                         </td>
@@ -77,10 +76,10 @@ error_reporting(E_ALL);
                             <?=htmlspecialchars($plan->getEindTijd()) ?>
                         </td>
                         <td>
-                            <?=htmlspecialchars($plan->getBetaalt()) ?>
+                            <?= $plan->getBetaalt() ? "Ja" : "Nee"; ?>
                         </td>
                         <td>
-                            <?=htmlspecialchars($plan->getIsGoedGekeurd()) ?>
+                            <?= $plan->getIsGoedGekeurd() ? "Ja" : "Nee"; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
