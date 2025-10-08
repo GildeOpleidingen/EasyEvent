@@ -16,13 +16,13 @@ class EventModel
     public string $Huisnummer;
     public string $Postcode;
     public int $eventOrganizer;
-    public string $eventSector;
+    public $eventSector = [];
     public $eventTime = [];   //[[date, startTime,endTime],[date, startTime,endTime]]
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $hoofdEventID;
 
-    public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', string $Sector = '', array $eventTime = []){
+    public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', array $Sector =[], array $eventTime = []){
         $this->eventOrganizer = $eventOrganizer;
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
@@ -66,7 +66,7 @@ class EventModel
         $this->Postcode = $Postcode;
     }
     public function setEventSector(string $Sector){
-        $this->eventSector = $Sector;
+        $this->eventSector[] = $Sector;
     }
     public function setEventOrganizer(int $eventOrganizer){
         $this->eventOrganizer = $eventOrganizer;
@@ -254,10 +254,10 @@ class EventModel
             // Retrieve the last inserted ID for the event
             $event->eventID = $db->lastInsertId();
 
-            // Insert each time slot into the `event-tijd` table
+            // Insert each time slot into the `event_tijd` table
             $sqlEventTime = "INSERT INTO `event_tijd` 
-                            (event_id, land, plaatsnaam, straatnaam, huisnummer, postcode, datum, begin_tijd, eind_tijd) 
-                            VALUES (:eventID, :Land, :Plaats, :Straatnaam, :Huisnummer, :Postcode, :date, :BeginTijd, :EindTijd)";
+                             (event_id, land, plaatsnaam, straatnaam, huisnummer, postcode, datum, begin_tijd, eind_tijd) 
+                             VALUES (:eventID, :Land, :Plaats, :Straatnaam, :Huisnummer, :Postcode, :date, :BeginTijd, :EindTijd)";
 
             $stmtEventTime = $db->prepare($sqlEventTime);
 
@@ -278,7 +278,22 @@ class EventModel
                 }
             }
             // echo "Successfully added event and all time slots!";
-            return "Successfully added event and all time slots!";
+            // return "Successfully added event and all time slots!";
+
+            $sqlSector = "INSERT INTO sector_event
+                          (event_id, sector_id)
+                          VALUES (:EventID, :SectorID)";
+
+            $stmtSector = $db->prepare($sqlSector);
+
+            foreach ($event->eventSector as $key => $value) {
+                $stmtSector->bindParam(':EventID', $event->eventID);
+                $stmtSector->bindParam(':SectorID', $value);
+
+                if (!$stmtSector->execute()) {
+                    return "The sector insertion failed!";
+                }
+            }
         }
         error_log("Event insertion failed: " . implode(", ", $stmtEvent->errorInfo()));
         // echo "Insertion into `event` table failed!";

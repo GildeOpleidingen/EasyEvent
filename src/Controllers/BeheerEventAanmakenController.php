@@ -6,10 +6,14 @@ use App\Controller;
 use App\Models\EventsModel;
 use App\Models\EventModel;
 use App\Models\UsersModel;
+use App\Models\SectorModel;
 
 class BeheerEventAanmakenController extends Controller {
     public function index() {
-        $this->render("beheer/event-aanmaken");
+        $allSectors = SectorModel::getAllSectors();
+        $this->render("beheer/event-aanmaken", [
+            'allSectors' => $allSectors
+        ]);
     }
     public function sendEvent(){
         $eventOrganizer = $_SESSION['GebruikersID'] ?? null;
@@ -26,8 +30,8 @@ class BeheerEventAanmakenController extends Controller {
         $Straatnaam = $_POST['Straatnaam'] ?? null;
         $Huisnummer = $_POST['Huisnummer'] ?? null;
         $Postcode = $_POST['Postcode'] ?? null;
-        $Sector = $_POST['Sector'] ?? '';
-        $eventBanner = base64_encode($_POST['banner'] ?? null);
+        $Sector = $_POST['Sector'] ?? [];
+        // $eventBanner = base64_encode($_POST['banner'] ?? null);
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
 
