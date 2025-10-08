@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="shortcut icon" href="/images/icons/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
     <link rel="shortcut icon" href="/images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
 
     <title>EasyEvents | Events</title>
-
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -20,10 +18,11 @@
 </head>
 
 <body>
-<div class="container-fluid vh-100">
-    <?php require_once("./parts/nav.html"); ?>
+<?php require_once("./parts/nav.html"); ?>
 
+<main class="container py-4">
     <div class="row g-4">
+
         <div class="col-lg-7 col-xl-8 order-2 order-lg-1">
             <div class="nav-buttons d-flex flex-column flex-sm-row gap-2 mb-3">
                 <button class="btn btn-primary">Alle</button>
@@ -32,78 +31,35 @@
                 <button class="btn btn-primary">School</button>
                 <button class="btn btn-primary">Gamen</button>
             </div>
-        </div>
 
-        <!-- Event list column -->
-        <div class="col-lg-8">
-            <input
-                type="text"
-                id="search-input-top"
-                class="form-control rounded-2 mb-3"
-                placeholder="Search events..."
-                onkeyup="filterEvents();"
-            >
+            <input type="text" id="search-input-top" class="form-control rounded-2" placeholder="Search events..." onkeyup="filterEvents();">
 
-            <?php if (!empty($events)): ?>
-                <div class="accordion" id="eventsAccordion">
-                    <?php foreach ($events as $index => $event): ?>
-                        <div class="accordion-item ev-item">
-                            <h2 class="accordion-header" id="heading<?= $index ?>">
-                                <button
-                                    class="accordion-button collapsed"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#collapse<?= $index ?>"
-                                    aria-expanded="false"
-                                    aria-controls="collapse<?= $index ?>"
-                                >
-                                    <?= htmlspecialchars($event->getEventName()) ?>
-                                </button>
-                            </h2>
-                            <div
-                                class="accordion-collapse collapse"
-                                id="collapse<?= $index ?>"
-                                data-bs-parent="#eventsAccordion"
-                            >
-                                <div class="accordion-body">
-                                    <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
-                                </div>
-                            </div>
+            <div class="accordion mt-3" id="eventsAccordion">
+                <?php if (!empty($events)): ?>
+                <?php foreach ($events as $index => $event): ?>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading<?= $index ?>">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
+                            <?= htmlspecialchars($event->getEventName()) ?>
+                        </button>
+                    </h2>
+                    <div id="collapse<?= $index ?>" class="accordion-collapse collapse" data-bs-parent="#eventsAccordion">
+                        <div class="accordion-body">
+                            <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
                         </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
-
-
-        <div class="col-lg-4 d-flex justify-content-center">
-
-        </div>
-    </div>
-</div>
-
-
-            <div class="col-lg-4 d-flex justify-content-center">
-                <div class="calendar p-3">
-                    <div class="calendar-header d-flex justify-content-between align-items-center">
-                        <button class="btn btn-outline-light btn-sm" onclick="prevMonth()">&lt;</button>
-                        <h3 class="px-2" id="calendar-month-year"></h3>
-                        <button class="btn btn-outline-light btn-sm" onclick="nextMonth()">&gt;</button>
                     </div>
-                    <table class="calendar-grid mt-4">
-                        <tr>
-                            <th>ma</th>
-                            <th>di</th>
-                            <th>wo</th>
-                            <th>do</th>
-                            <th>vr</th>
-                            <th>za</th>
-                            <th>zo</th>
-                        </tr>
-                        <tbody id="calendar-days">
-                            <!-- JavaScript gaat hier de kalenderdagen genereren -->
-                        </tbody>
-                    </table>
+                </div>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div class="col-lg-5 col-xl-4 order-1 order-lg-2 pt-lg-5">
+            <div class="calendar p-3 w-100" style="max-width: 100%;">
+                <div class="calendar-header d-flex justify-content-between align-items-center">
+                    <button class="btn btn-outline-light btn-sm" onclick="prevMonth()">&lt;</button>
+                    <h3 class="px-2 mb-0" id="calendar-month-year"></h3>
+                    <button class="btn btn-outline-light btn-sm" onclick="nextMonth()">&gt;</button>
                 </div>
                 <table class="table table-borderless text-center mt-3" style="--bs-table-bg: transparent; --bs-table-color: white;">
                     <thead>
