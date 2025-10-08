@@ -61,7 +61,7 @@ class EventsModel extends DBModel
                 '',
                 '',
                 '',
-                '',
+                [],
                 $eventDates,
                 ''
             );
@@ -118,7 +118,7 @@ class EventsModel extends DBModel
                 $row['Straatnaam'] ?? 'Unknown',
                 $row['Huisnummer'] ?? 'Unknown',
                 $row['Postcode'] ?? 'Unknown',
-                $row['Sector'] ?? 'Unknown',
+                $row['Sector'] ?? [],
                 [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
             );
             $event->eventID = $row['id'];

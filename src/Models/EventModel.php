@@ -22,7 +22,7 @@ class EventModel
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $hoofdEventID;
 
-    public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', array $Sector =[], array $eventTime = []){
+    public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', array $Sector = [], array $eventTime = []){
         $this->eventOrganizer = $eventOrganizer;
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
