@@ -30,7 +30,7 @@ $router->get('/logout', LoginController::class, 'logout');
 $router->get('/register', RegisterController::class, 'index');
 $router->post('/register', RegisterController::class, 'register');
 $router->post('/verify-code', RegisterController::class, 'verifyCode');
-$router->get('/events', EventsController::class, 'index');
+$router->get('/events', EventsController::class, 'index'); 
 $router->get('/event-info', EventInfoController::class, 'index');
 $router->post('/event-info', EventInfoController::class, 'update');
 $router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index', true);
