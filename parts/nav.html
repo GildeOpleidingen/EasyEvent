@@ -1,4 +1,16 @@
 <?php $bevoegd = false; ?>
+<?php use App\Models\BeheerHomeModel; ?>
+
+
+<?php 
+if (isset($_SESSION['Gebruikersnaam'])) {
+    $gebruiker = unserialize($_SESSION['gebruiker']);
+    $roles = $gebruiker->getRoles();
+}
+else {
+    $roles = "";
+}
+?>
 <nav class="navbar navbar-expand-lg">
     <div class="container">
         <a href="/home" class="navbar-brand">
@@ -9,8 +21,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <?php if (isset($_SESSION['Gebruikersnaam'])): ?>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
                 <?php if ($roles):?>
                 <?php foreach ($roles as $role): ?>
                     <?php if ($role->getName() == "Admin" || $role->getName() == "Organisator") {$bevoegd = true;} ?>
