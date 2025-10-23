@@ -26,7 +26,6 @@ else {
                 <?php foreach ($roles as $role): ?>
                     <?php if ($role->getName() == "Admin" || $role->getName() == "Organisator") {$bevoegd = true;} ?>
                 <?php endforeach; ?>
-                <?php endif ?>
                 <?php if ($bevoegd): ?>
                 <li class="nav-item">
                     <a href="/beheer/" class="nav-link active">Beheer</a>
