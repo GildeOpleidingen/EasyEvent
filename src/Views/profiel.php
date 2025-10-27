@@ -85,7 +85,7 @@ use App\Conn;
                     </div>
                 </div>
                 <div class="mt-4">
-                    <button class="btn btn-primary">Bekijk mijn Evenementen</button>
+                    <a href="/events" class="btn btn-primary">Bekijk mijn Evenementen</a>
                 </div>
             </div>
         </div>
