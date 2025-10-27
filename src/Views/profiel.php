@@ -84,8 +84,9 @@ use App\Conn;
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
+                <div class="mt-4 d-flex justify-content-between">
                     <a href="/events" class="btn btn-primary">Bekijk mijn Evenementen</a>
+                    <a class="btn btn-primary">Voeg kind toe</a>
                 </div>
             </div>
         </div>
