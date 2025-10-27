@@ -51,6 +51,8 @@ $router->post('/beheer/user-aanmaken', UserController::class, 'saveUser', true);
 $router->get('/beheer/user/delete', UserController::class, 'delete', true);
 $router->get('/beheer/event-bewerken', BeheerEventAanmakenController::class, 'editEvent', true, 'eventID');
 $router->get('/beheer/event/delete', EventsController::class, 'delete', true);
+$router->get('/add-child', ProfielController::class, 'addChildForm', true);
+$router->post('/add-child', ProfielController::class, 'addChild', true);
 
 
 $router->dispatch();
