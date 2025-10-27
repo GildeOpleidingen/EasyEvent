@@ -78,27 +78,36 @@ error_reporting(E_ALL);
                     <input type="password" class="form-control" id="wachtwoord" name="wachtwoord" placeholder="Wachtwoord" required>
                     <div class="invalid-feedback">Voer een wachtwoord in.</div>
                 </div>
-                <div class="mb-3">
-                    <label for="gebruikersNaam" class="form-label">Gebruikersnaam <span class="verplicht">*</span></label>
-                    <input type="text" class="form-control" id="gebruikersNaam" name="gebruikersNaam" placeholder="Gebruikersnaam" required>
-                    <div class="invalid-feedback">Voer een locatie in.</div>
-                </div>
                 
                 <?php
                     $rol = new RolModel();
                     $allRoles = $rol->getAllRoles();
                 ?>
          
-                <div class="mb-3">
-                    <label for="rol" class="form-label">Rol <span class="verplicht">*</span></label>
-                    <select class="form-control" id="rol" name="rol[]" required multiple>
-                    <!-- <option value="" disabled selected>Selecteer een rol</option> -->
-                    <?php foreach($allRoles as $key => $rol): ?>?>
-                        <option value="<?=$rol->getID() ?>"><?=$rol->getName() ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                    <div class="invalid-feedback">Selecteer een rol.</div>
-                </div>
+<div class="mb-3">
+    <label class="form-label">Rol <span class="verplicht">*</span></label>
+    <div id="rol" class="form-check-group">
+        <?php foreach($allRoles as $key => $rol): ?>
+            <div class="form-check">
+                <input 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    id="rol_<?= $rol->getID() ?>" 
+                    name="rol[]" 
+                    value="<?= $rol->getID() ?>" 
+                    required
+                >
+                <label 
+                    class="form-check-label" 
+                    for="rol_<?= $rol->getID() ?>"
+                >
+                    <?= htmlspecialchars($rol->getName()) ?>
+                </label>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <div class="invalid-feedback">Selecteer minstens één rol.</div>
+</div>
 
                 <?php
                     $kleding = new kledingModel();
