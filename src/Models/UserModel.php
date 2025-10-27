@@ -294,4 +294,14 @@ class UserModel
             return "Fout bij het verwijderen van de rollen voor gebruiker met id: " . $id;
         }
     }
+    public function updatePassword(string $email, string $hashedPassword): bool
+{
+    $db = Conn::getPDO();
+    $stmt = $db->prepare("UPDATE gebruiker SET wachtwoord = :wachtwoord WHERE email = :email");
+    $stmt->bindParam(':wachtwoord', $hashedPassword, PDO::PARAM_STR);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+
+    return $stmt->execute();
+}
+
 }
