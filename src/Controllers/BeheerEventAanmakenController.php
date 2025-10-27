@@ -10,11 +10,13 @@ use App\Models\SectorModel;
 
 class BeheerEventAanmakenController extends Controller {
     public function index() {
-        $allSectors = SectorModel::getAllSectors();
-        $this->render("beheer/event-aanmaken", [
-            'allSectors' => $allSectors
-        ]);
+        $this->render("beheer/event-aanmaken");
     }
+
+    public function step2() {
+        $this->render("beheer/event-aanmaken-stap-2");
+    }
+
     public function sendEvent(){
         $eventOrganizer = $_SESSION['GebruikersID'] ?? null;
         // Check if eventOrganizer is set and is an integer
@@ -30,8 +32,8 @@ class BeheerEventAanmakenController extends Controller {
         $Straatnaam = $_POST['Straatnaam'] ?? null;
         $Huisnummer = $_POST['Huisnummer'] ?? null;
         $Postcode = $_POST['Postcode'] ?? null;
-        $Sector = $_POST['Sector'] ?? [];
-        // $eventBanner = base64_encode($_POST['banner'] ?? null);
+        $Sector = $_POST['Sector'] ?? '';
+        $eventBanner = base64_encode($_POST['banner'] ?? null);
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
 
@@ -43,40 +45,20 @@ class BeheerEventAanmakenController extends Controller {
         $hasAtLeastOneTime = !empty($dates) && !empty($startTimes) && !empty($endTimes);
 
         // Controleer of alle velden ingevuld zijn
-        if ($eventName == '' || $eventInfo == '' || !$hasAtLeastOneTime) {
+        if (empty($eventName) || empty($eventInfo) || empty($eventBanner)|| empty($date) || empty($startTime)|| empty($endTime)) {
+            var_dump($eventName);
+            var_dump($eventInfo);
+            var_dump($eventBanner);
+            var_dump($startTime);
+            var_dump($_POST);
+            var_dump($endTime);
+            die(); 
             $this->render('beheer/home', ['error' => 'Alle velden zijn verplicht.']);
             return;
         }
 
-        $eventModel = new EventModel(
-            $eventOrganizer, 
-            $eventName, 
-            $eventInfo, 
-            $Land, 
-            $Plaats, 
-            $Straatnaam, 
-            $Huisnummer, 
-            $Postcode, 
-            $Sector, 
-            []
-        );
-
-        $rows = max(count($dates), count($startTimes), count($endTimes));
-        for ($i = 0; $i < $rows; $i++) {
-            $d = $dates[$i] ?? null;
-            $b = $startTimes[$i] ?? null;
-            $e = $endTimes[$i] ?? null;
-
-            if (!$d || !$b || !$e) {
-                continue;
-            }
-
-            $eventModel->addEventTime([
-                'date'      => $d,
-                'BeginTijd' => $b,
-                'EindTijd'  => $e,
-            ]);
-}
+        $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, ['date' => $date[0], 'BeginTijd' => $startTime[0], 'EindTijd' => $endTime[0]], $eventBanner);
+        $errors = $eventModel->validateModel();
         // Sla de gegevens tijdelijk op in de sessie
         $_SESSION['register_data'] = [
             'GebruikersID' => $_SESSION['GebruikersID'],
@@ -108,4 +90,14 @@ class BeheerEventAanmakenController extends Controller {
         }
 
     } 
+
+    public function sendEventStep2()
+    {
+        $this->redirection('beheer/event');
+    }
+
+    public function editEvent() {
+
+        $this->render("beheer/event-aanmaken");
+    }
 }

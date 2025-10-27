@@ -21,6 +21,12 @@ class Router
         $this->addRoute($route, $controller, $action, "POST");
     }
 
+
+    public function delete($route, $controller, $action, $isLoggedIn = false)
+    {
+        $this->addRoute($route, $controller, $action, `DELETE`, $isLoggedIn);
+    }
+
     public function dispatch()
     {
         $uri = strtok($_SERVER['REQUEST_URI'], '?');

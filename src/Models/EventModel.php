@@ -300,4 +300,10 @@ class EventModel
         return "Insertion into `event` table failed!";
     }
 
+    public static function getEvent() {
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+
+    }
+
 }

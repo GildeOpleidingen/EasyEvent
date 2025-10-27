@@ -1,7 +1,20 @@
+<?php $bevoegd = false; ?>
+<?php use App\Models\BeheerHomeModel; ?>
+
+
+<?php 
+if (isset($_SESSION['Gebruikersnaam'])) {
+    $gebruiker = unserialize($_SESSION['gebruiker']);
+    $roles = $gebruiker->getRoles();
+}
+else {
+    $roles = "";
+}
+?>
 <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a href="/home" class="navbar-brand ms-5">
-            <img src="../../images/logo.png" alt="EasyEvents Logo" width="125" height="125">
+    <div class="container">
+        <a href="/home" class="navbar-brand">
+            <img src="../../images/logo.png" alt="EasyEvents Logo" width="150" height="150">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,13 +22,19 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
+                <?php if ($roles):?>
+                <?php foreach ($roles as $role): ?>
+                    <?php if ($role->getName() == "Admin" || $role->getName() == "Organisator") {$bevoegd = true;} ?>
+                <?php endforeach; ?>
+                <?php if ($bevoegd): ?>
                 <li class="nav-item">
                     <a href="/beheer/" class="nav-link active">Beheer</a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a href="/events" class="nav-link active">Evenementen</a>
                 </li>
-                <?php if (isset($_SESSION['GebruikerEmail'])): ?>
+                <?php if (isset($_SESSION['Gebruikersnaam'])): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" 
                         data-bs-toggle="dropdown" aria-expanded="false">

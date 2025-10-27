@@ -1,8 +1,18 @@
-RewriteEngine on
+# Enable mod_rewrite
+RewriteEngine On
+RewriteBase /
 
-RewriteRule ^index.php$ - [L]
+# If the request is for index.php, do nothing
+RewriteRule ^index\.php$ - [L]
+
+# If the requested file or directory does not exist, redirect to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php [L]
+
+# Default directory index
 DirectoryIndex index.php
+
+# Fallback in case RewriteRule fails
 FallbackResource /index.php
+

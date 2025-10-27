@@ -87,7 +87,7 @@ error_reporting(E_ALL);
                         <div class="invalid-feedback">Voer een locatie in.</div>
                     </div>
                     <div class="col-md-3">
-                        <label for="eventAddress" class="form-label">Postcode <span class="verplicht">*</span></label>
+                        <label for="Address" class="form-label">Postcode <span class="verplicht">*</span></label>
                         <input type="text" class="form-control" id="eventAddress" name="Postcode" placeholder="1234 AB" required>
                         <div class="invalid-feedback">Voer een geldig postcode in.</div>
                     </div>
@@ -101,29 +101,60 @@ error_reporting(E_ALL);
                 <div class="mb-3 row" id="eventDatesContainer">
                     <div class="col-md-4">
                         <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                        <input type="date" class="form-control" id="eventDate" name="datum[]" required>
+                        <input 
+  type="date" 
+  class="form-control" 
+  id="eventDate" 
+  name="datum[]" 
+  required
+>
+<script>
+  const dateInput = document.getElementById('eventDate');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.min = today;
+</script>
                         <div class="invalid-feedback">Selecteer een datum.</div>
                     </div>
 
-                    <div class="col-md-4">
-                        <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" id="eventBeginTime" name="begin-tijd[]" required>
-                        <div class="invalid-feedback">Voer een begintijd in.</div>
-                    </div>
+<div class="col-md-4">
+    <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
+    <input type="time" class="form-control" id="eventBeginTime" name="begin-tijd[]" required>
+    <div class="invalid-feedback">Voer een begintijd in.</div>
+</div>
 
-                    <div class="col-md-4 d-flex align-items-end">
-                        <div class="flex-grow-1">
-                            <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                            <input type="time" class="form-control" id="eventEndTime" name="eind-tijd[]" required>
-                            <div class="invalid-feedback">Voer een eindtijd in.</div>
-                        </div>
-                    </div>
+<div class="col-md-4 d-flex align-items-end">
+    <div class="flex-grow-1">
+        <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+        <input type="time" class="form-control" id="eventEndTime" name="eind-tijd[]" required>
+        <div class="invalid-feedback">Eindtijd moet na begintijd zijn.</div>
+    </div>
+</div>
+<!-- Validatie voor tijd -->
+<script>
+const beginTime = document.getElementById('eventBeginTime');
+const endTime = document.getElementById('eventEndTime');
+
+function validateTimes() {
+    if (beginTime.value && endTime.value) {
+        if (endTime.value <= beginTime.value) {
+            endTime.setCustomValidity('Eindtijd moet na begintijd zijn.');
+        } else {
+            endTime.setCustomValidity('');
+        }
+    } else {
+        endTime.setCustomValidity('');
+    }
+}
+
+beginTime.addEventListener('input', validateTimes);
+endTime.addEventListener('input', validateTimes);
+</script>
                 </div>
                 <button type="button" class="btn btn-primary mb-3" id="addDay">
                     <i class="bi bi-plus text-white"></i>
                 </button>
 
-                <!-- <div class="mb-3">
+                <div class="mb-3">
                     <label for="eventBanner" class="form-label">Banner <span class="verplicht">*</span></label>
                     <input type="file" class="form-control" id="eventBanner" name="banner" accept="image/png" onchange="previewImage(event)" required>
                     <div class="invalid-feedback">Kies een Banner.</div>
@@ -131,7 +162,7 @@ error_reporting(E_ALL);
 
                 <div class="mb-3">
                     <img id="imagePreview" src="#" alt="Afbeelding Preview" class="img-fluid" style="display: none; max-height: 200px; object-fit: cover;">
-                </div> -->
+                </div>
 
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
@@ -199,7 +230,6 @@ $title;
 $description;
 $date = [];
 $location = [];
-$banner;
 
 //subevent
 $subEventCount = 0;
@@ -214,7 +244,7 @@ $activityTime = [];
 $activityPeople = [];
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location'])) {
     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
         $title = htmlspecialchars($_POST['title']);
     }
@@ -244,12 +274,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
             $errors[] = "De postcode moet bestaan uit 4 cijfers";
         }
     }
-    if (isset($_POST['banner'])) {
-        $img = file_get_contents($_POST['banner']);
-        $data = base64_encode($img);
-    }
-    if (!$title && !$description && !$location && !$date && !$banner) {
-        $event = new EventsModel($title,$description,$location,$date,$banner);
+    if (!$title && !$description && !$location && !$date) {
+        $event = new EventsModel($title,$description,$location,$date);
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["subEventTitle1"]) && isset($_POST["subEventDescription1"]) && isset($_POST["subEventDate1"])){

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use PDO;
 use PDOException;
-
+require_once __DIR__ . '/../../functions/rate_limiting.php';
 class LoginModel extends DBModel
 {
 
@@ -12,19 +12,19 @@ class LoginModel extends DBModel
         parent::__construct();
     }
 
-    public function login($email, $wachtwoord)
+    public function login($gebruikersnaam, $wachtwoord)
     {
-        if (!empty($email) && !empty($wachtwoord)) {
+        if (!empty($gebruikersnaam) && !empty($wachtwoord)) {
             try {
-                $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `email` = :email");
-                $stmt->bindParam(':email', $email);
+                $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
+                $stmt->bindParam(':email', $gebruikersnaam);
                 $stmt->execute();
 
                 $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($gebruiker) {
-                    if (password_verify($wachtwoord, $gebruiker['wachtwoord'])) {
-                        $_SESSION['GebruikerEmail'] = $gebruiker['email'];
-                        $_SESSION['GebruikersID'] = $gebruiker['id'];
+                    if (password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
+                        $_SESSION['Gebruikersnaam'] = $gebruiker['E-mail'];
+                        $_SESSION['GebruikersID'] = $gebruiker['ID'];
                         return 'events';
                     } else {
                         return 'invalid'; 
@@ -38,8 +38,13 @@ class LoginModel extends DBModel
             }
         }
 
-        return 'invalid'; 
-    }
+
+public function getDb(): \PDO
+{
+    return $this->db;
+}
+
+
 
     public function getUserByEmail($email)
     {
