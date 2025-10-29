@@ -26,7 +26,6 @@ else {
                 <?php foreach ($roles as $role): ?>
                     <?php if ($role->getName() == "Admin" || $role->getName() == "Organisator") {$bevoegd = true;} ?>
                 <?php endforeach; ?>
-                <?php endif ?>
                 <?php if ($bevoegd): ?>
                 <li class="nav-item">
                     <a href="/beheer" class="nav-link active">Beheer</a>
@@ -34,6 +33,7 @@ else {
                 <li class="nav-item">
                     <a href="/events" class="nav-link active">Evenementen</a>
                 </li>
+                <?php if (isset($_SESSION['Gebruikersnaam'])): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" 
                         data-bs-toggle="dropdown" aria-expanded="false">

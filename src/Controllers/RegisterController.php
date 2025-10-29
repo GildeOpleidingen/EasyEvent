@@ -36,7 +36,6 @@ class RegisterController extends Controller
         $telefoon = isset($_POST['telefoon']) ? trim($_POST['telefoon']) : null;
         $email = isset($_POST['email']) ? trim($_POST['email']) : null;
         $wachtwoord = isset($_POST['wachtwoord']) ? trim($_POST['wachtwoord']) : null;
-        $gebruikersnaam = isset($_POST['gebruikersnaam']) ? trim($_POST['gebruikersnaam']) : null;
         $rol = isset($_POST['rol']) ? trim($_POST['rol']) : null;
         $is_geverifieerd = isset($_POST['is_geverifieerd']) ? trim($_POST['is_geverifieerd']) : '0';
         $herhaalWachtwoord = isset($_POST['herhaalWachtwoord']) ? trim($_POST['herhaalWachtwoord']) : null;
@@ -63,7 +62,6 @@ class RegisterController extends Controller
             'telefoon' => $telefoon,
             'email' => $email,
             'wachtwoord' => $wachtwoord,
-            'gebruikersnaam' => $gebruikersnaam,
             'rol' => $rol,
             'is_geverifieerd' => $is_geverifieerd
         ];
@@ -192,7 +190,6 @@ class RegisterController extends Controller
                 $registerData['telefoon'],
                 $registerData['email'],
                 $registerData['wachtwoord'],
-                $registerData['gebruikersnaam']
             );
 
             unset($_SESSION['register_data']);
