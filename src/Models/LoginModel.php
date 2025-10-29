@@ -23,6 +23,13 @@ class LoginModel extends DBModel
                 $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($gebruiker) {
                     if (password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
+                        $stmt = $this->db->prepare("SELECT * FROM `event` WHERE `Organisator` = :userID");
+                        $stmt->bindParam(':userID', $gebruiker['ID']);
+                        $stmt->execute();
+
+                        $gebruikerModel = new UserModel();
+                        $gebruikerModel->setUserData($gebruiker);
+                        $_SESSION['gebruiker'] = serialize($gebruikerModel);
                         $_SESSION['Gebruikersnaam'] = $gebruiker['E-mail'];
                         $_SESSION['GebruikersID'] = $gebruiker['ID'];
                         return 'events';

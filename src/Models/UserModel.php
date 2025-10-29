@@ -22,6 +22,7 @@ class UserModel
     private $profielfoto;
 
     private array $organisations;
+    private array $accessToEntities;
 
     private $is_geverifieerd;
     private $ouder_ID;
@@ -290,6 +291,34 @@ class UserModel
             }            
         } else {
             return "Fout bij het verwijderen van de rollen voor gebruiker met id: " . $id;
+        }
+    }
+
+    public static function checkAccess($method, $requiredProperty, $userModel) {
+
+        if ($requiredProperty == "eventID") {
+            $userID = $userModel->getId();
+            $overeenkomst;
+            
+            $db = Conn::getPDO();
+            $stmt = $db->prepare("SELECT * FROM `event` WHERE Organisator = :id");
+            $stmt->bindParam(':id', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($result as $event) {
+                if ($event["Organisator"] == $userID && $event["ID"] == $_GET["eventID"]) {
+                    $overeenkomst = true;
+                    break;
+                } else {
+                    $overeenkomst = false;
+                }
+            }
+            if ($overeenkomst) {
+                return $_GET["eventID"];
+            } else {
+                return false;
+            }
         }
     }
 }

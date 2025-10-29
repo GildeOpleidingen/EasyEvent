@@ -2,14 +2,16 @@
 
 namespace App\Controllers;
 
+use App\Conn;
+use PDO;
 use App\Controller;
 use App\Models\EventsModel;
 use App\Models\EventModel;
 use App\Models\UsersModel;
+use App\Models\EventEditModel;
 
 class BeheerEventAanmakenController extends Controller {
     public function index() {
-
         $this->render("beheer/event-aanmaken");
     }
 
@@ -85,15 +87,42 @@ class BeheerEventAanmakenController extends Controller {
             $this->render('beheer/event-aanmaken-stap-2', ['error' => 'Er is een fout opgetreden bij het aanmaken van het evenement.']);
         }
 
-    } 
-
+    }
+    
     public function sendEventStep2()
     {
         $this->redirection('beheer/event');
     }
-
+    
     public function editEvent() {
+        $eventID = $_GET['eventID'] ?? null;
+        
+    //     if (!is_numeric($eventID)) {
+    //         die('Invalid event ID.');
+    //     }
+        
+    //     $mysql = Conn::getInstance();
+    //     $db = $mysql->getPDO();
+        
+    // $query = "SELECT * FROM `event` WHERE `ID` = :eventID";
+    // $sqlstmt = $db->prepare($query);
+    // $sqlstmt->bindParam(':eventID', $eventID, PDO::PARAM_INT);
 
-        $this->render("beheer/event-aanmaken");
+    // if (!$sqlstmt->execute()) {
+    //     die('Query failed: ' . implode(' ', $sqlstmt->errorInfo()));
+    // }
+
+    // $event = $sqlstmt->fetch(PDO::FETCH_ASSOC);
+
+    // if (!$event) {
+    //     echo "No event found.";
+    // } else {
+    //     print_r($event);
+    // }
+        $EEModel = new EventEditModel;
+
+        $EEModel->event = $EEModel->getEventByID($eventID);
+
+        $this->render("beheer/event-aanmaken", (array)$EEModel);
     }
 }

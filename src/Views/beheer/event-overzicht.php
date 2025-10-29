@@ -66,7 +66,7 @@ else {
                     <a href="/beheer/event/planning?eventID=<?=$event->getEventID() ?>">Toon Planning</a>
                 </td>
                 <td>
-                    <a href="/beheer/event-aanmaken?eventID=<?=$event->getEventID() ?>">Bewerk Event</a>
+                    <a href="/beheer/event-bewerken?eventID=<?=$event->getEventID() ?>">Bewerk Event</a>
                 </td>
                 <?php if ($bevoegd): ?>
                 <td>
