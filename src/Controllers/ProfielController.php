@@ -12,9 +12,13 @@ class ProfielController extends Controller
             return $this->render('login', ['error' => 'Je moet ingelogd zijn om je profiel te bekijken.']);
         }
 
+
         $gebruiker = unserialize($_SESSION['gebruiker']);
+
+
         $gebruiker = UserModel::getById($gebruiker->getId());
 
+        // var_dump($gebruiker);
         if (!$gebruiker) {
             return $this->render('login', ['error' => 'Gebruiker niet gevonden. Log opnieuw in.']);
         }

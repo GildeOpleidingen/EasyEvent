@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/css/register.css">
     <link rel="stylesheet" href="/css/nav.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="https://www.google.com/recaptcha/enterprise.js?render=6LePJs0rAAAAABAiA324JCCmHmiIS4Tp0nf2Bsho"></script>
+    <script src="../js/captcha.js"></script>
 </head>
 
 <body>
@@ -58,7 +60,22 @@
                                 <label for="email">E-mailadres</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="tel" id="telefoon" name="telefoon" class="form-control rounded-0" placeholder="Telefoonnummer" maxlength="20" required>
+<input 
+  type="tel" 
+  id="telefoon" 
+  name="telefoon" 
+  class="form-control rounded-0" 
+  placeholder="Telefoonnummer" 
+  maxlength="16" 
+  pattern="^\+?[0-9]{6,15}$" 
+  required
+  oninput="
+    this.value = this.value
+      .replace(/[^0-9+]/g,'')
+      .replace(/(?!^)\+/g,'')
+  "
+>
+
                                 <label for="telefoon">Telefoonnummer</label>
                             </div>
                             <div class="form-floating mb-3 position-relative">
@@ -71,7 +88,8 @@
                                 <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
                                 <i class="bi bi-eye-fill position-absolute icon-eye" data-toggle="herhaalWachtwoord"></i>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 register-btn">Registreer</button>
+<button type="submit" class="btn btn-primary w-100" onclick="submit">Registreer</button>
+
                         </form>
                     </div>
 
@@ -83,7 +101,7 @@
                                 <input type="text" id="verificationCode" name="verificationCode" class="form-control rounded-0" placeholder="Verificatiecode" required maxlength="6">
                                 <label for="verificationCode">Verificatiecode</label>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Verstuur</button>
+                            <button type="submit" class="btn btn-primary w-100" onclick="captcha('LOGIN', this)">Verstuur</button>
                             <button type="button" class="btn btn-secondary w-100 mt-2" id="backToRegister">Terug naar registratie</button>
                         </form>
                     </div>

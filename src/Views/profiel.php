@@ -63,22 +63,22 @@ use App\Conn;
                         <div class="mt-5 pt-5 row">
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-envelope-fill me-2"></i><span class="label">Email:</span> <?php $email?></p>
+                                    <p><i class="bi bi-envelope-fill me-2"></i><span class="label">Email:</span> <?php echo $gebruiker->getEmail() ?></p>
                                     <p><i class="bi bi-key-fill me-2"></i><span class="label">Wachtwoord:</span> ****** <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Wachtwoord wijzigen" onclick="openModalPassword();"></i></p>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <span class="ms-4">+31 6 123456789</span> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></p>
+                                    <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <span class="ms-4"> <?php echo $gebruiker->getTelefoon() ?> </span> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></p>
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-house-fill me-2"></i><span class="label">Postcode:</span> 1234 AB <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Adres wijzigen" onclick="openModalAddress();"></i></p>
-                                    <p><i class="bi bi-geo-alt-fill me-2"></i><span class="label">Plaatsnaam:</span> Amsterdam</p>
-                                    <p><i class="bi bi-door-open-fill me-2"></i><span class="label">Huisnummer:</span> 56</p>
+                                    <p><i class="bi bi-house-fill me-2"></i><span class="label">Postcode:</span> <?php echo $gebruiker->getPostcode() ?> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Adres wijzigen" onclick="openModalAddress();"></i></p>
+                                    <p><i class="bi bi-geo-alt-fill me-2"></i><span class="label">Plaatsnaam:</span> <?php echo $gebruiker->getPlaatsnaam() ?> </p>
+                                    <p><i class="bi bi-door-open-fill me-2"></i><span class="label">Huisnummer:</span> <?php echo $gebruiker->getHuisnummer() ?> </p>
                                 </div>
                             </div>
                         </div>
@@ -195,7 +195,6 @@ use App\Conn;
     <script src="../../js/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/searchbar.js"></script>
-    <script src="../../js/tabs.js"></script>
     <script src="../../js/calendar.js"></script>
 </body>
 </html>
