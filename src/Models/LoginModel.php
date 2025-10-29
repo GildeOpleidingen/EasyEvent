@@ -67,31 +67,6 @@ public function login($gebruikersnaam, $wachtwoord): string
         return "Er is een fout opgetreden. Probeer het later opnieuw.";
     }
 }
-                $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
-                if ($gebruiker) {
-                    if (password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
-                        $stmt = $this->db->prepare("SELECT * FROM `event` WHERE `Organisator` = :userID");
-                        $stmt->bindParam(':userID', $gebruiker['ID']);
-                        $stmt->execute();
-
-                        $gebruikerModel = new UserModel();
-                        $gebruikerModel->setUserData($gebruiker);
-                        $_SESSION['gebruiker'] = serialize($gebruikerModel);
-                        $_SESSION['Gebruikersnaam'] = $gebruiker['E-mail'];
-                        $_SESSION['GebruikersID'] = $gebruiker['ID'];
-                        return 'events';
-                    } else {
-                        return 'invalid'; 
-                    }
-                } else {
-                    return 'invalid'; 
-                }
-            } catch (PDOException $e) {
-                error_log("Fout bij inloggen: " . $e->getMessage());
-                return 'invalid';
-            }
-        }
-
 
 public function getDb(): \PDO
 {
