@@ -51,9 +51,9 @@ class ProfielController extends Controller
         
         $newPostCode = trim($_POST['newPostCode']) ?: null;
         $newCity = trim($_POST['newCity']) ?: null;
-        $newHouseNumber = trim($_POST['newHouseNumber']) ?: null;
+        $newAdres = trim($_POST['newAdres']) ?: null;
 
-        $gebruiker->updateAdresGegevens($newPostCode, $newCity, $newHouseNumber);
+        $gebruiker->updateAdresGegevens($newPostCode, $newCity, $newAdres);
 
         return $this->render('profiel', [
             'gebruiker' => $gebruiker,
