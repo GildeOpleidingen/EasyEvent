@@ -55,11 +55,6 @@ public function login($gebruikersnaam, $wachtwoord): string
         } else {
             return "Inlog gegevens zijn incorrect, probeer het opnieuw.";
         }
-    } catch (PDOException $e) {
-        error_log("Fout bij inloggen: " . $e->getMessage());
-        return "Er is een fout opgetreden. Probeer het later opnieuw.";
-    }
-}
 
 
 public function getDb(): \PDO

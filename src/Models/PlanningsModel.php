@@ -152,7 +152,7 @@ class PlanningsModel extends DBModel
         $sql = "SELECT et.datum as eventdatum,
                                e.naam as eventNaam,
                                et.begin_tijd as eventBeginTijd,
-                    et.eindTijd as eventEindTijd,
+                    et.eind_tijd as eventEindTijd,
                     a.naam as activiteitNaam,
                     aet.begin_tijd as activiteitBeginTijd,
                     aet.eind_tijd as activiteitEindTijd,
