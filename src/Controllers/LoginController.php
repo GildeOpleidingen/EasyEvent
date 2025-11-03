@@ -55,7 +55,9 @@ class LoginController extends Controller
         if ($result === 'events') {
             $gebruikerData = $this->model->getUserByEmail($gebruikersnaam);
             if ($gebruikerData) {
-            
+                $gebruiker = new UserModel();
+                $gebruiker->setUserData($gebruikerData);
+
                 /* test voor object usermodel
                 echo '<pre>';
                 echo 'Gebruiker ingelogd!<br>';
