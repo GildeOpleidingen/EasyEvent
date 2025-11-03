@@ -16,6 +16,7 @@ class ActivityModel extends DBModel
     public ?int $gebruikerID;
     public ?int $organisationID;
     public ?int $rolID;
+    public string $locatie;
     public string $naam;
     public string $beginTijd;
     public string $eindTijd;
@@ -52,6 +53,10 @@ class ActivityModel extends DBModel
     public function getRolID()
     {
         return $this->rolID;
+    }
+
+    public function getLocatie() {
+        return $this->locatie;
     }
 
     public function getActivityID()
@@ -127,6 +132,10 @@ class ActivityModel extends DBModel
     public function setRolID(?int $rolID): void
     {
         $this->rolID = $rolID;
+    }
+
+    public function setLocatie(string $locatie): void {
+        $this->locatie = $locatie;
     }
 
     public function setNaam(string $naam): void

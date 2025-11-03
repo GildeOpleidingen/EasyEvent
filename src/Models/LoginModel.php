@@ -27,25 +27,25 @@ public function login($gebruikersnaam, $wachtwoord): string
 
 
     try {
-        $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
+        $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `email` = :email");
         $stmt->bindParam(':email', $gebruikersnaam);
         $stmt->execute();
 
         $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($gebruiker && password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
+        if ($gebruiker && password_verify($wachtwoord, $gebruiker['wachtwoord'])) {
 
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
 
-            $_SESSION['Gebruikersnaam'] = $gebruiker['E-mail'];
-            $_SESSION['GebruikersID'] = $gebruiker['ID'];
+            $_SESSION['Gebruikersnaam'] = $gebruiker['email'];
+            $_SESSION['GebruikersID'] = $gebruiker['id'];
 
             $stmtRol = $this->db->prepare(
-                "SELECT rol_ID FROM `kpl_gebruiker_rol` WHERE gebruiker_ID = :gebruikerID"
+                "SELECT rol_id FROM `gebruiker_rol` WHERE gebruiker_id = :gebruikerID"
             );
-            $stmtRol->bindParam(':gebruikerID', $gebruiker['ID']);
+            $stmtRol->bindParam(':gebruikerID', $gebruiker['id']);
             $stmtRol->execute();
 
             $rollen = $stmtRol->fetchAll(PDO::FETCH_COLUMN);
@@ -72,7 +72,7 @@ public function getDb(): \PDO
     public function getUserByEmail($email)
     {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `E-mail` = :email");
+            $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `email` = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 
@@ -86,7 +86,7 @@ public function getDb(): \PDO
     public function userExists($email)
     {
         try {
-            $stmt = $this->db->prepare("SELECT COUNT(*) FROM `gebruiker` WHERE `E-mail` = :email");
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM `gebruiker` WHERE `email` = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 

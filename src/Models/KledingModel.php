@@ -37,7 +37,7 @@ class KledingModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT ID, kledingmaat FROM Kleding";
+        $sql = "SELECT id, maat FROM kleding_maat";
 
         $stmt = $db->prepare($sql);
 
@@ -48,8 +48,8 @@ class KledingModel extends DBModel
         $kledingmaten = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $kledingmaat = new KledingModel();
-            $kledingmaat->setId($row['ID']);
-            $kledingmaat->setKledingmaat($row['kledingmaat']);
+            $kledingmaat->setId($row['id']);
+            $kledingmaat->setKledingmaat($row['maat']);
             $kledingmaten[] = $kledingmaat;
         }
         return $kledingmaten;

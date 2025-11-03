@@ -57,8 +57,11 @@ class LoginController extends Controller
             if ($gebruikerData) {
                 $gebruiker = new UserModel();
                 $gebruiker->setUserData($gebruikerData);
+
+                var_dump($gebruiker);
                 $_SESSION['gebruiker'] = serialize($gebruiker);
-            
+                var_dump($_SESSION['gebruiker']);
+
                 /* test voor object usermodel
                 echo '<pre>';
                 echo 'Gebruiker ingelogd!<br>';
