@@ -60,7 +60,7 @@ class Router
                 }
                 $controller = new $controller();
                 $controller->$action();
-            } else if ($isLoggedIn && isset($_SESSION['Gebruikersnaam']) && isset($_SESSION['GebruikersID']) ) {
+            } else if ($isLoggedIn && isset($_SESSION['Gebruikersemail']) && isset($_SESSION['GebruikersID']) ) {
                 $controller = new $controller();
                 $controller->$action();
             } else if (!$isLoggedIn) {

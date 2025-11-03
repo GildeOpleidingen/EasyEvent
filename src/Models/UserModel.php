@@ -18,7 +18,6 @@ class UserModel
     private $plaatsnaam;
     private $huisnummer;
     private $wachtwoord;
-    private $gebruikersNaam;
     private $profielfoto;
 
     private array $organisations;
@@ -58,7 +57,6 @@ class UserModel
     public function getIsGeverifieerd() { return $this->is_geverifieerd; }
     public function getRoles() { return $this->roles; }
     private function getWachtwoord() { return $this->wachtwoord;}
-    public function getGebruikersNaam() {return $this->gebruikersNaam;}
 
     public function setID($value) {$this->id = $value;}
     public function setVoornaam($value) {$this->voornaam = $value;}
@@ -69,7 +67,6 @@ class UserModel
 
     public function setHuisnummer($value) {$this->huisnummer = $value;}
     public function setPlaatsnaam($value) {$this->plaatsnaam = $value;}
-    public function setGebruikersnaam($value) {$this->gebruikersNaam = $value;}
     public function setProfielfoto($value) {$this->profielfoto = $value;}
     public function setIsGeverifieerd($value) {$this->is_geverifieerd = $value;}
     public function setKledingmaat($value) {$this->kledingmaat = $value;}
@@ -201,7 +198,7 @@ class UserModel
                 FROM gebruiker_rol gr 
                 JOIN gebruiker g on g.id = gr.gebruiker_id
                 JOIN rol r on r.id = gr.rol_id
-                LEFT JOIN kleding_maat k on k.id = g.kleding_maat_id
+                LEFT JOIN kleding_maat k on k.id = g.maat
                 GROUP by g.id
                 ORDER BY g.achternaam, g.voornaam";
         $stmt = $db->prepare($sql);
@@ -269,7 +266,7 @@ class UserModel
         
             foreach($rollen as $rol){
                 //Koppel de gebruiker rol aan deze nieuwe gebruiker.
-                $stmt = $db->prepare("INSERT INTO `gebruiker_rol`(`gebruiker_id`, `rol_ID`) VALUES (:gebruikerId, :rolId)");
+                $stmt = $db->prepare("INSERT INTO `gebruiker_rol`(`gebruiker_id`, `rol_id`) VALUES (:gebruikerId, :rolId)");
                 $stmt->bindParam('gebruikerId', $last_id);
                 $stmt->bindParam('rolId', $rol);
                 $stmt->execute();
@@ -285,7 +282,7 @@ class UserModel
         $stmt = $db->prepare("DELETE FROM `gebruiker_rol` WHERE gebruiker_id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()){
-            $stmt = $db->prepare("DELETE FROM gebruiker WHERE ID = :id");
+            $stmt = $db->prepare("DELETE FROM gebruiker WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     
             if ($stmt->execute()) {

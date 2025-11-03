@@ -9,6 +9,7 @@ use App\Models\EventsModel;
 use App\Models\EventModel;
 use App\Models\UsersModel;
 use App\Models\EventEditModel;
+use App\Models\SectorModel;
 
 class BeheerEventAanmakenController extends Controller {
     public function index() {
@@ -20,14 +21,15 @@ class BeheerEventAanmakenController extends Controller {
     }
 
     public function sendEvent(){
-        $eventName = $_POST['eventNaam'] ?? null;
-        $eventInfo = $_POST['info'] ?? null;
         $eventOrganizer = $_SESSION['GebruikersID'] ?? null;
         // Check if eventOrganizer is set and is an integer
-        if (!isset($eventOrganizer) || !is_int($eventOrganizer)) {
+        if (!isset($eventOrganizer) || !ctype_digit((string)$eventOrganizer)) {
             $this->render('beheer/home', ['error' => 'Organisator is niet geldig.']);
             return;
         }
+        $eventOrganizer = (int)$eventOrganizer;
+        $eventName = $_POST['eventNaam'] ?? null;
+        $eventInfo = $_POST['info'] ?? null;
         $Land = $_POST['Land'] ?? null;
         $Plaats = $_POST['Plaats'] ?? null;
         $Straatnaam = $_POST['Straatnaam'] ?? null;
@@ -36,9 +38,13 @@ class BeheerEventAanmakenController extends Controller {
         $Sector = $_POST['Sector'] ?? '';
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
-        $date = $_POST['datum'] ?? null;
-        $startTime = $_POST['begin-tijd'] ?? null;
-        $endTime = $_POST['eind-tijd'] ?? null;
+
+
+        $dates = $_POST['datum'] ?? [];
+        $startTimes = $_POST['begin-tijd'] ?? [];
+        $endTimes = $_POST['eind-tijd'] ?? [];
+
+        $hasAtLeastOneTime = !empty($dates) && !empty($startTimes) && !empty($endTimes);
 
         // Controleer of alle velden ingevuld zijn
         if (empty($eventName) || empty($eventInfo) || empty($date) || empty($startTime)|| empty($endTime)) {
@@ -68,11 +74,11 @@ class BeheerEventAanmakenController extends Controller {
             'organisator' => $eventOrganizer,
             'hoofdEvent' => $hoofdEvent,
             'eventID' => $eventID,
-            'date' => $date,
-            'startTime' => $startTime,
-            'endTime' => $endTime
+            'date' => $dates,
+            'startTime' => $startTimes,
+            'endTime' => $endTimes
         ];
-       // var_dump($eventModel->event);
+
         $result = $eventModel->sendEvent($eventModel);
 
         if ($result) {
