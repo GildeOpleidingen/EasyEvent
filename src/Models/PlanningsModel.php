@@ -172,7 +172,7 @@ class PlanningsModel extends DBModel
                 JOIN activiteit a on a.id = aet.activiteit_id
                 JOIN `event` e on e.id = et.event_id
                 AND e.id = :eventid
-                ORDER by et.Datum, et.begin_tijd, aet.begin_ijd, p.begin_tijd
+                ORDER by et.Datum, et.begin_tijd, aet.begin_tijd, p.begin_tijd
                 ";
 
         $stmt = $pdo->prepare($sql);

@@ -106,7 +106,7 @@ error_reporting(E_ALL);
                 ?>
                 <div class="mb-3">
                     <label for="kledingmaat" class="form-label">Kledingmaat</label>
-                    <select class="form-control" id="kledingmaat" name="kledingmaat">
+                    <select class="form-control" id="kledingmaat" name="kledingmaat[]" multiple>
                         <option value="" disabled selected>Selecteer een kledingmaat</option>
                         <?php foreach($allKleding as $key => $kledingmaat): ?>?>
                             <option value="<?=$kledingmaat->getID() ?>"><?=$kledingmaat->getKledingmaat() ?></option>
