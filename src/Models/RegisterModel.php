@@ -24,7 +24,7 @@ class RegisterModel extends DBModel
 
     
     //registreren gebruiker in de db
-    public function register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $verif)
+    public function register($voornaam, $achternaam, $telefoon, $email, $wachtwoord, $verif = 1)
     {
         try {
             
@@ -48,9 +48,9 @@ class RegisterModel extends DBModel
 
                 //Koppel de gebruiker rol aan deze nieuwe gebruiker.
                 $rol = RolModel::getRoleIDByName('Gebruiker');
-                $stmt = $this->db->prepare("INSERT INTO `gebruiker_rol`(`gebruiker_id`, `rol_id`) VALUES (:gebruiker_id, :rol_id)");
-                $stmt->bindParam('gebruiker_id', $last_id);
-                $stmt->bindParam('rol_id', $rol);
+                $stmt = $this->db->prepare("INSERT INTO `gebruiker_rol`(`gebruiker_id`, `rol_id`) VALUES (:gebruikerId, :rolId)");
+                $stmt->bindParam('gebruikerId', $last_id);
+                $stmt->bindParam('rolId', $rol);
                 $stmt->execute();
             }
         } catch (\PDOException $e) {
