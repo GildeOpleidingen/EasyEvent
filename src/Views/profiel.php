@@ -159,7 +159,7 @@ use App\Conn;
                                 <input type="text" class="form-control" id="newCity" name="newCity" maxlength="100" required>
                             </div>
                             <div class="mb-3">
-                                <label for="newHouseNumber" class="form-label">Adres</label>
+                                <label for="newHouseNumber" class="form-label">Huisnummer</label>
                                 <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" maxlength="6" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Opslaan</button>
