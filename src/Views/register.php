@@ -101,7 +101,8 @@
                                 <input type="text" id="verificationCode" name="verificationCode" class="form-control rounded-0" placeholder="Verificatiecode" required maxlength="6">
                                 <label for="verificationCode">Verificatiecode</label>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100" onclick="captcha('LOGIN', this)">Verstuur</button>
+                            <button type="submit" class="btn btn-primary w-100">Verstuur</button>
+                            <!-- <button type="submit" class="btn btn-primary w-100" onclick="captcha('LOGIN', this)">Verstuur</button> -->
                             <button type="button" class="btn btn-secondary w-100 mt-2" id="backToRegister">Terug naar registratie</button>
                         </form>
                     </div>

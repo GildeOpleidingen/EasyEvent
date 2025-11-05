@@ -10,7 +10,7 @@ class SectorModel extends DBModel
     public int $id;
     public string $sector;
 
-    public function construct() {}
+    public function __construct() {}
     public function getSector() {
         return $this->sector;
     }
