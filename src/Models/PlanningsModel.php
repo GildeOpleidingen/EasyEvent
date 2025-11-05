@@ -185,7 +185,12 @@ class PlanningsModel extends DBModel
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $event = new EventModel();
             $event->setEventName($row['eventNaam']);
-            $event->addEventTime([$row['eventdatum'], $row['eventBeginTijd'], $row['eventEindTijd']]);
+            $event->addEventTime([
+                'date' => $row['eventDatum'], 
+                'BeginTijd' => $row['eventBeginTijd'], 
+                'EindTijd' => $row['eventEindTijd']
+            ]);
+
             $activity = new ActivityModel();
             $activity->setNaam($row['activiteitNaam']);
             $activity->setBeginTijd($row['activiteitBeginTijd']);

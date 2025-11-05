@@ -31,7 +31,7 @@ use App\Conn;
 </head>
 <body>
     <div class="login container-fluid vh-100">
-     <?php require_once(__ROOT__."/parts/nav.html"); ?>
+     <?php require_once(__ROOT__."/parts/nav.php"); ?>
         <div class="d-flex justify-content-center align-items-center h-75">
             <div class="row">
                 <div class="col-lg-6 d-flex align-items-center justify-content-center">

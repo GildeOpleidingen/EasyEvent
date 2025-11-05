@@ -20,7 +20,7 @@
 </head>
 
 <body>
-<?php require_once("./parts/nav.html"); ?>
+<?php require_once("./parts/nav.php"); ?>
 
 <main class="container py-4">
     <div class="row g-4">

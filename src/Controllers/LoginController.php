@@ -55,10 +55,11 @@ class LoginController extends Controller
         if ($result === 'events') {
             $gebruikerData = $this->model->getUserByEmail($gebruikersnaam);
             if ($gebruikerData) {
-                var_dump($gebruikerData);
+
                 $gebruiker = new UserModel();
-                var_dump($gebruiker);
+
                 $gebruiker->setUserData($gebruikerData);
+                $_SESSION['gebruiker'] = serialize($gebruiker);
 
                 /* test voor object usermodel
                 echo '<pre>';
