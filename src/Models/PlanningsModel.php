@@ -13,14 +13,14 @@ class PlanningsModel extends DBModel
     public array $defaultActivities = [];
     public array $oldActivities = [];
     public array $activities = [];
-    public int $organisatieId;
+    public int $verenigingId;
     public float $gewerkteUren;
 
     public bool $betaalt = false;
 
     public bool $isGoedGekeurd = false;
 
-    public function __construct(int $gebruiker_id, int $rol_id, array $plannedModels, int $organisatieId, array $defaultActivities, array $oldActivities)
+    public function __construct(int $gebruiker_id, int $rol_id, array $plannedModels, int $verenigingId, array $defaultActivities, array $oldActivities)
     {
         $this->gebruiker_id = $gebruiker_id;
         $this->rol_id = $rol_id;
@@ -36,7 +36,7 @@ class PlanningsModel extends DBModel
                 $this->planningModels[] = $planned;
             }
         }
-        $this->organisatieId = $organisatieId;
+        $this->verenigingId = $verenigingId;
     }
 
     public function setActivities(array $activities){
@@ -121,20 +121,20 @@ class PlanningsModel extends DBModel
         }
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
-        $sql = "INSERT INTO planning (Gebruiker_ID, activiteit_event_tijd_id, BeginTijd, EindTijd, Organisatie_ID, Rol_ID) VALUES ";
+        $sql = "INSERT INTO planning (gebruiker_id, activiteit_event_tijd_id, begin_tijd, eind_tijd, vereniging_id, rol_id) VALUES ";
 
         $placeholders = [];
         $params = [];
         foreach ($planning->planningModels as $index => $planningModel) {
             // For each row, add a set of placeholders and parameters
-            $placeholders[] = "(:gebruiker_id{$index}, :activiteit_eventtijd_id{$index}, :beginTijd{$index}, :eindTijd{$index}, :organisatie_ID{$index}, :rol_ID{$index})";
+            $placeholders[] = "(:gebruiker_id{$index}, :activiteit_event_tijd_id{$index}, :beginTijd{$index}, :eindTijd{$index}, :vereniging_ID{$index}, :rol_ID{$index})";
 
             // Bind the parameters dynamically
             $params[":gebruiker_id{$index}"] = $planning->gebruiker_id;
-            $params[":activiteit_eventtijd_id{$index}"] = $planningModel->activiteit_event_tijd_id;
+            $params[":activiteit_event_tijd_id{$index}"] = $planningModel->activiteit_event_tijd_id;
             $params[":beginTijd{$index}"] = $planningModel->beginTijd;
             $params[":eindTijd{$index}"] = $planningModel->eindTijd;
-            $params[":organisatie_ID{$index}"] = $planning->organisatieId;
+            $params[":vereniging_ID{$index}"] = $planning->verenigingId;
             $params[":rol_ID{$index}"] = $planning->rol_id;
         }
         $sql .= implode(", ", $placeholders);
@@ -149,29 +149,29 @@ class PlanningsModel extends DBModel
     {
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
-        $sql = "SELECT  et.datum as eventdatum,
-                        e.naam,
-                        et.begin_tijd as eventBeginTijd,
-                        et.eind_tijd as eventEindTijd,
-                        a.naam as activiteitNaam,
-                        aet.begin_tijd as activiteitBeginTijd,
-                        aet.eind_tijd as activiteitEindTijd,
-                        p.begin_tijd as planningBeginTijd,
-                        p.eind_tijd as planningEindTijd,
-                        g.voornaam,
-                        g.achternaam,
-                        g.telefoon,
-                        v.naam,
-                        p.is_betaald,
-                        p.goedgekeurd
+        $sql = "SELECT et.datum         as eventDatum,
+                       e.naam           as eventNaam,
+                       et.begin_tijd    as eventBeginTijd,
+                       et.eind_tijd     as eventEindTijd,
+                       a.naam           as activiteitNaam,
+                       aet.begin_tijd   as activiteitBeginTijd,
+                       aet.eind_tijd    as activiteitEindTijd,
+                       p.begin_tijd     as planningBeginTijd,
+                       p.eind_tijd      as planningEindTijd,
+                       g.voornaam,
+                       g.achternaam,
+                       g.telefoon,
+                       v.naam           as verenigingNaam,
+                       p.is_betaald,
+                       p.goedgekeurd
                 FROM `planning` p
                 JOIN gebruiker g on g.id = p.gebruiker_id
                 JOIN vereniging v on v.id = p.vereniging_id
                 JOIN activiteit_event_tijd aet on aet.id = p.activiteit_event_tijd_id
-                JOIN `event_tijd` et on et.ID = aet.event_tijd_id
+                JOIN `event_tijd` et on et.id = aet.event_tijd_id
                 JOIN activiteit a on a.id = aet.activiteit_id
                 JOIN `event` e on e.id = et.event_id
-                AND e.ID = :eventid
+                AND e.id = :eventid
                 ORDER by et.datum, et.begin_tijd, aet.begin_tijd, p.begin_tijd
                 ";
 
@@ -183,26 +183,35 @@ class PlanningsModel extends DBModel
 
         $planned = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
             $event = new EventModel();
-            $event->setEventName($row['Eventnaam']);
-            $event->addEventTime([$row['eventdatum'], $row['eventBeginTijd'], $row['eventEindTijd']]);
+            $event->setEventName($row['eventNaam']);
+            $event->addEventTime([
+                'date' $row['eventDatum'], 
+                'BeginTijd' $row['eventBeginTijd'], 
+                'EindTijd' $row['eventEindTijd']
+            ]);
+
             $activity = new ActivityModel();
             $activity->setNaam($row['activiteitNaam']);
             $activity->setBeginTijd($row['activiteitBeginTijd']);
             $activity->setEindTijd($row['activiteitEindTijd']);
+
             $user = new UserModel([]);
-            $user->setVoornaam($row['Voornaam']);
-            $user->setAchternaam($row['Achternaam']);
-            $user->setTelefoon($row['Telefoon']);
-            $user->setOrganisations([$row['Organtisatie']]);
+            $user->setVoornaam($row['voornaam']);
+            $user->setAchternaam($row['achternaam']);
+            $user->setTelefoon($row['telefoon']);
+            $user->setOrganisations([$row['verenigingNaam']]);
+
             $plan = new PlanningModel();
             $plan->setActivity($activity);
             $plan->setUser($user);
             $plan->setEvent($event);
             $plan->setBeginTijd($row['planningBeginTijd']);
             $plan->setEindTijd($row['planningEindTijd']);
-            $plan->setBetaalt($row['Betaalt']);
-            $plan->setIsGoedGekeurd($row['isGoedgekeurd']);
+            $plan->setBetaalt($row['is_betaald']);
+            $plan->setIsGoedGekeurd($row['goedgekeurd']);
+
             $planned[] = $plan;
         }
         return $planned;

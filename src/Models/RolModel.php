@@ -82,7 +82,7 @@ class RolModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT `rol_id`, `Rol` FROM `gebruiker_rol` LEFT JOIN `rol` ON gebruiker_rol.rol_id = `rol`.ID WHERE `gebruiker_id` = :gebruikerID";
+        $sql = "SELECT `rol_id`, `rol` FROM `gebruiker_rol` LEFT JOIN `rol` ON gebruiker_rol.rol_id = `rol`.id WHERE `gebruiker_id` = :gebruikerID";
 
         $stmt = $db->prepare($sql);
 
@@ -94,7 +94,7 @@ class RolModel extends DBModel
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $role = new RolModel();
             $role->setid($row['rol_id']);
-            $role->setName($row['Rol']);
+            $role->setName($row['rol']);
             $roles[] = $role;
         }
         return $roles;
