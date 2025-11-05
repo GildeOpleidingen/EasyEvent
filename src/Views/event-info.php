@@ -21,7 +21,7 @@
 </head>
 <body>
     <div class="container-fluid vh-100 d-flex flex-column">
-        <?php require_once("./parts/nav.html"); ?>
+        <?php require_once("./parts/nav.php"); ?>
         
         <?php if (isset($error)): ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>

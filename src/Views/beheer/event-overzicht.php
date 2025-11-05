@@ -4,6 +4,21 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ?>
+<?php 
+$bevoegd = false;
+if (isset($_SESSION['Gebruikersemail'])) {
+    $gebruiker = unserialize($_SESSION['gebruiker']);
+    $roles = $gebruiker->getRoles();
+    foreach ($roles as $role) {
+        if ($role == "Admin") {
+            $bevoegd = true;
+        }
+    }
+}
+else {
+    $roles = "";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +41,7 @@ error_reporting(E_ALL);
 </head>
 <body>
 <div class="container-fluid vh-100 d-flex flex-column">
-    <?php require_once('./parts/nav.html'); ?>
+    <?php require_once('./parts/nav.php'); ?>
     <div class="container my-4 pb-4">
         <h1 class="text-center mb-4">Event overzicht</h1>
         <?php if (!empty($events)): ?>
@@ -34,7 +49,11 @@ error_reporting(E_ALL);
             <thead>
             <tr>
                 <th scope="col">Titel</th>
-                <th scope="col">Actie</th>
+                <th scope="col">Planning</th>
+                <th scope="col">Bewerk</th>
+                <?php if ($bevoegd): ?>
+                <th scope="col">Verwijder</th>
+                <?php endif; ?>
             </tr>
             </thead>
             <tbody>
@@ -46,6 +65,14 @@ error_reporting(E_ALL);
                 <td>
                     <a href="/beheer/event/planning?eventID=<?=$event->getEventID() ?>">Toon Planning</a>
                 </td>
+                <td>
+                    <a href="/beheer/event-aanmaken?eventID=<?=$event->getEventID() ?>">Bewerk Event</a>
+                </td>
+                <?php if ($bevoegd): ?>
+                <td>
+                    <a href="/beheer/event/delete" onclick="return (confirm('Weet je zeker dat je deze gebruiker wilt verwijderen? Je kunt NIET meer terug!'));">Verwijder event</a>
+                </td>
+                <?php endif; ?>
             </tr>
             <?php endforeach; ?>
             </tbody>
@@ -55,7 +82,6 @@ error_reporting(E_ALL);
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
-<script src="/js/animaties.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script><script src="/js/animaties.js"></script>
 </body>
 </html>

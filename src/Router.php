@@ -21,6 +21,12 @@ class Router
         $this->addRoute($route, $controller, $action, "POST");
     }
 
+
+    public function delete($route, $controller, $action, $isLoggedIn = false)
+    {
+        $this->addRoute($route, $controller, $action, `DELETE`, $isLoggedIn);
+    }
+
     public function dispatch()
     {
         $uri = strtok($_SERVER['REQUEST_URI'], '?');
@@ -30,7 +36,7 @@ class Router
             $controller = $this->routes[$method][$uri]['controller'];
             $action = $this->routes[$method][$uri]['action'];
             $isLoggedIn = $this->routes[$method][$uri]['isLoggedIn'];
-            if ($isLoggedIn && isset($_SESSION['Gebruikersnaam']) && isset($_SESSION['GebruikersID']) ) {
+            if ($isLoggedIn && isset($_SESSION['Gebruikersemail']) && isset($_SESSION['GebruikersID']) ) {
                 $controller = new $controller();
                 $controller->$action();
             } else if (!$isLoggedIn) {
