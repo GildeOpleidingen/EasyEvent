@@ -39,7 +39,7 @@ public function login($gebruikersnaam, $wachtwoord): string
                 session_start();
             }
 
-            $_SESSION['Gebruikersnaam'] = $gebruiker['email'];
+            $_SESSION['Gebruikersemail'] = $gebruiker['email'];
             $_SESSION['GebruikersID'] = $gebruiker['id'];
 
             $stmtRol = $this->db->prepare(

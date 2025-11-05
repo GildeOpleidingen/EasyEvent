@@ -3,7 +3,7 @@
 
 
 <?php 
-if (isset($_SESSION['Gebruikersnaam'])) {
+if (isset($_SESSION['Gebruikersemail'])) {
     $gebruiker = unserialize($_SESSION['gebruiker']);
     $roles = $gebruiker->getRoles();
 }
@@ -35,7 +35,7 @@ else {
                     <a href="/events" class="nav-link active">Evenementen</a>
                 </li>
                 <?php endif; ?>
-                <?php if (isset($_SESSION['Gebruikersnaam'])): ?>
+                <?php if (isset($_SESSION['Gebruikersemail'])): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" 
                         data-bs-toggle="dropdown" aria-expanded="false">

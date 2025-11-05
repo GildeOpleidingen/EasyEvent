@@ -22,7 +22,7 @@
     <?php $bevoegd = false; ?>
 
     <div class="container-fluid vh-100 d-flex flex-column">
-        <?php require_once('./parts/nav.html'); ?>
+        <?php require_once('./parts/nav.php'); ?>
         <div class="container mt-4">
             <h1 class="mb-2" id="greeting"></h1>
             <p class="mb-4">
