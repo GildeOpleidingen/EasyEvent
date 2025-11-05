@@ -33,7 +33,7 @@ public function login($gebruikersnaam, $wachtwoord): string
 
         $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($gebruiker && password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
+        if ($gebruiker && password_verify($wachtwoord, $gebruiker['wachtwoord'])) {
 
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
@@ -55,6 +55,11 @@ public function login($gebruikersnaam, $wachtwoord): string
         } else {
             return "Inlog gegevens zijn incorrect, probeer het opnieuw.";
         }
+    } catch (PDOException $e) {
+        error_log("Fout bij inloggen: " . $e->getMessage());
+        return "Er is een fout opgetreden. Probeer het later opnieuw.";
+    }
+}
 
 
 public function getDb(): \PDO
