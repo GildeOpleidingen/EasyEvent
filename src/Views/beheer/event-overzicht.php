@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 ?>
 <?php 
 $bevoegd = false;
-if (isset($_SESSION['Gebruikersnaam'])) {
+if (isset($_SESSION['Gebruikersemail'])) {
     $gebruiker = unserialize($_SESSION['gebruiker']);
     $roles = $gebruiker->getRoles();
     foreach ($roles as $role) {
@@ -41,7 +41,7 @@ else {
 </head>
 <body>
 <div class="container-fluid vh-100 d-flex flex-column">
-    <?php require_once('./parts/nav.html'); ?>
+    <?php require_once('./parts/nav.php'); ?>
     <div class="container my-4 pb-4">
         <h1 class="text-center mb-4">Event overzicht</h1>
         <?php if (!empty($events)): ?>

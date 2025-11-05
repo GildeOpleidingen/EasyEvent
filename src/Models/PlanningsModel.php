@@ -187,9 +187,9 @@ class PlanningsModel extends DBModel
             $event = new EventModel();
             $event->setEventName($row['eventNaam']);
             $event->addEventTime([
-                'date' $row['eventDatum'], 
-                'BeginTijd' $row['eventBeginTijd'], 
-                'EindTijd' $row['eventEindTijd']
+                'date' => $row['eventDatum'], 
+                'BeginTijd' => $row['eventBeginTijd'], 
+                'EindTijd' => $row['eventEindTijd']
             ]);
 
             $activity = new ActivityModel();

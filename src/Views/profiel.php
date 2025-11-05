@@ -42,7 +42,7 @@ use App\Conn;
         $greeting = ($hour < 12) ? 'Goedemorgen' : (($hour < 18) ? 'Goedemiddag' : 'Goedeavond');
     ?>
     <div class="container-fluid vh-100">
-        <?php require_once('./parts/nav.html'); ?>
+        <?php require_once('./parts/nav.php'); ?>
         <?php if(isset($error)): ?>
     <div class="error-message">
         <?php echo $error; ?>
