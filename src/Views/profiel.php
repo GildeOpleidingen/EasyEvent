@@ -84,8 +84,9 @@ use App\Conn;
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
-                    <button class="btn btn-primary">Bekijk mijn Evenementen</button>
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="/events" class="btn btn-primary">Bekijk mijn Evenementen</a>
+                    <a href="/add-child" class="btn btn-primary">Voeg kind toe</a>
                 </div>
             </div>
         </div>
@@ -148,19 +149,20 @@ use App\Conn;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <form id="addressForm" method="POST" action="/profiel/updateAdresGegevens">
-                        <div class="mb-3">
-                            <label for="newPostcode" class="form-label">Postcode</label>
-                            <input type="text" class="form-control" id="newPostcode" name="newPostCode" maxlength="8" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newCity" class="form-label">Plaatsnaam</label>
-                            <input type="text" class="form-control" id="newCity" name="newCity" maxlength="100" required>
-                        <div class="mb-3">
-                            <label for="newHouseNumber" class="form-label">Huisnummer</label>
-                            <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" maxlength="6" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Opslaan</button>
+                    <form id="addressForm" method="POST" action="/profiel/updateAdresGegevens">
+                            <div class="mb-3">
+                                <label for="newPostcode" class="form-label">Postcode</label>
+                                <input type="text" class="form-control" id="newPostcode" name="newPostCode" maxlength="8" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newCity" class="form-label">Plaatsnaam</label>
+                                <input type="text" class="form-control" id="newCity" name="newCity" maxlength="100" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newHouseNumber" class="form-label">Huisnummer</label>
+                                <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" maxlength="6" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Opslaan</button>
                     </form>
                 </div>
             </div>
