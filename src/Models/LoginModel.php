@@ -55,12 +55,6 @@ public function login($gebruikersnaam, $wachtwoord): string
         } else {
             return "Inlog gegevens zijn incorrect, probeer het opnieuw.";
         }
-    } catch (PDOException $e) {
-        error_log("Fout bij inloggen: " . $e->getMessage());
-        return "Er is een fout opgetreden. Probeer het later opnieuw.";
-    }
-}
-
 
 public function getDb(): \PDO
 {
@@ -72,6 +66,7 @@ public function getDb(): \PDO
     public function getUserByEmail($email)
     {
         try {
+            $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `email` = :email");
             $stmt = $this->db->prepare("SELECT * FROM `gebruiker` WHERE `email` = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();
@@ -86,6 +81,7 @@ public function getDb(): \PDO
     public function userExists($email)
     {
         try {
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM `gebruiker` WHERE `email` = :email");
             $stmt = $this->db->prepare("SELECT COUNT(*) FROM `gebruiker` WHERE `email` = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();

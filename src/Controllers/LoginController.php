@@ -60,9 +60,6 @@ class LoginController extends Controller
 
                 $gebruiker->setUserData($gebruikerData);
                 $_SESSION['gebruiker'] = serialize($gebruiker);
-                $unserialisedgebruiker = unserialize($_SESSION['gebruiker']);
-                var_dump($unserialisedgebruiker);
-                die;
 
                 /* test voor object usermodel
                 echo '<pre>';

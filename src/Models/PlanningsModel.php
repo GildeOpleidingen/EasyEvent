@@ -183,7 +183,6 @@ class PlanningsModel extends DBModel
 
         $planned = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
             $event = new EventModel();
             $event->setEventName($row['eventNaam']);
             $event->addEventTime([
