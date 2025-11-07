@@ -28,8 +28,9 @@ else {
                 <?php endforeach; ?>
                 <?php if ($bevoegd): ?>
                 <li class="nav-item">
-                    <a href="/beheer" class="nav-link active">Beheer</a>
+                    <a href="/beheer/" class="nav-link active">Beheer</a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a href="/events" class="nav-link active">Evenementen</a>
                 </li>

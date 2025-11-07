@@ -39,7 +39,7 @@ class RegisterModel extends DBModel
             $stmt->bindParam(':telefoon', $telefoon);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':wachtwoord', $hashedPassword);
-            $stmt->bindparam('is_geverifieerd', $verif);
+            $stmt->bindparam(':is_geverifieerd', $verif);
 
             if($stmt->execute())
             {

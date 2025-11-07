@@ -33,7 +33,7 @@ public function login($gebruikersnaam, $wachtwoord): string
 
         $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($gebruiker && password_verify($wachtwoord, $gebruiker['Wachtwoord'])) {
+        if ($gebruiker && password_verify($wachtwoord, $gebruiker['wachtwoord'])) {
 
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();

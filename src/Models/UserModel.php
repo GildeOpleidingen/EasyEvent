@@ -302,13 +302,13 @@ class UserModel
             $overeenkomst;
             
             $db = Conn::getPDO();
-            $stmt = $db->prepare("SELECT * FROM `event` WHERE Organisator = :id");
+            $stmt = $db->prepare("SELECT * FROM `event` WHERE organisator_id = :id");
             $stmt->bindParam(':id', $userID);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($result as $event) {
-                if ($event["Organisator"] == $userID && $event["ID"] == $_GET["eventID"]) {
+                if ($event["organisator_id"] == $userID && $event["id"] == $_GET["eventID"]) {
                     $overeenkomst = true;
                     break;
                 } else {
