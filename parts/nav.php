@@ -22,7 +22,7 @@ else {
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
-                <?php if ($roles):?>
+                <?php if (isset($roles)):?>
                 <?php foreach ($roles as $role): ?>
                     <?php if ($role->getName() == "Admin" || $role->getName() == "Organisator") {$bevoegd = true;} ?>
                 <?php endforeach; ?>
