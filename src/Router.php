@@ -30,7 +30,7 @@ class Router
             $controller = $this->routes[$method][$uri]['controller'];
             $action = $this->routes[$method][$uri]['action'];
             $isLoggedIn = $this->routes[$method][$uri]['isLoggedIn'];
-            if ($isLoggedIn && isset($_SESSION['Gebruikersnaam']) && isset($_SESSION['GebruikersID']) ) {
+            if ($isLoggedIn && isset($_SESSION['GebruikerEmail']) && isset($_SESSION['GebruikersID']) ) {
                 $controller = new $controller();
                 $controller->$action();
             } else if (!$isLoggedIn) {

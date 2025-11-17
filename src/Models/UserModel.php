@@ -34,15 +34,15 @@ class UserModel
 
     public function setUserData(array $data)
     {
-        $this->id = $data['ID'] ?? null;
-        $this->voornaam = $data['Voornaam'] ?? null;
-        $this->achternaam = $data['Achternaam'] ?? null;
-        $this->email = $data['E-mail'] ?? null;
-        $this->telefoon = $data['Telefoon'] ?? null;
-        $this->postcode = $data['Postcode'] ?? null;
-        $this->roles = isset($data['ID']) ? RolModel::getRolesByUserId($data['ID']) : [];
-        $this->plaatsnaam = $data['Plaatsnaam'] ?? null;
-        $this->huisnummer = $data['Huisnummer'] ?? null;
+        $this->id = $data['id'] ?? null;
+        $this->voornaam = $data['voornaam'] ?? null;
+        $this->achternaam = $data['achternaam'] ?? null;
+        $this->email = $data['email'] ?? null;
+        $this->telefoon = $data['telefoon'] ?? null;
+        $this->postcode = $data['postcode'] ?? null;
+        $this->roles = isset($data['id']) ? RolModel::getRolesByUserId($data['id']) : [];
+        $this->plaatsnaam = $data['plaatsnaam'] ?? null;
+        $this->huisnummer = $data['huisnummer'] ?? null;
     }
 
     public function getId() { return $this->id; }
@@ -57,7 +57,6 @@ class UserModel
     public function getIsGeverifieerd() { return $this->is_geverifieerd; }
     public function getRoles() { return $this->roles; }
     private function getWachtwoord() { return $this->wachtwoord;}
-    public function getGebruikersNaam() {return $this->gebruikersNaam;}
 
     public function setID($value) {$this->id = $value;}
     public function setVoornaam($value) {$this->voornaam = $value;}
@@ -68,7 +67,6 @@ class UserModel
 
     public function setHuisnummer($value) {$this->huisnummer = $value;}
     public function setPlaatsnaam($value) {$this->plaatsnaam = $value;}
-    public function setGebruikersnaam($value) {$this->gebruikersNaam = $value;}
     public function setProfielfoto($value) {$this->profielfoto = $value;}
     public function setIsGeverifieerd($value) {$this->is_geverifieerd = $value;}
     public function setKledingmaat($value) {$this->kledingmaat = $value;}
@@ -79,7 +77,7 @@ class UserModel
     public static function getById($id)
     {
         $db = Conn::getPDO();
-        $stmt = $db->prepare("SELECT * FROM gebruiker WHERE ID = ?");
+        $stmt = $db->prepare("SELECT * FROM gebruiker WHERE id = ?");
         $stmt->execute([$id]);
 
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -196,13 +194,13 @@ class UserModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT g.ID, g.Voornaam, g.Achternaam, g.`E-mail`, g.Telefoon, IF(g.Is_Geverifieerd = 1, 'Ja', 'Nee') AS Is_Geverifieerd, k.KledingMaat, g.Ouder_ID, GROUP_CONCAT(r.Rol SEPARATOR ', ') as Rollen
-                FROM kpl_gebruiker_rol gr 
-                JOIN gebruiker g on g.ID = gr.gebruiker_ID
-                JOIN rol r on r.ID = gr.rol_ID
-                LEFT JOIN Kleding k on k.ID = g.KledingMaat
+        $sql = "SELECT g.id, g.voornaam, g.achternaam, g.email, g.telefoon, IF(g.geverifieerd = 1, 'Ja', 'Nee') AS Is_Geverifieerd, k.id AS kleding_maat_id, g.ouder_id, GROUP_CONCAT(r.rol SEPARATOR ', ') as Rollen
+                FROM gebruiker_rol gr 
+                JOIN gebruiker g on g.ID = gr.gebruiker_id
+                JOIN rol r on r.ID = gr.rol_id
+                LEFT JOIN kleding_maat k on k.id = g.kleding_maat_id
                 GROUP by g.id
-                ORDER BY g.Achternaam, g.Voornaam";
+                ORDER BY g.achternaam, g.voornaam";
         $stmt = $db->prepare($sql);
 
         if (!$stmt->execute()) {
@@ -212,14 +210,14 @@ class UserModel
         $allusers = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $user = new UserModel();
-            $user->setID($row['ID']);
-            $user->setVoornaam($row['Voornaam']);
-            $user->setAchternaam($row['Achternaam']);
-            $user->setEmail($row['E-mail']);
-            $user->setTelefoon($row['Telefoon']);
+            $user->setID($row['id']);
+            $user->setVoornaam($row['voornaam']);
+            $user->setAchternaam($row['achternaam']);
+            $user->setEmail($row['email']);
+            $user->setTelefoon($row['telefoon']);
             $user->setIsGeverifieerd($row['Is_Geverifieerd']);
-            $user->setKledingmaat($row['KledingMaat']);
-            $user->setOuderId($row['Ouder_ID']);
+            $user->setKledingmaat($row['kleding_maat_id']);
+            $user->setOuderId($row['ouder_id']);
             $user->setRoles($row['Rollen']);
 
             $allusers[] = $user;
@@ -239,7 +237,6 @@ class UserModel
         $pc = $um->getPostcode();
         $pln = $um->getPlaatsnaam();
         $ww = $um->getWachtwoord();
-        $gn = $um->getGebruikersNaam();
         $hnr= $um->getHuisnummer();
         // $isgev= 1;
         $km = $um->getKledingmaat();
@@ -247,9 +244,9 @@ class UserModel
         //rol
         $rollen = $um->getRoles();
 
-        $sql = "INSERT INTO `gebruiker`(`Voornaam`, `Achternaam`, `E-mail`, `Telefoon`, `Postcode`, `Plaatsnaam`, 
-            `Wachtwoord`, `Gebruikersnaam`, `Huisnummer`, `KledingMaat`)
-            VALUES (:vn, :an, :em, :tel, :pc, :pln, :ww, :gn, :hnr, :km)";
+        $sql = "INSERT INTO `gebruiker`(`voornaam`, `achternaam`, `email`, `telefoon`, `postcode`, `plaatsnaam`, 
+            `wachtwoord`, `huisnummer`, `kleding_maat_id`)
+            VALUES (:vn, :an, :em, :tel, :pc, :pln, :ww, :hnr, :km)";
 
         $stmt = $db->prepare($sql);
         $stmt->bindParam(":vn",$vn);
@@ -259,7 +256,6 @@ class UserModel
         $stmt->bindParam(":pc", $pc);
         $stmt->bindParam(":pln", $pln);
         $stmt->bindParam(":ww", $ww);
-        $stmt->bindParam(":gn", $gn);
         $stmt->bindParam(":hnr", $hnr);
         //  $stmt->bindParam(":isgev", $isgev);
         $stmt->bindParam(":km", $km);
@@ -270,7 +266,7 @@ class UserModel
         
             foreach($rollen as $rol){
                 //Koppel de gebruiker rol aan deze nieuwe gebruiker.
-                $stmt = $db->prepare("INSERT INTO `kpl_gebruiker_rol`(`gebruiker_ID`, `rol_ID`) VALUES (:gebruikerId, :rolId)");
+                $stmt = $db->prepare("INSERT INTO `gebruiker_rol`(`gebruiker_id`, `rol_id`) VALUES (:gebruikerId, :rolId)");
                 $stmt->bindParam('gebruikerId', $last_id);
                 $stmt->bindParam('rolId', $rol);
                 $stmt->execute();
@@ -283,7 +279,7 @@ class UserModel
 
     public function delete($id){
         $db = Conn::getPDO();
-        $stmt = $db->prepare("DELETE FROM `kpl_gebruiker_rol` WHERE gebruiker_ID = :id");
+        $stmt = $db->prepare("DELETE FROM `gebruiker_rol` WHERE gebruiker_ID = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()){
             $stmt = $db->prepare("DELETE FROM gebruiker WHERE ID = :id");
@@ -298,4 +294,14 @@ class UserModel
             return "Fout bij het verwijderen van de rollen voor gebruiker met id: " . $id;
         }
     }
+    public function updatePassword(string $email, string $hashedPassword): bool
+{
+    $db = Conn::getPDO();
+    $stmt = $db->prepare("UPDATE gebruiker SET wachtwoord = :wachtwoord WHERE email = :email");
+    $stmt->bindParam(':wachtwoord', $hashedPassword, PDO::PARAM_STR);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+
+    return $stmt->execute();
+}
+
 }

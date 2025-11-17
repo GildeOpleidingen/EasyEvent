@@ -149,30 +149,30 @@ class PlanningsModel extends DBModel
     {
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
-        $sql = "SELECT et.Datum as eventdatum,
-                               e.Eventnaam,
-                               et.BeginTijd as eventBeginTijd,
-                    et.EindTijd as eventEindTijd,
-                    a.Naam as activiteitNaam,
-                    aet.BeginTijd as activiteitBeginTijd,
-                    aet.EindTijd as activiteitEindTijd,
-                    p.BeginTijd as planningBeginTijd,
-                    p.EindTijd as planningEindTijd,
-                    g.Voornaam,
-                    g.Achternaam,
-                    g.Telefoon,
-                    o.Organtisatie,
-                    p.Betaalt,
-                    p.isGoedgekeurd
+        $sql = "SELECT  et.datum as eventdatum,
+                        e.naam,
+                        et.begin_tijd as eventBeginTijd,
+                        et.eind_tijd as eventEindTijd,
+                        a.naam as activiteitNaam,
+                        aet.begin_tijd as activiteitBeginTijd,
+                        aet.eind_tijd as activiteitEindTijd,
+                        p.begin_tijd as planningBeginTijd,
+                        p.eind_tijd as planningEindTijd,
+                        g.voornaam,
+                        g.achternaam,
+                        g.telefoon,
+                        v.naam,
+                        p.is_betaald,
+                        p.goedgekeurd
                 FROM `planning` p
-                JOIN gebruiker g on g.ID = p.Gebruiker_ID
-                JOIN organisatie o on o.ID = p.Organisatie_ID
-                JOIN kpl_activiteit_event_tijd aet on aet.kpl_activiteit_event_tijd_ID = p.activiteit_event_tijd_ID
-                JOIN `event-tijd` et on et.ID = aet.event_tijd_ID
-                JOIN activiteit a on a.ID = aet.activiteit_ID
-                JOIN `event` e on e.ID = et.Event_ID
+                JOIN gebruiker g on g.id = p.gebruiker_id
+                JOIN vereniging v on v.id = p.vereniging_id
+                JOIN activiteit_event_tijd aet on aet.id = p.activiteit_event_tijd_id
+                JOIN `event_tijd` et on et.ID = aet.event_tijd_id
+                JOIN activiteit a on a.id = aet.activiteit_id
+                JOIN `event` e on e.id = et.event_id
                 AND e.ID = :eventid
-                ORDER by et.Datum, et.BeginTijd, aet.BeginTijd, p.BeginTijd
+                ORDER by et.datum, et.begin_tijd, aet.begin_tijd, p.begin_tijd
                 ";
 
         $stmt = $pdo->prepare($sql);

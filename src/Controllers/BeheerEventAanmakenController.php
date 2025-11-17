@@ -6,46 +6,77 @@ use App\Controller;
 use App\Models\EventsModel;
 use App\Models\EventModel;
 use App\Models\UsersModel;
+use App\Models\SectorModel;
 
 class BeheerEventAanmakenController extends Controller {
     public function index() {
-        $this->render("beheer/event-aanmaken");
+        $allSectors = SectorModel::getAllSectors();
+        $this->render("beheer/event-aanmaken", [
+            'allSectors' => $allSectors
+        ]);
     }
     public function sendEvent(){
-        $eventName = $_POST['eventNaam'] ?? null;
-        $eventInfo = $_POST['info'] ?? null;
         $eventOrganizer = $_SESSION['GebruikersID'] ?? null;
         // Check if eventOrganizer is set and is an integer
-        if (!isset($eventOrganizer) || !is_int($eventOrganizer)) {
+        if (!isset($eventOrganizer) || !ctype_digit((string)$eventOrganizer)) {
             $this->render('beheer/home', ['error' => 'Organisator is niet geldig.']);
             return;
         }
+        $eventOrganizer = (int)$eventOrganizer;
+        $eventName = $_POST['eventNaam'] ?? null;
+        $eventInfo = $_POST['info'] ?? null;
         $Land = $_POST['Land'] ?? null;
         $Plaats = $_POST['Plaats'] ?? null;
         $Straatnaam = $_POST['Straatnaam'] ?? null;
         $Huisnummer = $_POST['Huisnummer'] ?? null;
         $Postcode = $_POST['Postcode'] ?? null;
-        $Sector = $_POST['Sector'] ?? '';
+        $Sector = $_POST['Sector'] ?? [];
+        // $eventBanner = base64_encode($_POST['banner'] ?? null);
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
-        $date = $_POST['datum'] ?? null;
-        $startTime = $_POST['begin-tijd'] ?? null;
-        $endTime = $_POST['eind-tijd'] ?? null;
+
+
+        $dates = $_POST['datum'] ?? [];
+        $startTimes = $_POST['begin-tijd'] ?? [];
+        $endTimes = $_POST['eind-tijd'] ?? [];
+
+        $hasAtLeastOneTime = !empty($dates) && !empty($startTimes) && !empty($endTimes);
 
         // Controleer of alle velden ingevuld zijn
-        if (empty($eventName) || empty($eventInfo) || empty($date) || empty($startTime)|| empty($endTime)) {
-            var_dump($eventName);
-            var_dump($eventInfo);
-            var_dump($startTime);
-            var_dump($_POST);
-            var_dump($endTime);
-            die(); 
+        if ($eventName == '' || $eventInfo == '' || !$hasAtLeastOneTime) {
             $this->render('beheer/home', ['error' => 'Alle velden zijn verplicht.']);
             return;
         }
 
-        $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, ['date' => $date[0], 'BeginTijd' => $startTime[0], 'EindTijd' => $endTime[0]]);
-        $errors = $eventModel->validateModel();
+        $eventModel = new EventModel(
+            $eventOrganizer, 
+            $eventName, 
+            $eventInfo, 
+            $Land, 
+            $Plaats, 
+            $Straatnaam, 
+            $Huisnummer, 
+            $Postcode, 
+            $Sector, 
+            []
+        );
+
+        $rows = max(count($dates), count($startTimes), count($endTimes));
+        for ($i = 0; $i < $rows; $i++) {
+            $d = $dates[$i] ?? null;
+            $b = $startTimes[$i] ?? null;
+            $e = $endTimes[$i] ?? null;
+
+            if (!$d || !$b || !$e) {
+                continue;
+            }
+
+            $eventModel->addEventTime([
+                'date'      => $d,
+                'BeginTijd' => $b,
+                'EindTijd'  => $e,
+            ]);
+}
         // Sla de gegevens tijdelijk op in de sessie
         $_SESSION['register_data'] = [
             'GebruikersID' => $_SESSION['GebruikersID'],
@@ -60,11 +91,11 @@ class BeheerEventAanmakenController extends Controller {
             'organisator' => $eventOrganizer,
             'hoofdEvent' => $hoofdEvent,
             'eventID' => $eventID,
-            'date' => $date,
-            'startTime' => $startTime,
-            'endTime' => $endTime
+            'date' => $dates,
+            'startTime' => $startTimes,
+            'endTime' => $endTimes
         ];
-       // var_dump($eventModel->event);
+
         $result = $eventModel->sendEvent($eventModel);
 
         if ($result) {
