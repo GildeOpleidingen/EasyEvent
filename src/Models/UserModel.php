@@ -18,10 +18,10 @@ class UserModel
     private $plaatsnaam;
     private $huisnummer;
     private $wachtwoord;
-    private $gebruikersNaam;
     private $profielfoto;
 
     private array $organisations;
+    private array $accessToEntities;
 
     private $is_geverifieerd;
     private $ouder_ID;
@@ -93,7 +93,7 @@ class UserModel
     public function updateTelefoon($newPhone)
     {
         $db = Conn::getPDO();
-        $stmt = $db->prepare("UPDATE gebruiker SET Telefoon = ? WHERE Id = ?");
+        $stmt = $db->prepare("UPDATE gebruiker SET telefoon = ? WHERE Id = ?");
         $stmt->execute([$newPhone, $this->id]);
         $this->telefoon = $newPhone;
     }
@@ -107,19 +107,19 @@ class UserModel
         $updateVelden = [];
 
         if (!empty($newPostCode)) {
-            $updateVelden[] = "Postcode = :postcode";
+            $updateVelden[] = "postcode = :postcode";
         }
 
         if (!empty($newCity)) {
-            $updateVelden[] = "Plaatsnaam = :plaatsnaam";
+            $updateVelden[] = "plaatsnaam = :plaatsnaam";
         }
 
         if (!empty($newHouseNumber)) {
-            $updateVelden[] = "Huisnummer = :huisnummer";
+            $updateVelden[] = "huisnummer = :huisnummer";
         }
 
         $query .= implode(', ', $updateVelden);
-        $query .= " WHERE Id = :id"; 
+        $query .= " WHERE id = :id"; 
         $stmt = $db->prepare($query);
 
         if (!empty($newPostCode)) {
@@ -147,7 +147,7 @@ class UserModel
         }
 
         $db = Conn::getPDO();
-        $stmt = $db->prepare("SELECT Wachtwoord FROM gebruiker WHERE ID = :id");
+        $stmt = $db->prepare("SELECT wachtwoord FROM gebruiker WHERE id = :id");
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -156,11 +156,11 @@ class UserModel
             return "Gebruiker niet gevonden.";
         }
 
-        if (!password_verify($currentPassword, $result['Wachtwoord'])) {
+        if (!password_verify($currentPassword, $result['wachtwoord'])) {
             return "Onjuist wachtwoord.";
         }
 
-        if (password_verify($newPassword, $result['Wachtwoord'])) {
+        if (password_verify($newPassword, $result['wachtwoord'])) {
             return "Je nieuwe wachtwoord mag niet hetzelfde zijn als je huidige wachtwoord.";
         }
 
@@ -174,7 +174,7 @@ class UserModel
 
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-        $stmt = $db->prepare("UPDATE gebruiker SET Wachtwoord = :wachtwoord WHERE ID = :id");
+        $stmt = $db->prepare("UPDATE gebruiker SET wachtwoord = :wachtwoord WHERE id = :id");
         $stmt->bindParam(':wachtwoord', $hashedPassword, PDO::PARAM_STR);
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
 
@@ -194,11 +194,11 @@ class UserModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT g.id, g.voornaam, g.achternaam, g.email, g.telefoon, IF(g.geverifieerd = 1, 'Ja', 'Nee') AS Is_Geverifieerd, k.id AS kleding_maat_id, g.ouder_id, GROUP_CONCAT(r.rol SEPARATOR ', ') as Rollen
+        $sql = "SELECT g.id, g.voornaam, g.achternaam, g.email, g.telefoon, IF(g.geverifieerd = 1, 'Ja', 'Nee') AS Is_Geverifieerd, k.maat, g.ouder_id, GROUP_CONCAT(r.rol SEPARATOR ', ') as Rollen
                 FROM gebruiker_rol gr 
-                JOIN gebruiker g on g.ID = gr.gebruiker_id
-                JOIN rol r on r.ID = gr.rol_id
-                LEFT JOIN kleding_maat k on k.id = g.kleding_maat_id
+                JOIN gebruiker g on g.id = gr.gebruiker_id
+                JOIN rol r on r.id = gr.rol_id
+                LEFT JOIN kleding_maat k on k.id = g.maat
                 GROUP by g.id
                 ORDER BY g.achternaam, g.voornaam";
         $stmt = $db->prepare($sql);
@@ -216,7 +216,7 @@ class UserModel
             $user->setEmail($row['email']);
             $user->setTelefoon($row['telefoon']);
             $user->setIsGeverifieerd($row['Is_Geverifieerd']);
-            $user->setKledingmaat($row['kleding_maat_id']);
+            $user->setKledingmaat($row['maat']);
             $user->setOuderId($row['ouder_id']);
             $user->setRoles($row['Rollen']);
 
@@ -279,10 +279,10 @@ class UserModel
 
     public function delete($id){
         $db = Conn::getPDO();
-        $stmt = $db->prepare("DELETE FROM `gebruiker_rol` WHERE gebruiker_ID = :id");
+        $stmt = $db->prepare("DELETE FROM `gebruiker_rol` WHERE gebruiker_id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()){
-            $stmt = $db->prepare("DELETE FROM gebruiker WHERE ID = :id");
+            $stmt = $db->prepare("DELETE FROM gebruiker WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     
             if ($stmt->execute()) {
@@ -294,14 +294,32 @@ class UserModel
             return "Fout bij het verwijderen van de rollen voor gebruiker met id: " . $id;
         }
     }
-    public function updatePassword(string $email, string $hashedPassword): bool
-{
-    $db = Conn::getPDO();
-    $stmt = $db->prepare("UPDATE gebruiker SET wachtwoord = :wachtwoord WHERE email = :email");
-    $stmt->bindParam(':wachtwoord', $hashedPassword, PDO::PARAM_STR);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
 
-    return $stmt->execute();
-}
+    public static function checkAccess($method, $requiredProperty, $userModel) {
 
+        if ($requiredProperty == "eventID") {
+            $userID = $userModel->getId();
+            $overeenkomst;
+            
+            $db = Conn::getPDO();
+            $stmt = $db->prepare("SELECT * FROM `event` WHERE organisator_id = :id");
+            $stmt->bindParam(':id', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($result as $event) {
+                if ($event["organisator_id"] == $userID && $event["id"] == $_GET["eventID"]) {
+                    $overeenkomst = true;
+                    break;
+                } else {
+                    $overeenkomst = false;
+                }
+            }
+            if ($overeenkomst) {
+                return $_GET["eventID"];
+            } else {
+                return false;
+            }
+        }
+    }
 }

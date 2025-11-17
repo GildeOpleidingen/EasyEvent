@@ -38,8 +38,8 @@ $router->get('/event-info', EventInfoController::class, 'index');
 $router->post('/event-info', EventInfoController::class, 'update');
 $router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index', true);
 $router->post('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'sendEvent', true);
-$router->get('/beheer/event-aanmaken-stap-2', BeheerEventAanmakenController::class, 'index', true);
-$router->post('/beheer/event-aanmaken-stap-2', BeheerEventAanmakenController::class, 'sendEvent', true);
+$router->get('/beheer/event-aanmaken-stap-2', BeheerEventAanmakenController::class, 'step2', true);
+$router->post('/beheer/event-aanmaken-stap-2', BeheerEventAanmakenController::class, 'sendEventStep2', true);
 $router->get('/beheer/', BeheerHomeController::class, 'index', true);
 $router->get('/profiel', ProfielController::class, 'index', true);
 $router->post('/profiel', ProfielController::class, 'updateTelefoon', true);
@@ -52,6 +52,12 @@ $router->get('/beheer/user-overzicht', UserController::class, 'index', true);
 $router->get('/beheer/user-aanmaken', UserController::class, 'add', true);
 $router->post('/beheer/user-aanmaken', UserController::class, 'saveUser', true);
 $router->get('/beheer/user/delete', UserController::class, 'delete', true);
+$router->get('/beheer/event-bewerken', BeheerEventAanmakenController::class, 'editEvent', true, 'eventID');
+$router->get('/add-child', ProfielController::class, 'addChildForm', true);
+$router->post('/add-child', ProfielController::class, 'addChild', true);
+$router->get('/beheer/event/delete', EventsController::class, 'delete', true);
+$router->get('/add-child', ProfielController::class, 'addChildForm', true);
+$router->post('/add-child', ProfielController::class, 'addChild', true);
 
 
 $router->dispatch();

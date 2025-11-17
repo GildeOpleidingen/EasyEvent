@@ -12,13 +12,10 @@ class ProfielController extends Controller
             return $this->render('login', ['error' => 'Je moet ingelogd zijn om je profiel te bekijken.']);
         }
 
-
         $gebruiker = unserialize($_SESSION['gebruiker']);
-
 
         $gebruiker = UserModel::getById($gebruiker->getId());
 
-        // var_dump($gebruiker);
         if (!$gebruiker) {
             return $this->render('login', ['error' => 'Gebruiker niet gevonden. Log opnieuw in.']);
         }
@@ -76,4 +73,30 @@ class ProfielController extends Controller
             return $this->render('profiel', ['error' => 'wachtwoord komt niet overeen']);
         }
     }
+
+    public function addChildForm() {
+        if (!isset($_SESSION['gebruiker'])) {
+            return $this->render('login', ['error' => 'Je moet ingelogd zijn om een kind toe te voegen.']);
+        }
+
+        $gebruiker = unserialize($_SESSION['gebruiker']);
+        $gebruiker = UserModel::getById($gebruiker->getId());
+
+        return $this->render('add-child', ['gebruiker' => $gebruiker]);    }
+
+    public function addChild()
+    {
+        if (!isset($_SESSION['gebruiker'])) {
+            return $this->render('login', ['error' => 'Je moet ingelogd zijn om een kind toe te voegen.']);
+        }
+
+        if (empty($_POST['voornaam']) || empty($_POST['achternaam']) || empty($_POST['geboortedatum'])) {
+            return $this->render('add-child', ['error' => 'Alle velden zijn verplicht.']);
+        }
+
+
+        return $this->render('add-child', ['success' => 'Kind succesvol toegevoegd!']);
+    }
+
+
 }

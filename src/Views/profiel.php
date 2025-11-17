@@ -42,7 +42,7 @@ use App\Conn;
         $greeting = ($hour < 12) ? 'Goedemorgen' : (($hour < 18) ? 'Goedemiddag' : 'Goedeavond');
     ?>
     <div class="container-fluid vh-100">
-        <?php require_once('./parts/nav.html'); ?>
+        <?php require_once('./parts/nav.php'); ?>
         <?php if(isset($error)): ?>
     <div class="error-message">
         <?php echo $error; ?>
@@ -84,8 +84,9 @@ use App\Conn;
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
-                    <button class="btn btn-primary">Bekijk mijn Evenementen</button>
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="/events" class="btn btn-primary">Bekijk mijn Evenementen</a>
+                    <a href="/add-child" class="btn btn-primary">Voeg kind toe</a>
                 </div>
             </div>
         </div>
@@ -148,19 +149,20 @@ use App\Conn;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <form id="addressForm" method="POST" action="/profiel/updateAdresGegevens">
-                        <div class="mb-3">
-                            <label for="newPostcode" class="form-label">Postcode</label>
-                            <input type="text" class="form-control" id="newPostcode" name="newPostCode" maxlength="8" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newCity" class="form-label">Plaatsnaam</label>
-                            <input type="text" class="form-control" id="newCity" name="newCity" maxlength="100" required>
-                        <div class="mb-3">
-                            <label for="newHouseNumber" class="form-label">Huisnummer</label>
-                            <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" maxlength="6" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Opslaan</button>
+                    <form id="addressForm" method="POST" action="/profiel/updateAdresGegevens">
+                            <div class="mb-3">
+                                <label for="newPostcode" class="form-label">Postcode</label>
+                                <input type="text" class="form-control" id="newPostcode" name="newPostCode" maxlength="8" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newCity" class="form-label">Plaatsnaam</label>
+                                <input type="text" class="form-control" id="newCity" name="newCity" maxlength="100" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newHouseNumber" class="form-label">Huisnummer</label>
+                                <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" maxlength="6" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Opslaan</button>
                     </form>
                 </div>
             </div>
@@ -195,7 +197,6 @@ use App\Conn;
     <script src="../../js/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../js/searchbar.js"></script>
-    <script src="../../js/tabs.js"></script>
     <script src="../../js/calendar.js"></script>
 </body>
 </html>
