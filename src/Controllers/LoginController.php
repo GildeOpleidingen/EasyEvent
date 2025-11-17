@@ -27,7 +27,7 @@ class LoginController extends Controller
 
     public function index()
     {
-        if (isset($_SESSION['Gebruikersnaam'])) {
+        if (isset($_SESSION['GebruikerEmail'])) {
             header('Location: /events');
             exit();
         }
@@ -120,26 +120,13 @@ class LoginController extends Controller
 public function sendResetEmail()
 {
     $email = trim($_POST['email'] ?? '');
-    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 
     if (empty($email)) {
         $this->render('forgot-password', ['error' => 'Vul een e-mailadres in.']);
         return;
     }
 
-    // ---------------- Rate Limiting ----------------
-    require_once __DIR__ . '/../../functions/rate_limiting.php';
 
-    // Use PDO from your model (assuming $this->model->db exists)
-    try {
- checkRateLimit($this->model->getDb(), $ip, $email, 5, 300, "Te veel pogingen. Probeer het over 5 minuten opnieuw.");
-
-    } catch (\Exception $e) {
-        $this->render('forgot-password', ['error' => $e->getMessage()]);
-        return;
-    }
-
-    // ---------------- Forgot Password Logic ----------------
     if ($this->model->userExists($email)) {
         $resetCode = $this->generateResetCode();
         $_SESSION['reset_code'] = $resetCode;
@@ -154,6 +141,67 @@ public function sendResetEmail()
         $this->render('forgot-password', ['error' => 'Dit e-mailadres is niet bij ons bekend.']);
     }
 }
+
+    public function verifyResetCode()
+{
+
+    $enteredCode = trim($_POST['reset_code'] ?? '');
+    $savedCode   = $_SESSION['reset_code'] ?? '';
+    $email       = $_SESSION['reset_email'] ?? '';
+
+    if (empty($enteredCode)) {
+        $this->render('forgot-password', ['error' => 'Vul een code in.']);
+        return;
+    }
+
+
+    if ($enteredCode === $savedCode) {
+        $this->render('reset-password-form', ['email' => $email]);
+    } else {
+
+        $this->render('forgot-password', ['error' => 'Ongeldige code.']);
+    }
+}
+
+public function resetPassword()
+{
+    $email = $_SESSION['reset_email'] ?? null;
+    $password = trim($_POST['password'] ?? '');
+    $confirmPassword = trim($_POST['confirm_password'] ?? '');
+
+    if (empty($email)) {
+        $this->render('forgot-password', ['error' => 'Sessie verlopen. Vraag een nieuwe resetcode aan.']);
+        return;
+    }
+
+    if (empty($password) || empty($confirmPassword)) {
+        $this->render('reset-password-form', ['error' => 'Vul alle velden in.', 'email' => $email]);
+        return;
+    }
+
+    if ($password !== $confirmPassword) {
+        $this->render('reset-password-form', ['error' => 'De wachtwoorden komen niet overeen.', 'email' => $email]);
+        return;
+    }
+
+    if (strlen($password) < 8) {
+        $this->render('reset-password-form', ['error' => 'Het wachtwoord moet minimaal 8 tekens bevatten.', 'email' => $email]);
+        return;
+    }
+
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    $userModel = new \App\Models\UserModel();  // <-- use UserModel
+    if ($userModel->updatePassword($email, $hashedPassword)) {
+        unset($_SESSION['reset_code'], $_SESSION['reset_email']);
+        $this->render('login', ['success' => 'Je wachtwoord is succesvol gewijzigd.']);
+    } else {
+        $this->render('reset-password-form', ['error' => 'Er ging iets mis bij het wijzigen van je wachtwoord.', 'email' => $email]);
+    }
+}
+
+
+
 
 
     private function generateResetCode($length = 6)
