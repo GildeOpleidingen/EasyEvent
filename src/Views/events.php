@@ -22,7 +22,7 @@
 
 <body>
 <div class="container-fluid vh-100">
-    <?php require_once("./parts/nav.html"); ?>
+    <?php require_once("./parts/nav.php"); ?>
 
     <div class="row g-4">
         
