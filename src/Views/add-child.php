@@ -22,7 +22,7 @@ use App\Conn;
 </head>
 <body>
 <div class="login container-fluid vh-100">
-    <?php require_once(__ROOT__."/parts/nav.html"); ?>
+    <?php require_once(__ROOT__."/parts/nav.php"); ?>
     <div class="d-flex justify-content-center align-items-center h-75">
         <div class="row">
             <?php //?>
@@ -90,7 +90,6 @@ use App\Conn;
                     <button class="btn btn-primary w-100 login-btn mt-3" type="submit">Kind Toevoegen</button>
                 </form>
                 <?php else: ?>
-                <?php //?>
                 <div class="alert alert-warning">Kon gebruikersgegevens niet laden. <a href="/profiel">Ga terug</a>.</div>
                 <?php endif; ?>
 

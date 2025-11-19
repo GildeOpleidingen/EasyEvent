@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+         <?php require_once(__ROOT__."/parts/nav.php"); ?>
     <div class="container mt-5">
         <h1>Wachtwoord Vergeten</h1>
         <?php if (isset($error)): ?>
@@ -23,6 +24,18 @@
             </div>
             <button type="submit" class="btn btn-primary">Send Email</button>
         </form>
+        <?php if (isset($success)): ?>
+    <hr>
+    <h2>Voer je resetcode in</h2>
+    <form method="POST" action="./verify-reset-code">
+        <div class="mb-3">
+            <label for="reset_code" class="form-label">Resetcode</label>
+            <input type="text" class="form-control" id="reset_code" name="reset_code" placeholder="Voer je code in" required>
+        </div>
+        <button type="submit" class="btn btn-success">Verifiëren</button>
+    </form>
+<?php endif; ?>
+
     </div>
 </body>
 </html>
