@@ -21,7 +21,7 @@
 </head>
 
 <body>
-<div class="container-fluid vh-100">
+<div class="container py-4">
     <?php require_once("./parts/nav.php"); ?>
 
     <div class="row g-4">
