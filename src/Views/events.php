@@ -1,3 +1,7 @@
+<?php 
+use App\Models\SectorModel;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,10 +34,10 @@
         <div class="col-12">
             <div class="nav-buttons d-flex mb-3">
                 <button class="btn btn-primary">Alle</button>
-                <button class="btn btn-primary">Sport</button>
-                <button class="btn btn-primary">Cultuur</button>
-                <button class="btn btn-primary">School</button>
-                <button class="btn btn-primary">Gamen</button>
+
+                <?php foreach (SectorModel::getAllSectors() as $key => $sector) {
+                    echo '<button class="btn btn-primary">' . $sector->getSector() . '</button>';
+                } ?>
             </div>
         </div>
 
