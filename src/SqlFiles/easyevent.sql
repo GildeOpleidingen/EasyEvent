@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 30, 2025 at 10:26 AM
+-- Generation Time: Nov 19, 2025 at 08:21 AM
 -- Server version: 8.0.43-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -62,47 +62,6 @@ CREATE TABLE `event` (
   `removed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `event`
---
-
-INSERT INTO `event` (`id`, `naam`, `beschrijving`, `hoofd_event`, `organisator_id`, `removed`) VALUES
-(1, 'Pool', 'poolen', NULL, 4, 0),
-(2, 'Pool', 'poolen', NULL, 4, 0),
-(3, 'Pool', 'poolen', NULL, 4, 0),
-(4, 'Pool', 'poolen', NULL, 4, 0),
-(5, 'Pool', 'poolen', NULL, 4, 0),
-(6, 'Pool', 'poolen', NULL, 4, 0),
-(7, 'Pool', 'poolen', NULL, 4, 0),
-(8, 'Pool', 'poolen', NULL, 4, 0),
-(9, 'Pool2', 'trwea', NULL, 4, 0),
-(10, 'hooi', 'hooi harken', NULL, 4, 0),
-(11, 'hooi', 'hooi harken', NULL, 4, 0),
-(12, 'goon', 'goonstar', NULL, 4, 0),
-(13, 'game', 'gaming', NULL, 4, 0),
-(14, 'game', 'gaming', NULL, 4, 0),
-(15, 'game', 'gaming', NULL, 4, 0),
-(16, 'fußball', 'fußball spielen', NULL, 4, 0),
-(17, 'golf', 'gee', NULL, 4, 0),
-(18, 'kamp', 'school', NULL, 4, 0),
-(19, 'kamp', 'school', NULL, 4, 0),
-(20, 'kamp', 'school', NULL, 4, 0),
-(21, 'kamp', 'school', NULL, 4, 0),
-(22, 'final', 'finish', NULL, 4, 0),
-(23, 'retry', 'wQS', NULL, 4, 0),
-(24, 'wd', 'awd', NULL, 4, 0),
-(25, 'gthq', 'kkiujhygvfdxs', NULL, 4, 0),
-(26, '67', '676767', NULL, 4, 0),
-(27, 'wasdde', 'htgrfed', NULL, 4, 0),
-(28, 'hooi', 'wadawdawdawdawdawdawdawd', NULL, 4, 0),
-(29, 'hooi', 'wadawdawdawdawdawdawdawd', NULL, 4, 0),
-(30, 'qssdsvfbhnjmk', 'sxdcfghjmk,', NULL, 4, 0),
-(31, 'tryyyy', 'wadwdawdawd', NULL, 4, 0),
-(32, '2345t6yu', '234t5yuyjmh', NULL, 4, 0),
-(33, '2345t6yu', '234t5yuyjmh', NULL, 4, 0),
-(34, '2345t6yu', '234t5yuyjmh', NULL, 4, 0),
-(35, 'birthday', 'happy', NULL, 4, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -121,41 +80,6 @@ CREATE TABLE `event_tijd` (
   `huisnummer` varchar(10) NOT NULL,
   `postcode` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `event_tijd`
---
-
-INSERT INTO `event_tijd` (`id`, `event_id`, `datum`, `begin_tijd`, `eind_tijd`, `land`, `plaatsnaam`, `straatnaam`, `huisnummer`, `postcode`) VALUES
-(1, 8, '2025-09-26', '14:48:00', '17:51:00', '', '', '', '', ''),
-(2, 9, '2025-09-26', '12:15:00', '23:45:00', '', '', '', '', ''),
-(3, 11, '2025-10-09', '15:36:00', '18:38:00', '', '', '', '', ''),
-(4, 12, '2025-09-20', '16:54:00', '18:57:00', '', '', '', '', ''),
-(5, 15, '2025-09-01', '14:50:00', '14:00:00', '', '', '', '', ''),
-(6, 16, '2025-10-11', '10:10:00', '10:15:00', '', '', '', '', ''),
-(7, 17, '2025-10-16', '10:04:00', '10:05:00', '', '', '', '', ''),
-(8, 17, '2025-10-15', '09:00:00', '12:00:00', '', '', '', '', ''),
-(9, 17, '2025-10-16', '13:00:00', '17:00:00', '', '', '', '', ''),
-(10, 22, '2025-10-16', '14:50:00', '21:00:00', '', '', '', '', ''),
-(11, 23, '2025-10-12', '11:52:00', '11:53:00', '', '', '', '', ''),
-(12, 24, '2025-10-09', '11:15:00', '11:19:00', '', '', '', '', ''),
-(13, 25, '2025-10-18', '11:52:00', '11:52:00', '', '', '', '', ''),
-(14, 26, '2025-10-24', '10:52:00', '10:53:00', '', '', '', '', ''),
-(15, 27, '2025-10-30', '13:05:00', '16:08:00', '', '', '', '', ''),
-(16, 27, '2025-10-31', '13:05:00', '16:08:00', '', '', '', '', ''),
-(17, 27, '2025-11-01', '13:05:00', '16:08:00', '', '', '', '', ''),
-(18, 28, '2025-10-23', '11:06:00', '17:01:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(19, 28, '2025-10-16', '15:01:00', '11:06:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(20, 29, '2025-10-23', '11:06:00', '17:01:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(21, 29, '2025-10-16', '15:01:00', '11:06:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(22, 30, '2025-10-30', '15:07:00', '12:34:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(23, 30, '2025-10-17', '14:07:00', '12:34:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(24, 31, '2025-10-25', '14:12:00', '11:18:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(25, 32, '2025-11-02', '14:16:00', '11:21:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(26, 33, '2025-11-02', '14:16:00', '11:21:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(27, 34, '2025-11-02', '14:16:00', '11:21:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(28, 35, '2025-10-25', '13:30:00', '11:11:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA'),
-(29, 35, '2025-10-19', '12:30:00', '22:22:00', 'Netherland', 'Deurne', 'Schutsboom', '31', '5751 JA');
 
 -- --------------------------------------------------------
 
@@ -184,9 +108,8 @@ CREATE TABLE `gebruiker` (
 --
 
 INSERT INTO `gebruiker` (`id`, `voornaam`, `achternaam`, `email`, `telefoon`, `postcode`, `plaatsnaam`, `wachtwoord`, `profiel_foto`, `huisnummer`, `geverifieerd`, `kleding_maat_id`, `ouder_id`) VALUES
-(4, 'Lars', 'Rutjens', 'Larsrutjens1@gmail.com', '0681543006', '5751 JA', 'Deurne', '$2y$10$bq7Yignv9IZb5wdcVhANpO8uSDo63JH5a1LncKKooE4ynZ0Cl5TFC', NULL, '31', 1, NULL, NULL),
-(7, 'P', 'H', 'lars.rutjens@student.gildeopleidingen.nl', '0612345678', NULL, NULL, '$2y$10$UFD/xap49OX4KA1MeM2AnOiM8yFmh16ejtEWiIDajMuH3WRGc0j5G', NULL, NULL, 1, NULL, NULL),
-(10, 'Lars', 'Rutjens', 'thiccestbricc1@gmail.com', '0612345678', NULL, NULL, '$2y$10$FnUcBnUYTiFlwutwT142yOsCVIcRwmmPdnlZqo7czKVvXBOBFO.kO', NULL, NULL, 1, NULL, NULL);
+(10, 'Lars', 'Rutjens', 'thiccestbricc1@gmail.com', '0612345678', '5751 JA', 'Deurne', '$2y$10$jfnvHHzCDm31DvX8mXWWI.yLGUOWQQFpKMvFL/PFLF3IjEo6fZmQ6', NULL, '31', 1, NULL, NULL),
+(11, 'Lars', 'Rutjens', 'lars.rutjens@student.gildeopleidingen.nl', '0612345678', NULL, NULL, '$2y$10$lbVkmz5GI5B3WlcnHdGh7errne37qhfWFXNT3ATHbnh0x4JcVvESW', NULL, NULL, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -205,9 +128,9 @@ CREATE TABLE `gebruiker_rol` (
 --
 
 INSERT INTO `gebruiker_rol` (`id`, `gebruiker_id`, `rol_id`) VALUES
-(1, 4, 1),
-(8, 7, 1),
-(11, 10, 1);
+(11, 10, 1),
+(12, 10, 2),
+(14, 11, 1);
 
 -- --------------------------------------------------------
 
@@ -232,6 +155,29 @@ CREATE TABLE `kleding_maat` (
   `id` int NOT NULL,
   `maat` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `kleding_maat`
+--
+
+INSERT INTO `kleding_maat` (`id`, `maat`) VALUES
+(1, 'XXS - 32 (Dames)'),
+(3, 'XS - 34 (Dames)'),
+(4, 'S - 36 (Dames)'),
+(5, 'M - 38 (Dames)'),
+(6, 'L - 40 (Dames)'),
+(7, 'XL - 42 (Dames)'),
+(8, 'XXL - 44 (Dames)'),
+(9, '3XL - 46 (Dames)'),
+(10, 'XS - 44 (Heren)'),
+(11, 'S - 46 (Heren)'),
+(12, 'M - 48 (Heren)'),
+(13, 'M/L - 50 (Heren)'),
+(14, 'L - 52 (Heren)'),
+(15, 'XL - 54 (Heren)'),
+(16, 'XXL - 56 (Heren)'),
+(17, '3XL - 58 (Heren)'),
+(18, '4XL - 60 (Heren)');
 
 -- --------------------------------------------------------
 
@@ -269,8 +215,7 @@ CREATE TABLE `rate_limit_attempts` (
 --
 
 INSERT INTO `rate_limit_attempts` (`id`, `ip`, `email`, `request_time`) VALUES
-(32, '::1', 'thiccestbricc1@gmail.com', 1761743963),
-(33, '::1', 'thiccestbricc1@gmail.com', 1761744182);
+(70, '::1', 'thiccestbricc1@gmail.com', 1763539235);
 
 -- --------------------------------------------------------
 
@@ -325,16 +270,6 @@ CREATE TABLE `sector_event` (
   `event_id` int NOT NULL,
   `sector_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `sector_event`
---
-
-INSERT INTO `sector_event` (`event_id`, `sector_id`) VALUES
-(34, 2),
-(34, 3),
-(35, 2),
-(35, 3);
 
 -- --------------------------------------------------------
 
@@ -490,13 +425,13 @@ ALTER TABLE `event_tijd`
 -- AUTO_INCREMENT for table `gebruiker`
 --
 ALTER TABLE `gebruiker`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `gebruiker_rol`
 --
 ALTER TABLE `gebruiker_rol`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `inschrijving`
@@ -508,7 +443,7 @@ ALTER TABLE `inschrijving`
 -- AUTO_INCREMENT for table `kleding_maat`
 --
 ALTER TABLE `kleding_maat`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `planning`
@@ -520,7 +455,7 @@ ALTER TABLE `planning`
 -- AUTO_INCREMENT for table `rate_limit_attempts`
 --
 ALTER TABLE `rate_limit_attempts`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `rol`
