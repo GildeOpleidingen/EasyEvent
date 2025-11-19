@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="/css/nav.css">
 </head>
 <body>
-         <?php require_once(__ROOT__."/parts/nav.html"); ?>
+         <?php require_once(__ROOT__."/parts/nav.php"); ?>
 <div class="container mt-5">
     <h1>Nieuw Wachtwoord Instellen</h1>
 

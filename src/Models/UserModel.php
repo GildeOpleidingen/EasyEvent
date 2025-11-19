@@ -198,7 +198,7 @@ class UserModel
                 FROM gebruiker_rol gr 
                 JOIN gebruiker g on g.id = gr.gebruiker_id
                 JOIN rol r on r.id = gr.rol_id
-                LEFT JOIN kleding_maat k on k.id = g.maat
+                LEFT JOIN kleding_maat k on k.id = g.kleding_maat_id
                 GROUP by g.id
                 ORDER BY g.achternaam, g.voornaam";
         $stmt = $db->prepare($sql);
@@ -293,6 +293,15 @@ class UserModel
         } else {
             return "Fout bij het verwijderen van de rollen voor gebruiker met id: " . $id;
         }
+    }
+
+     public function updatePassword(string $email, string $hashedPassword): bool {
+        $db = Conn::getPDO();
+        $stmt = $db->prepare("UPDATE gebruiker SET wachtwoord = :wachtwoord WHERE email = :email");
+        $stmt->bindParam(':wachtwoord', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+
+        return $stmt->execute();
     }
 
     public static function checkAccess($method, $requiredProperty, $userModel) {
