@@ -1,3 +1,26 @@
+# Requirements
+Composer installeren in WSL.
+PHP 8.4 versie is nodig.
+
+sudo apt install mysql-server
+sudo apt install apache2
+
+sudo apt-get install php-mbstring	
+sudo apt install php-xml
+sudo apt-get install php-gd	
+
+Sudo a2enmod rewrite
+
+Maak een VHOST aan voor Easyevent
+Voeg dit toe.
+    Dit gaat ervanuit dat de repo  in /var/www/easyevents is geplaatst.
+    Dit zorgt ervoor dat er voor het easyevent project naar .htaccess word gekeken.
+    <Directory /var/www/easyevents>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+
 # Stappen folder aanmaken in nginx
 ```eerst genereer je een ssh key die je in gitlab gooit in het project.
 ssh-keygen -t ed25519 -C "Naam.Achternaam@student.gildeopleidingen.nl"
@@ -27,7 +50,8 @@ git clone git@gitlab.gdcs.gildedevops.it:evenement/evenementen-app.git /var/www/
 
 
 # Credentials
-
-```
+Database user
+Naam: easyevent_user
+Wachtwoord: jsKU]ptclOSJ5ziA
 
  
