@@ -6,6 +6,10 @@
     <title>Wachtwoord Vergeten</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
+        <link rel="shortcut icon" href="/images/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
+    <link rel="shortcut icon" href="/images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
+        <link rel="stylesheet" href="/css/nav.css">
 </head>
 <body>
          <?php require_once(__ROOT__."/parts/nav.php"); ?>
