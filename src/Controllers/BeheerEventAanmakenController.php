@@ -39,12 +39,10 @@ class BeheerEventAanmakenController extends Controller {
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
 
-
         $dates = $_POST['datum'] ?? [];
         $startTimes = $_POST['begin-tijd'] ?? [];
         $endTimes = $_POST['eind-tijd'] ?? [];
 
-        $hasAtLeastOneTime = !empty($dates) && !empty($startTimes) && !empty($endTimes);
 
         // Controleer of alle velden ingevuld zijn
         if (empty($eventName) || empty($eventInfo) || empty($dates) || empty($startTimes)|| empty($endTimes)) {

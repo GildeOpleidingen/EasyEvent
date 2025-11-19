@@ -78,23 +78,13 @@ error_reporting(E_ALL);
                     <input type="password" class="form-control" id="wachtwoord" name="wachtwoord" placeholder="Wachtwoord" required>
                     <div class="invalid-feedback">Voer een wachtwoord in.</div>
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label">Rol <span class="verplicht">*</span></label>
                     <div id="rol" class="form-check-group">
                         <?php foreach(RolModel::getAllRoles() as $key => $rol): ?>
                             <div class="form-check">
-                                <input 
-                                    class="form-check-input" 
-                                    type="checkbox" 
-                                    id="rol_<?= $rol->getID() ?>" 
-                                    name="rol[]" 
-                                    value="<?= $rol->getID() ?>" 
-                                >
-                                <label 
-                                    class="form-check-label" 
-                                    for="rol_<?= $rol->getID() ?>"
-                                >
+                                <input class="form-check-input" type="checkbox" id="rol_<?= $rol->getID() ?>" name="rol[]" value="<?= $rol->getID() ?>" required>
+                                <label class="form-check-label" for="rol_<?= $rol->getID() ?>">
                                     <?= htmlspecialchars($rol->getName()) ?>
                                 </label>
                             </div>
