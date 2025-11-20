@@ -38,12 +38,12 @@ use App\Models\EventsModel;
                                 <div class="invalid-feedback">Voer een activiteit naam in.</div>
                             </div>
                             <div class="col-md-4">
-                                <label for="activityTime1" class="form-label">Begintijd <span class="verplicht">*</span></label>
+                                <label for="activityBeginTime1" class="form-label">Begintijd <span class="verplicht">*</span></label>
                                 <input type="time" class="form-control" id="activityBeginTime1" name="activity-begintime[]" required>
                                 <div class="invalid-feedback">Voer een activiteit begin tijd in.</div>
                             </div>
                             <div class="col-md-4">
-                                <label for="activityTime1" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+                                <label for="activityEndTime1" class="form-label">Eindtijd <span class="verplicht">*</span></label>
                                 <input type="time" class="form-control" id="activityEndTime1" name="activity-endtime[]" required>
                                 <div class="invalid-feedback">Voer een activiteit eind tijd in.</div>
                             </div>
