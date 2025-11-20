@@ -52,7 +52,6 @@ error_reporting(E_ALL);
                 </div>
 
                 <div class="mb-3">
-<<<<<<< HEAD
                     <label class="form-label">Sector <span class="verplicht">*</span></label>
                     <div id="sector" class="form-check-group">
                         <?php foreach(SectorModel::getAllSectors() as $key => $sector): ?>
@@ -68,24 +67,12 @@ error_reporting(E_ALL);
                                     class="form-check-label" 
                                     for="sector_<?= $sector->getID() ?>"
                                 >
-=======
-                    <label for="eventSector" class="form-label">Sector <span class="verplicht">*</span></label>
-                    <div class="form-check-group" id="eventSector" name="Sector[]" required multiple>
-                        <?php foreach(SectorModel::getAllSectors() as $key => $sector): ?>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="sector_<?= $sector->getID() ?>" name="sector[]" value="<?= $sector->getID() ?>">
-                                <label class="form-check-label" for="sector_<?= $sector->getID() ?>">
->>>>>>> e06975c (role + sector selection update)
                                     <?= htmlspecialchars($sector->getSector()) ?>
                                 </label>
                             </div>
                         <?php endforeach; ?>
                     </div>
-<<<<<<< HEAD
                     <div class="invalid-feedback">Selecteer minstens één sector.</div>
-=======
-                    <div class="invalid-feedback">Selecteer een sector.</div>
->>>>>>> e06975c (role + sector selection update)
                 </div>
 
                 <div class="mb-3 row">
