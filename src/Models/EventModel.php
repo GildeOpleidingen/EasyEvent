@@ -33,19 +33,6 @@ class EventModel
         $this->Postcode = $Postcode;
         $this->eventSector = $Sector;
         $this->eventTimes = $eventTimes;
-
-        // var_dump($eventTimes);
-
-        // foreach ($eventTimes as $i => $key) {
-        //     # code...
-        
-        //     if (!empty($eventTimes) 
-        //         && isset($eventTimes['dates'], $eventTimes['BeginTimes'], $eventTimes['EndTimes']) 
-        //         && $eventTimes['dates'] !== '' && $eventTimes['BeginTimes'] !== '' && $eventTimes['EndTimes'] !== '') 
-        //         {
-        //         $this->eventTimes[] = $eventTimes;
-        //     }
-        // }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -309,3 +296,4 @@ class EventModel
     }
 
 }
+
