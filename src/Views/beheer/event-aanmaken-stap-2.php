@@ -38,12 +38,12 @@ use App\Models\EventsModel;
                                 <div class="invalid-feedback">Voer een activiteit naam in.</div>
                             </div>
                             <div class="col-md-4">
-                                <label for="activityTime1" class="form-label">Begintijd <span class="verplicht">*</span></label>
+                                <label for="activityBeginTime1" class="form-label">Begintijd <span class="verplicht">*</span></label>
                                 <input type="time" class="form-control" id="activityBeginTime1" name="activity-begintime[]" required>
                                 <div class="invalid-feedback">Voer een activiteit begin tijd in.</div>
                             </div>
                             <div class="col-md-4">
-                                <label for="activityTime1" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+                                <label for="activityEndTime1" class="form-label">Eindtijd <span class="verplicht">*</span></label>
                                 <input type="time" class="form-control" id="activityEndTime1" name="activity-endtime[]" required>
                                 <div class="invalid-feedback">Voer een activiteit eind tijd in.</div>
                             </div>
@@ -94,27 +94,24 @@ use App\Models\EventsModel;
             newDay.classList.add("mb-3", "row");
             newDay.innerHTML = `
                 <div class="col-md-4">
-                    <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                    <input type="date" class="form-control" name="date[]" required>
-                    <div class="invalid-feedback">Selecteer een datum.</div>
+                    <label for="activityName1" class="form-label">Naam <span class="verplicht">*</span></label>
+                    <input type="text" class="form-control" id="activityName1" name="activity-name[]" placeholder="Activiteit Naam" required>
+                    <div class="invalid-feedback">Voer een activiteit naam in.</div>
                 </div>
                 <div class="col-md-4">
-                    <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                    <input type="time" class="form-control" name="begin-time[]" required>
-                    <div class="invalid-feedback">Voer een begintijd in.</div>
+                    <label for="activityTime1" class="form-label">Begintijd <span class="verplicht">*</span></label>
+                    <input type="time" class="form-control" id="activityBeginTime1" name="activity-begintime[]" required>
+                    <div class="invalid-feedback">Voer een activiteit begin tijd in.</div>
                 </div>
                 <div class="col-md-4">
-                    <label for="eventBeginTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                    <input type="time" class="form-control" name="end-time[]" required>
-                    <div class="invalid-feedback">Voer een eindtijd in.</div>
+                    <label for="activityTime1" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+                    <input type="time" class="form-control" id="activityEndTime1" name="activity-endtime[]" required>
+                    <div class="invalid-feedback">Voer een activiteit eind tijd in.</div>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <div class="flex-grow-1">
-                        <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" name="end-time[]" required>
-                        <div class="invalid-feedback">Voer een eindtijd in.</div>
-                    </div>
-                    <button class="btn btn-danger ms-2 remove-day"><i class="bi bi-trash text-white"></i></button>
+                <div class="col-md-4">
+                    <label for="activityPeople1" class="form-label">Aantal personen <span class="verplicht">*</span></label>
+                    <input type="number" class="form-control" id="activityPeople1" name="activity-people[]" placeholder="Aantal personen" required>
+                    <div class="invalid-feedback">Voer het aantal personen in voor de activiteit</div>
                 </div>
             `;
             container.appendChild(newDay);
