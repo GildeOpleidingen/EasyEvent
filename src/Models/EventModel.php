@@ -253,7 +253,6 @@ class EventModel
             error_log("Event insertion successful: " . json_encode($event));
             // Retrieve the last inserted ID for the event
             $event->eventID = $db->lastInsertId();
-
             // Insert each time slot into the `event_tijd` table
             $sqlEventTime = "INSERT INTO `event_tijd` 
                              (event_id, land, plaatsnaam, straatnaam, huisnummer, postcode, datum, begin_tijd, eind_tijd) 
@@ -298,6 +297,11 @@ class EventModel
         error_log("Event insertion failed: " . implode(", ", $stmtEvent->errorInfo()));
         // echo "Insertion into `event` table failed!";
         return "Insertion into `event` table failed!";
+    }
+
+    public function sendActivity()
+    {
+        
     }
 
 }

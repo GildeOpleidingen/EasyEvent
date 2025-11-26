@@ -28,6 +28,12 @@ error_reporting(E_ALL);
 <body>
 <div class="container-fluid vh-100 d-flex flex-column">
         <?php require_once('./parts/nav.php'); ?>
+
+        <?php 
+        $newModel = new SectorModel;
+        $allSectors = $newModel->getAllSectors();
+        ?>
+
         <div class="container my-4 pb-4">
             <h1 class="text-center mb-4">Event Aanmaken</h1>
 
@@ -153,12 +159,6 @@ endTime.addEventListener('input', validateTimes);
                 <button type="button" class="btn btn-primary mb-3" id="addDay">
                     <i class="bi bi-plus text-white"></i>
                 </button>
-
-                <div class="mb-3">
-                    <label for="eventBanner" class="form-label">Banner <span class="verplicht">*</span></label>
-                    <input type="file" class="form-control" id="eventBanner" name="banner" accept="image/png" onchange="previewImage(event)" required>
-                    <div class="invalid-feedback">Kies een Banner.</div>
-                </div>
 
                 <div class="mb-3">
                     <img id="imagePreview" src="#" alt="Afbeelding Preview" class="img-fluid" style="display: none; max-height: 200px; object-fit: cover;">
