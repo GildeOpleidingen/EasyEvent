@@ -35,7 +35,7 @@ error_reporting(E_ALL);
             <h1 class="text-center mb-4">Gebruiker aanmaken</h1>
 
             <!-- Form 1: Event Details -->
-            <form id="formEventDetails" class="needs-validation" novalidate action="<?php $_PHP_SELF ?>" method="POST">
+            <form id="formEventDetails" class="needs-validation" novalidate action="checkbox-validation" method="POST">
                 <div class="mb-3 row">
                     <div class="col-md-3">
                         <label for="voorNaam" class="form-label">Voornaam <span class="verplicht">*</span></label>
@@ -81,6 +81,7 @@ error_reporting(E_ALL);
                 <div class="mb-3">
                     <label class="form-label">Rol <span class="verplicht">*</span></label>
                     <div id="rol" class="form-check-group">
+                        <input type="text" id="checkbox_required" required hidden>
                         <?php foreach(RolModel::getAllRoles() as $key => $rol): ?>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="rol_<?= $rol->getID() ?>" name="rol[]" value="<?= $rol->getID() ?>" required>
