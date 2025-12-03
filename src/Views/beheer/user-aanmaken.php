@@ -143,33 +143,6 @@ error_reporting(E_ALL);
     <script src="/js/activiteit-toevoegen.js"></script>
 
     <script>
-        document.getElementById("addDay").addEventListener("click", function() {
-            const container = document.getElementById("userDatesContainer");
-            const newDay = document.createElement("div");
-            newDay.classList.add("mb-3", "row");
-            newDay.innerHTML = `
-                <div class="col-md-4">
-                    <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                    <input type="date" class="form-control" name="date[]" required>
-                    <div class="invalid-feedback">Selecteer een datum.</div>
-                </div>
-                <div class="col-md-4">
-                    <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                    <input type="time" class="form-control" name="begin-time[]" required>
-                    <div class="invalid-feedback">Voer een begintijd in.</div>
-                </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <div class="flex-grow-1">
-                        <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" name="end-time[]" required>
-                        <div class="invalid-feedback">Voer een eindtijd in.</div>
-                    </div>
-                    <button class="btn btn-danger ms-2 remove-day"><i class="bi bi-trash text-white"></i></button>
-                </div>
-            `;
-            container.appendChild(newDay);
-        });
-
         document.getElementById("userDatesContainer").addEventListener("click", function(event) {
             if (event.target.classList.contains("remove-day") || event.target.closest(".remove-day")) {
                 event.target.closest(".row").remove();
