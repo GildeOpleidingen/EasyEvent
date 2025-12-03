@@ -43,16 +43,17 @@ class BeheerEventAanmakenController extends Controller {
         $startTimes = $_POST['begin-tijd'] ?? [];
         $endTimes = $_POST['eind-tijd'] ?? [];
 
+        // $hasAtLeastOneTime = !empty($dates) && !empty($startTimes) && !empty($endTimes);
 
         // Controleer of alle velden ingevuld zijn
         if (empty($eventName) || empty($eventInfo) || empty($dates) || empty($startTimes)|| empty($endTimes)) {
             var_dump($eventName);
             var_dump($eventInfo);
             var_dump($startTimes);
+            var_dump($startTimes);
             var_dump($_POST);
             var_dump($endTimes);
-            die(); 
-            $this->render('beheer/home', ['error' => 'Alle velden zijn verplicht.']);
+            $this->render('beheer/event-aanmaken', ['error' => 'Alle velden zijn verplicht.']);
             return;
         }
 
@@ -85,11 +86,11 @@ class BeheerEventAanmakenController extends Controller {
 
         $result = $eventModel->sendEvent($eventModel);
 
+
         if ($result) {
             // Debugging statement to confirm redirection
             error_log("Redirecting to event aanmaken stap 2");
-            // Redirect
-            $this->redirect('/beheer/event-aanmaken-stap-2');
+            $this->redirect('/beheer/event-aanmaken-stap-2?eventId='. $eventModel->getEventID() .'');
             return; // Ensure to return after rendering
         } else {
             $this->render('beheer/event-aanmaken', ['error' => 'Er is een fout opgetreden bij het aanmaken van het evenement.']);
@@ -99,7 +100,10 @@ class BeheerEventAanmakenController extends Controller {
     
     public function sendEventStep2()
     {
-        $this->redirect('/beheer/event');
+        $currentEventID = $_GET['eventId'];
+        
+        var_dump($currentEventID);
+        die;
     }
     
     public function editEvent() {
