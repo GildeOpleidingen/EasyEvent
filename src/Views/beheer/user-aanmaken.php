@@ -107,17 +107,7 @@ error_reporting(E_ALL);
                     </select>
                     <div class="invalid-feedback">Selecteer een kledingmaat.</div>
                 </div>
-                
-                <!-- <div class="mb-3">
-                    <label for="profielfoto" class="form-label">Profielfoto</label>
-                    <input type="file" class="form-control" id="profielfoto" name="profielfoto" accept="image/png" onchange="previewImage(event)">
-                    <div class="invalid-feedback">Kies een profielfoto.</div>
-                </div>
-
-                <div class="mb-3">
-                    <img id="imagePreview" src="#" alt="Afbeelding Preview" class="img-fluid" style="display: none; max-height: 200px; object-fit: cover;">
-                </div> -->
-
+            
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
                     <button type="submit" class="btn btn-primary" id="btnToForm2">Opslaan</button>
