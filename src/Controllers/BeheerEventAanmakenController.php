@@ -35,7 +35,7 @@ class BeheerEventAanmakenController extends Controller {
         $Straatnaam = $_POST['Straatnaam'] ?? null;
         $Huisnummer = $_POST['Huisnummer'] ?? null;
         $Postcode = $_POST['Postcode'] ?? null;
-        $Sector = $_POST['Sector'] ?? '';
+        $Sector = $_POST['Sector'] ?? [];
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
 
@@ -50,13 +50,22 @@ class BeheerEventAanmakenController extends Controller {
             var_dump($eventName);
             var_dump($eventInfo);
             var_dump($startTimes);
+            var_dump($startTimes);
             var_dump($_POST);
             var_dump($endTimes);
             $this->render('beheer/event-aanmaken', ['error' => 'Alle velden zijn verplicht.']);
             return;
         }
 
-        $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, ['date' => $dates[0], 'BeginTijd' => $startTimes[0], 'EindTijd' => $endTimes[0]]);
+        for ($i = 0; $i < count($dates); $i++) { 
+            $eventTimes[] = [
+                'date' => $dates[$i], 
+                'BeginTime' => $startTimes[$i], 
+                'EndTime' => $endTimes[$i]
+            ];
+        }
+        $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, $eventTimes);
+        // die();
         $errors = $eventModel->validateModel();
         // Sla de gegevens tijdelijk op in de sessie
         $_SESSION['register_data'] = [
@@ -72,9 +81,7 @@ class BeheerEventAanmakenController extends Controller {
             'organisator' => $eventOrganizer,
             'hoofdEvent' => $hoofdEvent,
             'eventID' => $eventID,
-            'dates' => $dates,
-            'startTimes' => $startTimes,
-            'endTimes' => $endTimes
+            'eventTimes' => $eventTimes
         ];
 
         $result = $eventModel->sendEvent($eventModel);
@@ -86,8 +93,7 @@ class BeheerEventAanmakenController extends Controller {
             $this->redirect('/beheer/event-aanmaken-stap-2?eventId='. $eventModel->getEventID() .'');
             return; // Ensure to return after rendering
         } else {
-            // TODO error
-            $this->redirect('/beheer/event-aanmaken-stap-2');
+            $this->render('beheer/event-aanmaken', ['error' => 'Er is een fout opgetreden bij het aanmaken van het evenement.']);
         }
 
     }

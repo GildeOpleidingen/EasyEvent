@@ -58,15 +58,27 @@ error_reporting(E_ALL);
                 </div>
 
                 <div class="mb-3">
-                    <label for="eventSector" class="form-label">Sector <span class="verplicht">*</span></label>
-                    <select class="form-control" id="eventSector" name="Sector[]" required multiple>
-                        <?php foreach($allSectors as $sector): ?>?>
-                            <option value="<?= htmlspecialchars($sector->getId()) ?>">
-                                <?= htmlspecialchars($sector->getSector()) ?>
-                            </option>
+                    <label class="form-label">Sector <span class="verplicht">*</span></label>
+                    <div id="sector" class="form-check-group">
+                        <?php foreach(SectorModel::getAllSectors() as $key => $sector): ?>
+                            <div class="form-check">
+                                <input 
+                                    class="form-check-input" 
+                                    type="checkbox" 
+                                    id="sector_<?= $sector->getID() ?>" 
+                                    name="sector[]" 
+                                    value="<?= $sector->getID() ?>" 
+                                >
+                                <label 
+                                    class="form-check-label" 
+                                    for="sector_<?= $sector->getID() ?>"
+                                >
+                                    <?= htmlspecialchars($sector->getSector()) ?>
+                                </label>
+                            </div>
                         <?php endforeach; ?>
-                    </select>
-                    <div class="invalid-feedback">Selecteer een sector.</div>
+                    </div>
+                    <div class="invalid-feedback">Selecteer minstens één sector.</div>
                 </div>
 
                 <div class="mb-3 row">
@@ -160,9 +172,15 @@ endTime.addEventListener('input', validateTimes);
                     <i class="bi bi-plus text-white"></i>
                 </button>
 
+                <!-- <div class="mb-3">
+                    <label for="eventBanner" class="form-label">Banner <span class="verplicht">*</span></label>
+                    <input type="file" class="form-control" id="eventBanner" name="banner" accept="image/png" onchange="previewImage(event)" required>
+                    <div class="invalid-feedback">Kies een Banner.</div>
+                </div>
+
                 <div class="mb-3">
                     <img id="imagePreview" src="#" alt="Afbeelding Preview" class="img-fluid" style="display: none; max-height: 200px; object-fit: cover;">
-                </div>
+                </div> -->
 
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
@@ -185,7 +203,6 @@ endTime.addEventListener('input', validateTimes);
     <script src="/js/form-validatie.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>
-    <script src="/js/activiteit-toevoegen.js"></script>
 
     <script>
         document.getElementById("addDay").addEventListener("click", function() {
