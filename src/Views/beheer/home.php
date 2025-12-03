@@ -49,7 +49,7 @@
                         <h5>Bekijk evenementen</h5>
                     </div>
                 </a>
-                <buttgit on class="col-6 col-md-4 text-decoration-none btn-as-link" href="" disabled>
+                <button  class="col-6 col-md-4 text-decoration-none btn-as-link" href="" disabled>
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-people mb-2 fs-1"></i>
                         <h5>Bekijk verenigingen</h5>
