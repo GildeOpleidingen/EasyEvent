@@ -131,14 +131,6 @@ error_reporting(E_ALL);
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>
     <script src="/js/activiteit-toevoegen.js"></script>
-
-    <script>
-        document.getElementById("userDatesContainer").addEventListener("click", function(event) {
-            if (event.target.classList.contains("remove-day") || event.target.closest(".remove-day")) {
-                event.target.closest(".row").remove();
-            }
-        });
-    </script>
 </body>
 </html>
 
