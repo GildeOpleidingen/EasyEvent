@@ -39,24 +39,24 @@ class BeheerEventAanmakenController extends Controller {
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
 
-        $date = $_POST['datum'] ?? [];
-        $startTime = $_POST['begin-tijd'] ?? [];
-        $endTime = $_POST['eind-tijd'] ?? [];
+        $dates = $_POST['datum'] ?? [];
+        $startTimes = $_POST['begin-tijd'] ?? [];
+        $endTimes = $_POST['eind-tijd'] ?? [];
 
         // $hasAtLeastOneTime = !empty($dates) && !empty($startTimes) && !empty($endTimes);
 
         // Controleer of alle velden ingevuld zijn
-        if (empty($eventName) || empty($eventInfo) || empty($date) || empty($startTime)|| empty($endTime)) {
+        if (empty($eventName) || empty($eventInfo) || empty($dates) || empty($startTimes)|| empty($endTimes)) {
             var_dump($eventName);
             var_dump($eventInfo);
-            var_dump($startTime);
+            var_dump($startTimes);
             var_dump($_POST);
-            var_dump($endTime);
+            var_dump($endTimes);
             $this->render('beheer/event-aanmaken', ['error' => 'Alle velden zijn verplicht.']);
             return;
         }
 
-        $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, ['date' => $date[0], 'BeginTijd' => $startTime[0], 'EindTijd' => $endTime[0]]);
+        $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, ['date' => $dates[0], 'BeginTijd' => $startTimes[0], 'EindTijd' => $endTimes[0]]);
         $errors = $eventModel->validateModel();
         // Sla de gegevens tijdelijk op in de sessie
         $_SESSION['register_data'] = [
@@ -72,21 +72,21 @@ class BeheerEventAanmakenController extends Controller {
             'organisator' => $eventOrganizer,
             'hoofdEvent' => $hoofdEvent,
             'eventID' => $eventID,
-            'date' => $date,
-            'startTime' => $startTime,
-            'endTime' => $endTime
+            'dates' => $dates,
+            'startTimes' => $startTimes,
+            'endTimes' => $endTimes
         ];
 
         $result = $eventModel->sendEvent($eventModel);
-        $_SESSION['register_data']['eventID'] = $eventModel->getEventID();
 
 
         if ($result) {
             // Debugging statement to confirm redirection
             error_log("Redirecting to event aanmaken stap 2");
-            $this->redirect('/beheer/event-aanmaken-stap-2');
+            $this->redirect('/beheer/event-aanmaken-stap-2?eventId='. $eventModel->getEventID() .'');
             return; // Ensure to return after rendering
         } else {
+            // TODO error
             $this->redirect('/beheer/event-aanmaken-stap-2');
         }
 
@@ -94,9 +94,9 @@ class BeheerEventAanmakenController extends Controller {
     
     public function sendEventStep2()
     {
-        $currentEventID = $_SESSION['register_data']['eventID'];
+        $currentEventID = $_GET['eventId'];
         
-        var_dump($_POST);
+        var_dump($currentEventID);
         die;
     }
     
