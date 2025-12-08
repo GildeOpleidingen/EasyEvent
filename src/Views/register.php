@@ -79,12 +79,12 @@
                                 <label for="telefoon">Telefoonnummer</label>
                             </div>
                             <div class="form-floating mb-3 position-relative">
-                                <input type="password" id="wachtwoord" name="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord" maxlength="100" required>
+                                <input type="password" id="wachtwoord" name="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord" maxlength="100" minlength="8" required>
                                 <label for="wachtwoord">Wachtwoord</label>
                                 <i class="bi bi-eye-fill position-absolute icon-eye" data-toggle="wachtwoord"></i>
                             </div>
                             <div class="form-floating mb-3 position-relative">
-                                <input type="password" id="herhaalWachtwoord" name="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord" maxlength="100" required>
+                                <input type="password" id="herhaalWachtwoord" name="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord" maxlength="100" minlength="8" required>
                                 <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
                                 <i class="bi bi-eye-fill position-absolute icon-eye" data-toggle="herhaalWachtwoord"></i>
                             </div>
