@@ -58,6 +58,7 @@ error_reporting(E_ALL);
                 </div>
 
                 <div class="mb-3">
+                    <input type="text" id="checkbox_required" required hidden>
                     <label class="form-label">Sector <span class="verplicht">*</span></label>
                     <div id="sector" class="form-check-group">
                         <?php foreach(SectorModel::getAllSectors() as $key => $sector): ?>
@@ -203,6 +204,7 @@ endTime.addEventListener('input', validateTimes);
     <script src="/js/form-validatie.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>
+    <script src="/js/checkbox-validation.js"></script>
 
     <script>
         document.getElementById("addDay").addEventListener("click", function() {

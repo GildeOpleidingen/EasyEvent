@@ -35,7 +35,7 @@ error_reporting(E_ALL);
             <h1 class="text-center mb-4">Gebruiker aanmaken</h1>
 
             <!-- Form 1: Event Details -->
-            <form id="formEventDetails" class="needs-validation" novalidate action="checkbox-validation" method="POST">
+            <form id="formEventDetails" class="needs-validation" novalidate action="" method="POST">
                 <div class="mb-3 row">
                     <div class="col-md-3">
                         <label for="voorNaam" class="form-label">Voornaam <span class="verplicht">*</span></label>
@@ -79,12 +79,12 @@ error_reporting(E_ALL);
                     <div class="invalid-feedback">Voer een wachtwoord in.</div>
                 </div>
                 <div class="mb-3">
+                    <input type="text" id="checkbox_required" required hidden value="">
                     <label class="form-label">Rol <span class="verplicht">*</span></label>
                     <div id="rol" class="form-check-group">
-                        <input type="text" id="checkbox_required" required hidden>
                         <?php foreach(RolModel::getAllRoles() as $key => $rol): ?>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="rol_<?= $rol->getID() ?>" name="rol[]" value="<?= $rol->getID() ?>" required>
+                                <input class="form-check-input" type="checkbox" id="rol_<?= $rol->getID() ?>" name="rol[]" value="<?= $rol->getID() ?>">
                                 <label class="form-check-label" for="rol_<?= $rol->getID() ?>">
                                     <?= htmlspecialchars($rol->getName()) ?>
                                 </label>
@@ -131,6 +131,7 @@ error_reporting(E_ALL);
     <script src="/js/form-validatie.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>
+    <script src="/js/checkbox-validation.js"></script>
 </body>
 </html>
 
