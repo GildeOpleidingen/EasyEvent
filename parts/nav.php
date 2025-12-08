@@ -1,27 +1,52 @@
+<?php $bevoegd = false; ?>
+<?php use App\Models\BeheerHomeModel; ?>
+
+
+<?php 
+if (isset($_SESSION['Gebruikersemail'])) {
+    $gebruiker = unserialize($_SESSION['gebruiker']);
+    $roles = $gebruiker->getRoles();
+}
+else {
+    $roles = "";
+}
+?>
 <nav class="navbar navbar-expand-lg">
     <div class="container">
         <a href="/home" class="navbar-brand">
             <img src="../../images/logo.png" alt="EasyEvents Logo" width="150" height="150">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <?php if (isset($_SESSION['Gebruikersnaam'])): ?>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
+                <?php if ($roles):?>
+                <?php foreach ($roles as $role): ?>
+                    <?php if ($role->getName() == "Admin" || $role->getName() == "Organisator") {$bevoegd = true;} ?>
+                <?php endforeach; ?>
+                <?php if ($bevoegd): ?>
                 <li class="nav-item">
                     <a href="/beheer/" class="nav-link active">Beheer</a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a href="/events" class="nav-link active">Evenementen</a>
                 </li>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['Gebruikersemail'])): ?>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" 
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         Profiel
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" href="/profiel">Profiel Bekijken</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <!-- <li><a class="dropdown-item" href="/settings">Instellingen</a></li> -->
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" href="/logout">Uitloggen</a></li>
                     </ul>
                 </li>

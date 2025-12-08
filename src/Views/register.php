@@ -13,11 +13,13 @@
     <link rel="stylesheet" href="/css/register.css">
     <link rel="stylesheet" href="/css/nav.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="https://www.google.com/recaptcha/enterprise.js?render=6LePJs0rAAAAABAiA324JCCmHmiIS4Tp0nf2Bsho"></script>
+    <script src="../js/captcha.js"></script>
 </head>
 
 <body>
     <div class="register container-fluid vh-100">
-        <?php require_once(__ROOT__."/parts/nav.html"); ?>
+        <?php require_once(__ROOT__."/parts/nav.php"); ?>
         <div class="d-flex justify-content-center align-items-center h-75">
             <div class="row">
                 <div class="col-lg-6 d-flex align-items-center justify-content-center">
@@ -77,16 +79,17 @@
                                 <label for="telefoon">Telefoonnummer</label>
                             </div>
                             <div class="form-floating mb-3 position-relative">
-                                <input type="password" id="wachtwoord" name="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord" maxlength="100" required>
+                                <input type="password" id="wachtwoord" name="wachtwoord" class="form-control rounded-0" placeholder="Wachtwoord" maxlength="100" minlength="8" required>
                                 <label for="wachtwoord">Wachtwoord</label>
                                 <i class="bi bi-eye-fill position-absolute icon-eye" data-toggle="wachtwoord"></i>
                             </div>
                             <div class="form-floating mb-3 position-relative">
-                                <input type="password" id="herhaalWachtwoord" name="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord" maxlength="100" required>
+                                <input type="password" id="herhaalWachtwoord" name="herhaalWachtwoord" class="form-control rounded-0" placeholder="Herhaal wachtwoord" maxlength="100" minlength="8" required>
                                 <label for="herhaalWachtwoord">Herhaal wachtwoord</label>
                                 <i class="bi bi-eye-fill position-absolute icon-eye" data-toggle="herhaalWachtwoord"></i>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 register-btn">Registreer</button>
+<button type="submit" class="btn btn-primary w-100" onclick="submit">Registreer</button>
+
                         </form>
                     </div>
 
@@ -99,6 +102,7 @@
                                 <label for="verificationCode">Verificatiecode</label>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Verstuur</button>
+                            <!-- <button type="submit" class="btn btn-primary w-100" onclick="captcha('LOGIN', this)">Verstuur</button> -->
                             <button type="button" class="btn btn-secondary w-100 mt-2" id="backToRegister">Terug naar registratie</button>
                         </form>
                     </div>

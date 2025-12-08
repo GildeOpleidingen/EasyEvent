@@ -6,8 +6,13 @@
     <title>Wachtwoord Vergeten</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
+        <link rel="shortcut icon" href="/images/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/icons/favicon-16x16.png" type="image/x-icon" sizes="16x16">
+    <link rel="shortcut icon" href="/images/icons/favicon-32x32.png" type="image/x-icon" sizes="32x32">
+        <link rel="stylesheet" href="/css/nav.css">
 </head>
 <body>
+         <?php require_once(__ROOT__."/parts/nav.php"); ?>
     <div class="container mt-5">
         <h1>Wachtwoord Vergeten</h1>
         <?php if (isset($error)): ?>
@@ -23,6 +28,18 @@
             </div>
             <button type="submit" class="btn btn-primary">Send Email</button>
         </form>
+        <?php if (isset($success)): ?>
+    <hr>
+    <h2>Voer je resetcode in</h2>
+    <form method="POST" action="./verify-reset-code">
+        <div class="mb-3">
+            <label for="reset_code" class="form-label">Resetcode</label>
+            <input type="text" class="form-control" id="reset_code" name="reset_code" placeholder="Voer je code in" required>
+        </div>
+        <button type="submit" class="btn btn-success">Verifiëren</button>
+    </form>
+<?php endif; ?>
+
     </div>
 </body>
 </html>

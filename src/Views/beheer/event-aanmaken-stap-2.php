@@ -23,12 +23,12 @@ use App\Models\EventsModel;
 </head>
 <body>
 <div class="container-fluid vh-100 d-flex flex-column">
-        <?php require_once('./parts/nav-beheer.html'); ?>
+        <?php require_once('./parts/nav.php'); ?>
         <div class="container my-4 pb-4">
             <h1 class="text-center mb-4">Event Aanmaken</h1>
 
             <!-- Form 2: Activities -->
-            <form id="formActivities" class="needs-validation" style="display: none;" novalidate method="POST">
+            <form id="formActivities" class="needs-validation" novalidate method="POST">
                 <div id="activitiesContainer">
                     <div class="activity-item mb-3">
                         <div class="row">
@@ -38,12 +38,12 @@ use App\Models\EventsModel;
                                 <div class="invalid-feedback">Voer een activiteit naam in.</div>
                             </div>
                             <div class="col-md-4">
-                                <label for="activityTime1" class="form-label">Begintijd <span class="verplicht">*</span></label>
+                                <label for="activityBeginTime1" class="form-label">Begintijd <span class="verplicht">*</span></label>
                                 <input type="time" class="form-control" id="activityBeginTime1" name="activity-begintime[]" required>
                                 <div class="invalid-feedback">Voer een activiteit begin tijd in.</div>
                             </div>
                             <div class="col-md-4">
-                                <label for="activityTime1" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+                                <label for="activityEndTime1" class="form-label">Eindtijd <span class="verplicht">*</span></label>
                                 <input type="time" class="form-control" id="activityEndTime1" name="activity-endtime[]" required>
                                 <div class="invalid-feedback">Voer een activiteit eind tijd in.</div>
                             </div>
@@ -86,38 +86,6 @@ use App\Models\EventsModel;
     <script>
         document.getElementById("formActivities").addEventListener("submit", function() {
             document.getElementById("successMessage").style.display = "block";
-        });
-
-        document.getElementById("addDay").addEventListener("click", function() {
-            const container = document.getElementById("eventDatesContainer");
-            const newDay = document.createElement("div");
-            newDay.classList.add("mb-3", "row");
-            newDay.innerHTML = `
-                <div class="col-md-4">
-                    <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                    <input type="date" class="form-control" name="date[]" required>
-                    <div class="invalid-feedback">Selecteer een datum.</div>
-                </div>
-                <div class="col-md-4">
-                    <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                    <input type="time" class="form-control" name="begin-time[]" required>
-                    <div class="invalid-feedback">Voer een begintijd in.</div>
-                </div>
-                <div class="col-md-4">
-                    <label for="eventBeginTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                    <input type="time" class="form-control" name="end-time[]" required>
-                    <div class="invalid-feedback">Voer een eindtijd in.</div>
-                </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <div class="flex-grow-1">
-                        <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" name="end-time[]" required>
-                        <div class="invalid-feedback">Voer een eindtijd in.</div>
-                    </div>
-                    <button class="btn btn-danger ms-2 remove-day"><i class="bi bi-trash text-white"></i></button>
-                </div>
-            `;
-            container.appendChild(newDay);
         });
 
         document.getElementById("eventDatesContainer").addEventListener("click", function(event) {

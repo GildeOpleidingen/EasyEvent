@@ -42,7 +42,7 @@ use App\Conn;
         $greeting = ($hour < 12) ? 'Goedemorgen' : (($hour < 18) ? 'Goedemiddag' : 'Goedeavond');
     ?>
     <div class="container-fluid vh-100">
-        <?php require_once('./parts/nav.html'); ?>
+        <?php require_once('./parts/nav.php'); ?>
         <?php if(isset($error)): ?>
     <div class="error-message">
         <?php echo $error; ?>
@@ -63,29 +63,30 @@ use App\Conn;
                         <div class="mt-5 pt-5 row">
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-envelope-fill me-2"></i><span class="label">Email:</span> <?php $email?></p>
+                                    <p><i class="bi bi-envelope-fill me-2"></i><span class="label">Email:</span> <?php echo $gebruiker->getEmail() ?></p>
                                     <p><i class="bi bi-key-fill me-2"></i><span class="label">Wachtwoord:</span> ****** <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Wachtwoord wijzigen" onclick="openModalPassword();"></i></p>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <span class="ms-4">+31 6 123456789</span> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></p>
+                                    <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <span class="ms-4"> <?php echo $gebruiker->getTelefoon() ?> </span> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></p>
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-house-fill me-2"></i><span class="label">Postcode:</span> 1234 AB <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Adres wijzigen" onclick="openModalAddress();"></i></p>
-                                    <p><i class="bi bi-geo-alt-fill me-2"></i><span class="label">Plaatsnaam:</span> Amsterdam</p>
-                                    <p><i class="bi bi-door-open-fill me-2"></i><span class="label">Huisnummer:</span> 56</p>
+                                    <p><i class="bi bi-house-fill me-2"></i><span class="label">Postcode:</span> <?php echo $gebruiker->getPostcode() ?> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Adres wijzigen" onclick="openModalAddress();"></i></p>
+                                    <p><i class="bi bi-geo-alt-fill me-2"></i><span class="label">Plaatsnaam:</span> <?php echo $gebruiker->getPlaatsnaam() ?> </p>
+                                    <p><i class="bi bi-door-open-fill me-2"></i><span class="label">Huisnummer:</span> <?php echo $gebruiker->getHuisnummer() ?> </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
-                    <button class="btn btn-primary">Bekijk mijn Evenementen</button>
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="/events" class="btn btn-primary">Bekijk mijn Evenementen</a>
+                    <a href="/add-child" class="btn btn-primary">Voeg kind toe</a>
                 </div>
             </div>
         </div>
@@ -148,19 +149,20 @@ use App\Conn;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <form id="addressForm" method="POST" action="/profiel/updateAdresGegevens">
-                        <div class="mb-3">
-                            <label for="newPostcode" class="form-label">Postcode</label>
-                            <input type="text" class="form-control" id="newPostcode" name="newPostCode" maxlength="8" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newCity" class="form-label">Plaatsnaam</label>
-                            <input type="text" class="form-control" id="newCity" name="newCity" maxlength="100" required>
-                        <div class="mb-3">
-                            <label for="newHouseNumber" class="form-label">Huisnummer</label>
-                            <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" maxlength="6" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Opslaan</button>
+                    <form id="addressForm" method="POST" action="/profiel/updateAdresGegevens">
+                            <div class="mb-3">
+                                <label for="newPostcode" class="form-label">Postcode</label>
+                                <input type="text" class="form-control" id="newPostcode" name="newPostCode" maxlength="8" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newCity" class="form-label">Plaatsnaam</label>
+                                <input type="text" class="form-control" id="newCity" name="newCity" maxlength="100" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newHouseNumber" class="form-label">Huisnummer</label>
+                                <input type="text" class="form-control" id="newHouseNumber" name="newHouseNumber" maxlength="6" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Opslaan</button>
                     </form>
                 </div>
             </div>

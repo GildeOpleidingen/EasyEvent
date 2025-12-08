@@ -30,12 +30,12 @@ error_reporting(E_ALL);
 </head>
 <body>
 <div class="container-fluid vh-100 d-flex flex-column">
-        <?php require_once('./parts/nav.html'); ?>
+        <?php require_once('./parts/nav.php'); ?>
         <div class="container my-4 pb-4">
             <h1 class="text-center mb-4">Gebruiker aanmaken</h1>
 
             <!-- Form 1: Event Details -->
-            <form id="formEventDetails" class="needs-validation" novalidate action="<?php $_PHP_SELF ?>" method="POST">
+            <form id="formEventDetails" class="needs-validation" novalidate action="" method="POST">
                 <div class="mb-3 row">
                     <div class="col-md-3">
                         <label for="voorNaam" class="form-label">Voornaam <span class="verplicht">*</span></label>
@@ -79,25 +79,19 @@ error_reporting(E_ALL);
                     <div class="invalid-feedback">Voer een wachtwoord in.</div>
                 </div>
                 <div class="mb-3">
-                    <label for="gebruikersNaam" class="form-label">Gebruikersnaam <span class="verplicht">*</span></label>
-                    <input type="text" class="form-control" id="gebruikersNaam" name="gebruikersNaam" placeholder="Gebruikersnaam" required>
-                    <div class="invalid-feedback">Voer een locatie in.</div>
-                </div>
-                
-                <?php
-                    $rol = new RolModel();
-                    $allRoles = $rol->getAllRoles();
-                ?>
-         
-                <div class="mb-3">
-                    <label for="rol" class="form-label">Rol <span class="verplicht">*</span></label>
-                    <select class="form-control" id="rol" name="rol[]" required multiple>
-                    <!-- <option value="" disabled selected>Selecteer een rol</option> -->
-                    <?php foreach($allRoles as $key => $rol): ?>?>
-                        <option value="<?=$rol->getID() ?>"><?=$rol->getName() ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                    <div class="invalid-feedback">Selecteer een rol.</div>
+                    <input type="text" id="checkbox_required" required hidden value="">
+                    <label class="form-label">Rol <span class="verplicht">*</span></label>
+                    <div id="rol" class="form-check-group">
+                        <?php foreach(RolModel::getAllRoles() as $key => $rol): ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rol_<?= $rol->getID() ?>" name="rol[]" value="<?= $rol->getID() ?>">
+                                <label class="form-check-label" for="rol_<?= $rol->getID() ?>">
+                                    <?= htmlspecialchars($rol->getName()) ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="invalid-feedback">Selecteer minstens één rol.</div>
                 </div>
 
                 <?php
@@ -106,7 +100,7 @@ error_reporting(E_ALL);
                 ?>
                 <div class="mb-3">
                     <label for="kledingmaat" class="form-label">Kledingmaat</label>
-                    <select class="form-control" id="kledingmaat" name="kledingmaat">
+                    <select class="form-control" id="kledingmaat" name="kledingmaat[]" multiple>
                         <option value="" disabled selected>Selecteer een kledingmaat</option>
                         <?php foreach($allKleding as $key => $kledingmaat): ?>?>
                             <option value="<?=$kledingmaat->getID() ?>"><?=$kledingmaat->getKledingmaat() ?></option>
@@ -114,17 +108,7 @@ error_reporting(E_ALL);
                     </select>
                     <div class="invalid-feedback">Selecteer een kledingmaat.</div>
                 </div>
-                
-                <!-- <div class="mb-3">
-                    <label for="profielfoto" class="form-label">Profielfoto</label>
-                    <input type="file" class="form-control" id="profielfoto" name="profielfoto" accept="image/png" onchange="previewImage(event)">
-                    <div class="invalid-feedback">Kies een profielfoto.</div>
-                </div>
-
-                <div class="mb-3">
-                    <img id="imagePreview" src="#" alt="Afbeelding Preview" class="img-fluid" style="display: none; max-height: 200px; object-fit: cover;">
-                </div> -->
-
+            
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
                     <button type="submit" class="btn btn-primary" id="btnToForm2">Opslaan</button>
@@ -147,42 +131,7 @@ error_reporting(E_ALL);
     <script src="/js/form-validatie.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>
-    <script src="/js/activiteit-toevoegen.js"></script>
-
-    <script>
-        document.getElementById("addDay").addEventListener("click", function() {
-            const container = document.getElementById("userDatesContainer");
-            const newDay = document.createElement("div");
-            newDay.classList.add("mb-3", "row");
-            newDay.innerHTML = `
-                <div class="col-md-4">
-                    <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                    <input type="date" class="form-control" name="date[]" required>
-                    <div class="invalid-feedback">Selecteer een datum.</div>
-                </div>
-                <div class="col-md-4">
-                    <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                    <input type="time" class="form-control" name="begin-time[]" required>
-                    <div class="invalid-feedback">Voer een begintijd in.</div>
-                </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <div class="flex-grow-1">
-                        <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" name="end-time[]" required>
-                        <div class="invalid-feedback">Voer een eindtijd in.</div>
-                    </div>
-                    <button class="btn btn-danger ms-2 remove-day"><i class="bi bi-trash text-white"></i></button>
-                </div>
-            `;
-            container.appendChild(newDay);
-        });
-
-        document.getElementById("userDatesContainer").addEventListener("click", function(event) {
-            if (event.target.classList.contains("remove-day") || event.target.closest(".remove-day")) {
-                event.target.closest(".row").remove();
-            }
-        });
-    </script>
+    <script src="/js/checkbox-validation.js"></script>
 </body>
 </html>
 
