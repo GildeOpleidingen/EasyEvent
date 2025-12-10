@@ -171,7 +171,7 @@ class PlanningsModel extends DBModel
                 JOIN `event_tijd` et on et.id = aet.event_tijd_id
                 JOIN activiteit a on a.id = aet.activiteit_id
                 JOIN `event` e on e.id = et.event_id
-                AND e.id = :eventid
+                WHERE e.id = :eventid
                 ORDER by et.datum, et.begin_tijd, aet.begin_tijd, p.begin_tijd
                 ";
 

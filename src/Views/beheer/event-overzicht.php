@@ -70,7 +70,7 @@ else {
                 </td>
                 <?php if ($bevoegd): ?>
                 <td>
-                    <a href="/beheer/event/delete" onclick="return (confirm('Weet je zeker dat je deze gebruiker wilt verwijderen? Je kunt NIET meer terug!'));">Verwijder event</a>
+                    <a href="/beheer/event/delete" onclick="return (confirm('Weet je zeker dat je dit evenement wilt verwijderen? Je kunt NIET meer terug!'));">Verwijder event</a>
                 </td>
                 <?php endif; ?>
             </tr>

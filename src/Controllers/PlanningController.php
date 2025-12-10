@@ -23,6 +23,9 @@ class PlanningController extends Controller
         $planningsModel = new PlanningsModel($user->getId(), -1, [], -1, [], []);
         $plannedActivities = $planningsModel->getPlanning($id);
         $planningsModel->setActivities($plannedActivities);
-        $this->render('/beheer/planning-overzicht', (array)$planningsModel);
+        $this->render('/beheer/planning-overzicht', [
+            'planningsModel' => (array)$planningsModel,
+            'activities' => $plannedActivities
+        ]);
     }
 }
