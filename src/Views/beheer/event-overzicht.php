@@ -49,7 +49,7 @@ else {
             <thead>
             <tr>
                 <th scope="col">Titel</th>
-                <th scope="col">Planning</th>
+                <th scope="col">Activiteiten</th>
                 <th scope="col">Bewerk</th>
                 <?php if ($bevoegd): ?>
                 <th scope="col">Verwijder</th>
@@ -63,7 +63,7 @@ else {
                     <p><?= htmlspecialchars($event->getEventName()) ?></p>
                 </td>
                 <td>
-                    <a href="/beheer/event/planning?eventID=<?=$event->getEventID() ?>">Toon Planning</a>
+                    <a href="/beheer/event/activiteiten?eventID=<?=$event->getEventID() ?>">Toon Activiteiten</a>
                 </td>
                 <td>
                     <a href="/beheer/event-bewerken?eventID=<?=$event->getEventID() ?>">Bewerk Event</a>

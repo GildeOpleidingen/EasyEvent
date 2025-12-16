@@ -176,7 +176,7 @@ class SingleEventModel extends DBModel
                 JOIN activiteit AS a ON aet.activiteit_id = a.id
                 LEFT JOIN planning as p ON p.activiteit_event_tijd_id = aet.id AND p.gebruiker_id = :userid
                 WHERE et.event_id = :eventid
-        "
+        ";
 
         $sql = "SELECT t.aet_ID, t.event_tijd_id, t.id, t.begin_tijd, t.eind_tijd, t.activiteit_id, t.naam, t.gebruiker_id, t.vereniging_id, t.rol_id
                 FROM (SELECT    aet.id as aet_ID,

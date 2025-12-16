@@ -47,6 +47,7 @@ $router->post('/profiel/updateAdresGegevens', ProfielController::class, 'updateA
 $router->post('/profiel/updateWachtwoord', ProfielController::class, 'updateWachtwoord', true);
 $router->post('/profiel/logout', LoginController::class, 'logout');
 $router->get('/beheer/event', EventsController::class, 'adminIndex', true);
+$router->get('/beheer/event/activiteiten', PlanningController::class, 'activiteitIndex', true);
 $router->get('/beheer/event/planning', PlanningController::class, 'index', true);
 $router->get('/beheer/user-overzicht', UserController::class, 'index', true);
 $router->get('/beheer/user-aanmaken', UserController::class, 'add', true);

@@ -1,8 +1,17 @@
 <?php
 
+use App\Models\ActivityModel;
+use App\Models\PlanningsModel;
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+$activiteitID = $_GET['activiteitID'];
+
+$activity = ActivityModel::getActiviteitById($activiteitID);
+
+$planning = PlanningsModel::getPlanning($activiteitID);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,13 +36,13 @@ error_reporting(E_ALL);
 <body>
 <div class="container-fluid vh-100 d-flex flex-column">
     <?php require_once('./parts/nav.php'); ?>
-    <?= var_dump($activities) ?>
     <div class="container my-4 pb-4">
-        <h1 class="text-center mb-4">Planning overzicht
+        <h1 class="text-center mb-4">Planning 
+                <?php if (!empty($activiteitID)): ?>
+                    <?= $activity['naam'];
+                ?>
+        </h1>
 
-            </h1>
-            <?php if (!empty($activities)): ?>
-                <?= $activities[0]->getEvent()->getEventName(); ?>
             <table class="table">
                 <thead>
                 <tr>
@@ -50,37 +59,37 @@ error_reporting(E_ALL);
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($activities as $index => $plan): ?>
+                <?php foreach ($planning as $row): ?>
                     <tr>
                         <td>
-                            <?=htmlspecialchars($plan->getActivity()->getName()) ?>
+                            <?=htmlspecialchars($row['activiteitNaam']) ?>
                         </td>
                         <td>
-                            <?=htmlspecialchars($plan->getActivity()->getBeginTijd()) ?>
+                            <?=htmlspecialchars($row['activiteitBeginTijd']) ?>
                         </td>
                         <td>
-                            <?=htmlspecialchars($plan->getActivity()->getEindTijd()) ?>
+                            <?=htmlspecialchars($row['activiteitEindTijd']) ?>
                         </td>
                         <td>
-                            <?=htmlspecialchars($plan->getUser()->getVoornaam()) ?>
+                            <?=htmlspecialchars($row['voornaam']) ?>
                         </td>
                         <td>
-                            <?=htmlspecialchars($plan->getUser()->getAchternaam()) ?>
+                            <?=htmlspecialchars($row['achternaam']) ?>
                         </td>
                         <td>
-                            <?=htmlspecialchars($plan->getUser()->getTelefoon()) ?>
+                            <?=htmlspecialchars($row['telefoon']) ?>
                         </td>
                         <td>
-                            <?=htmlspecialchars($plan->getBeginTijd()) ?>
+                            <?=htmlspecialchars($row['planningBeginTijd']) ?>
                         </td>
                         <td>
-                            <?=htmlspecialchars($plan->getEindTijd()) ?>
+                            <?=htmlspecialchars($row['planningEindTijd']) ?>
                         </td>
                         <td>
-                            <?= $plan->getBetaalt() ? "Ja" : "Nee"; ?>
+                            <?= $row['is_betaald'] ? "Ja" : "Nee"; ?>
                         </td>
                         <td>
-                            <?= $plan->getIsGoedGekeurd() ? "Ja" : "Nee"; ?>
+                            <?= $row['goedgekeurd'] ? "Ja" : "Nee"; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

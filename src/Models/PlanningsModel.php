@@ -145,7 +145,7 @@ class PlanningsModel extends DBModel
         return "Insertion into `planning` table failed!";
     }
 
-    public static function getPlanning($eventID)
+    public static function getPlanning($activiteitID)
     {
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
@@ -171,48 +171,16 @@ class PlanningsModel extends DBModel
                 JOIN `event_tijd` et on et.id = aet.event_tijd_id
                 JOIN activiteit a on a.id = aet.activiteit_id
                 JOIN `event` e on e.id = et.event_id
-                WHERE e.id = :eventid
+                WHERE a.id = :activiteitid
                 ORDER by et.datum, et.begin_tijd, aet.begin_tijd, p.begin_tijd
                 ";
 
         $stmt = $pdo->prepare($sql);
 
-        if (!$stmt->execute(['eventid' => $eventID])) {
+        if (!$stmt->execute(['activiteitid' => $activiteitID])) {
             die('Query failed: ' . implode(' ', $stmt->errorInfo()));
         }
 
-        $planned = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $event = new EventModel();
-            $event->setEventName($row['eventNaam']);
-            $event->addEventTime([
-                'date' => $row['eventDatum'], 
-                'BeginTijd' => $row['eventBeginTijd'], 
-                'EindTijd' => $row['eventEindTijd']
-            ]);
-
-            $activity = new ActivityModel();
-            $activity->setNaam($row['activiteitNaam']);
-            $activity->setBeginTijd($row['activiteitBeginTijd']);
-            $activity->setEindTijd($row['activiteitEindTijd']);
-
-            $user = new UserModel([]);
-            $user->setVoornaam($row['voornaam']);
-            $user->setAchternaam($row['achternaam']);
-            $user->setTelefoon($row['telefoon']);
-            $user->setOrganisations([$row['verenigingNaam']]);
-
-            $plan = new PlanningModel();
-            $plan->setActivity($activity);
-            $plan->setUser($user);
-            $plan->setEvent($event);
-            $plan->setBeginTijd($row['planningBeginTijd']);
-            $plan->setEindTijd($row['planningEindTijd']);
-            $plan->setBetaalt($row['is_betaald']);
-            $plan->setIsGoedGekeurd($row['goedgekeurd']);
-
-            $planned[] = $plan;
-        }
-        return $planned;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

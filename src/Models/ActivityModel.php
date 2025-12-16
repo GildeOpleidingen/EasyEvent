@@ -152,4 +152,49 @@ class ActivityModel extends DBModel
     {
         $this->eindTijd = $eindTijd;
     }
+
+    public static function getActiviteitByID(int $activiteitId): array {
+        $mysql = Conn::getInstance();
+        $pdo = $mysql->getPDO();
+        $sql = "SELECT  a.naam,
+                        a.id
+                FROM activiteit a
+                WHERE a.id = :activiteitid
+                ORDER BY a.naam
+        ";
+
+        $stmt = $pdo->prepare($sql);
+        
+        if (!$stmt->execute(['activiteitid' => $activiteitId])) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function getActiviteitenByEventId(int $eventId): array 
+    {
+        $mysql = Conn::getInstance();
+        $pdo = $mysql->getPDO();
+        $sql = "SELECT a.naam           as activiteitNaam,
+                       a.id             as activiteitID,
+                       aet.begin_tijd   as activiteitBeginTijd,
+                       aet.eind_tijd    as activiteitEindTijd
+                FROM `activiteit_event_tijd` aet
+                JOIN `event_tijd` et on et.id = aet.event_tijd_id
+                JOIN activiteit a on a.id = aet.activiteit_id
+                JOIN `event` e on e.id = et.event_id
+                WHERE e.id = :eventid
+                ORDER by a.naam
+                ";
+
+        $stmt = $pdo->prepare($sql);
+
+        if (!$stmt->execute(['eventid' => $eventId])) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
