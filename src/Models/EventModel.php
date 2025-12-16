@@ -293,11 +293,5 @@ class EventModel
         // echo "Insertion into `event` table failed!";
         return "Insertion into `event` table failed!";
     }
-
-    public function sendActivity()
-    {
-        
-    }
-
 }
 
