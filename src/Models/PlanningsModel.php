@@ -145,7 +145,7 @@ class PlanningsModel extends DBModel
         return "Insertion into `planning` table failed!";
     }
 
-    public static function getPlanning($activiteitID): array
+    public static function getPlanning($activiteitID)
     {
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
@@ -181,7 +181,6 @@ class PlanningsModel extends DBModel
             die('Query failed: ' . implode(' ', $stmt->errorInfo()));
         }
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
         // $planned = [];
         // while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         //     $event = new EventModel();
@@ -212,8 +211,9 @@ class PlanningsModel extends DBModel
         //     $plan->setBetaalt($row['is_betaald']);
         //     $plan->setIsGoedGekeurd($row['goedgekeurd']);
 
-        //     $planned[] = $plan;
+            // $planned[] = $plan;
         // }
         // return $planned;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
