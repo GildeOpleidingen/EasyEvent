@@ -114,7 +114,7 @@ class EventModel
         $location = "";
 
         // geen post gebruik eigenschappen van de class
-        if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+        if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location'])) {
             // checks for invalid input for title
             if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
                 $title = htmlspecialchars($_POST['title']);

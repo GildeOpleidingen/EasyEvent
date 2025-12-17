@@ -95,7 +95,7 @@ class BeheerEventAanmakenController extends Controller {
             $this->redirect('/beheer/event-aanmaken-stap-2?eventId='. $eventModel->getEventID() .'');
             return; // Ensure to return after rendering
         } else {
-            $this->render('beheer/event-aanmaken', ['error' => 'Er is een fout opgetreden bij het aanmaken van het evenement.']);
+            $this->render('beheer/event-aanmaken', ['error' => $errors]);
         }
 
     }

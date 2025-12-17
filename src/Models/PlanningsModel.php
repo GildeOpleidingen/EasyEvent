@@ -182,5 +182,38 @@ class PlanningsModel extends DBModel
         }
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // $planned = [];
+        // while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        //     $event = new EventModel();
+        //     $event->setEventName($row['eventNaam']);
+        //     $event->addEventTime([
+        //         'date' => $row['eventDatum'], 
+        //         'BeginTijd' => $row['eventBeginTijd'], 
+        //         'EindTijd' => $row['eventEindTijd']
+        //     ]);
+
+        //     $activity = new ActivityModel($row['activiteitNaam'], $row['activiteitBeginTijd'], $row['activiteitEindTijd']);
+        //     // $activity->setNaam($row['activiteitNaam']);
+        //     // $activity->setBeginTijd($row['activiteitBeginTijd']);
+        //     // $activity->setEindTijd($row['activiteitEindTijd']);
+
+        //     $user = new UserModel([]);
+        //     $user->setVoornaam($row['voornaam']);
+        //     $user->setAchternaam($row['achternaam']);
+        //     $user->setTelefoon($row['telefoon']);
+        //     $user->setOrganisations([$row['verenigingNaam']]);
+
+        //     $plan = new PlanningModel();
+        //     $plan->setActivity($activity);
+        //     $plan->setUser($user);
+        //     $plan->setEvent($event);
+        //     $plan->setBeginTijd($row['planningBeginTijd']);
+        //     $plan->setEindTijd($row['planningEindTijd']);
+        //     $plan->setBetaalt($row['is_betaald']);
+        //     $plan->setIsGoedGekeurd($row['goedgekeurd']);
+
+        //     $planned[] = $plan;
+        // }
+        // return $planned;
     }
 }

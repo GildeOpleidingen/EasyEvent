@@ -21,7 +21,7 @@ class ActivityModel extends DBModel
     public string $beginTijd;
     public string $eindTijd;
 
-    public function __construct($naam, $beginTijd, $eindTijd, $aantalPersonen)
+    public function __construct($naam, $beginTijd, $eindTijd, $aantalPersonen = 0)
     {
         $this->naam = $naam;
         $this->beginTijd = $beginTijd;
