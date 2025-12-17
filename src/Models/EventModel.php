@@ -230,6 +230,8 @@ class EventModel
                     return "The sector insertion failed!";
                 }
             }
+            var_dump($event);
+            // die;
         }
         error_log("Event insertion failed: " . implode(", ", $stmtEvent->errorInfo()));
         // echo "Insertion into `event` table failed!";
