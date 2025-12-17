@@ -145,7 +145,7 @@ class PlanningsModel extends DBModel
         return "Insertion into `planning` table failed!";
     }
 
-    public static function getPlanning($activiteitID)
+    public static function getPlanning($activiteitID): array
     {
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
@@ -166,7 +166,7 @@ class PlanningsModel extends DBModel
                        p.goedgekeurd
                 FROM `planning` p
                 JOIN gebruiker g on g.id = p.gebruiker_id
-                JOIN vereniging v on v.id = p.vereniging_id
+                LEFT JOIN vereniging v on v.id = p.vereniging_id
                 JOIN activiteit_event_tijd aet on aet.id = p.activiteit_event_tijd_id
                 JOIN `event_tijd` et on et.id = aet.event_tijd_id
                 JOIN activiteit a on a.id = aet.activiteit_id

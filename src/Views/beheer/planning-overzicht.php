@@ -1,17 +1,7 @@
 <?php
-
-use App\Models\ActivityModel;
-use App\Models\PlanningsModel;
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-$activiteitID = $_GET['activiteitID'];
-
-$activity = ActivityModel::getActiviteitById($activiteitID);
-
-$planning = PlanningsModel::getPlanning($activiteitID);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,38 +28,32 @@ $planning = PlanningsModel::getPlanning($activiteitID);
     <?php require_once('./parts/nav.php'); ?>
     <div class="container my-4 pb-4">
         <h1 class="text-center mb-4">Planning 
-                <?php if (!empty($activiteitID)): ?>
-                    <?= $activity['naam'];
-                ?>
+                <?php if (!empty($id)): ?>
+                <?= $activity['naam']; ?>
         </h1>
+        <h2>
+            Starttijd: <?= $activity['begin_tijd'] ?> 
+        </h2>
+        <h2>
+            Eindtijd: <?= $activity['eind_tijd'] ?>
+        </h2>
 
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Activiteit</th>
-                    <th scope="col">Activiteit Start Tijd</th>
-                    <th scope="col">Activiteit Eind Tijd</th>
                     <th scope="col">Voornaam</th>
                     <th scope="col">Achternaam</th>
                     <th scope="col">Telefoon</th>
-                    <th scope="col">Ingeplande Start Tijd</th>
+                    <th scope="col">Ingeplande Starttijd</th>
                     <th scope="col">Ingeplande Eindtijd</th>
-                    <th scope="col">Betaalt</th>
+                    <th class="col">Vereniging</th>
+                    <th scope="col">Betaald</th>
                     <th scope="col">Goedgekeurd</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($planning as $row): ?>
                     <tr>
-                        <td>
-                            <?=htmlspecialchars($row['activiteitNaam']) ?>
-                        </td>
-                        <td>
-                            <?=htmlspecialchars($row['activiteitBeginTijd']) ?>
-                        </td>
-                        <td>
-                            <?=htmlspecialchars($row['activiteitEindTijd']) ?>
-                        </td>
                         <td>
                             <?=htmlspecialchars($row['voornaam']) ?>
                         </td>
@@ -84,6 +68,9 @@ $planning = PlanningsModel::getPlanning($activiteitID);
                         </td>
                         <td>
                             <?=htmlspecialchars($row['planningEindTijd']) ?>
+                        </td>
+                        <td>
+                            <?=htmlspecialchars(isset($row['vereniging']) ? $row['vereniging'] : "-") ?>
                         </td>
                         <td>
                             <?= $row['is_betaald'] ? "Ja" : "Nee"; ?>

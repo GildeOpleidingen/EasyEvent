@@ -1,15 +1,10 @@
 <?php
 
-use App\Models\ActivityModel;
 use App\Models\EventEditModel;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-$eventid = $_GET['eventID'];
-
-$planning = ActivityModel::getActiviteitenByEventId($eventid);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,19 +46,19 @@ $planning = ActivityModel::getActiviteitenByEventId($eventid);
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($planning as $row): ?>
+                <?php foreach ($activiteiten as $activiteit): ?>
                     <tr>
                         <td>
-                            <?=htmlspecialchars($row['activiteitNaam']) ?>
+                            <?=htmlspecialchars($activiteit['activiteitNaam']) ?>
                         </td>
                         <td>
-                            <?= htmlspecialchars($row['activiteitBeginTijd']) ?>
+                            <?= htmlspecialchars($activiteit['activiteitBeginTijd']) ?>
                         </td>
                         <td>
-                            <?= htmlspecialchars($row['activiteitEindTijd']) ?>
+                            <?= htmlspecialchars($activiteit['activiteitEindTijd']) ?>
                         </td>
                         <td>
-                            <a href="/beheer/event/planning?activiteitID=<?= $row['activiteitID'] ?>">Toon Planning</a>
+                            <a href="/beheer/event/planning?activiteitID=<?= $activiteit['activiteitID'] ?>">Toon Planning</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

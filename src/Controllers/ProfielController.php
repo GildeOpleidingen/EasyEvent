@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Controller;
+use Exception;
 
 class ProfielController extends Controller
 {

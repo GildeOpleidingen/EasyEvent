@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controller;
 use App\Models\PlanningsModel;
+use App\Models\ActivityModel;
 
 class PlanningController extends Controller
 {
@@ -18,14 +19,15 @@ class PlanningController extends Controller
             $this->redirect('/login');
             exit();
         }
-        // $id = intval($_GET['eventID']);
-        // $user = unserialize($_SESSION['gebruiker']);
-        // $planningsModel = new PlanningsModel($user->getId(), -1, [], -1, [], []);
-        // $plannedActivities = $planningsModel->getPlanning($id);
-        // $planningsModel->setActivities($plannedActivities);
+ 
+        $activiteitID = $_GET['activiteitID'];
+        $activity = ActivityModel::getActiviteitById($activiteitID);
+        $planning = PlanningsModel::getPlanning($activiteitID);
+
         $this->render('/beheer/planning-overzicht', [
-        //     'planningsModel' => (array)$planningsModel,
-        //     // 'activities' => $plannedActivities
+            'id' => $activiteitID,
+            'activity' => $activity,
+            'planning' => $planning
         ]);
     }
 
@@ -40,8 +42,12 @@ class PlanningController extends Controller
             exit();
         }
 
-        $this->render('/beheer/activiteiten-overzicht', [
+        $eventid = $_GET['eventID'];
+        $activiteiten = ActivityModel::getActiviteitenByEventId($eventid);
 
+        $this->render('/beheer/activiteiten-overzicht', [
+            'activiteiten' => $activiteiten,
+            'eventid' => $eventid
         ]);
     }
 }

@@ -157,8 +157,11 @@ class ActivityModel extends DBModel
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();
         $sql = "SELECT  a.naam,
-                        a.id
+                        a.id,
+                        aet.begin_tijd,
+                        aet.eind_tijd
                 FROM activiteit a
+                LEFT JOIN activiteit_event_tijd aet on aet.activiteit_id = a.id
                 WHERE a.id = :activiteitid
                 ORDER BY a.naam
         ";
