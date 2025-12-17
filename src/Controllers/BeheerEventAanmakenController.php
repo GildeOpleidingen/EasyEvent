@@ -36,13 +36,14 @@ class BeheerEventAanmakenController extends Controller {
         $Straatnaam = $_POST['Straatnaam'] ?? null;
         $Huisnummer = $_POST['Huisnummer'] ?? null;
         $Postcode = $_POST['Postcode'] ?? null;
-        $Sector = $_POST['Sector'] ?? [];
+        $Sector = $_POST['sector'] ?? [];
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
 
         $dates = $_POST['datum'] ?? [];
         $startTimes = $_POST['begin-tijd'] ?? [];
         $endTimes = $_POST['eind-tijd'] ?? [];
+
 
         // $hasAtLeastOneTime = !empty($dates) && !empty($startTimes) && !empty($endTimes);
 
@@ -127,7 +128,8 @@ class BeheerEventAanmakenController extends Controller {
             return;
         }
 
-        $activityModel = new ActivityModel($activiteitNamen, $beginTijden, $eindTijden, $aantalPersonen);
+        for ($i=0; $i < sizeof($activiteitNamen); $i++) { 
+        $activityModel = new ActivityModel($activiteitNamen[$i], $beginTijden[$i], $eindTijden[$i], $aantalPersonen[$i]);
 
         // Add activity validation
         
@@ -140,33 +142,12 @@ class BeheerEventAanmakenController extends Controller {
         } else {
             $this->render('beheer/event-aanmaken-stap-2', ['error' => 'Er is een fout opgetreden bij het aanmaken van het evenement.']);
         }
+        }
     }
     
     public function editEvent() {
         $eventID = $_GET['eventID'] ?? null;
         
-    //     if (!is_numeric($eventID)) {
-    //         die('Invalid event ID.');
-    //     }
-        
-    //     $mysql = Conn::getInstance();
-    //     $db = $mysql->getPDO();
-        
-    // $query = "SELECT * FROM `event` WHERE `ID` = :eventID";
-    // $sqlstmt = $db->prepare($query);
-    // $sqlstmt->bindParam(':eventID', $eventID, PDO::PARAM_INT);
-
-    // if (!$sqlstmt->execute()) {
-    //     die('Query failed: ' . implode(' ', $sqlstmt->errorInfo()));
-    // }
-
-    // $event = $sqlstmt->fetch(PDO::FETCH_ASSOC);
-
-    // if (!$event) {
-    //     echo "No event found.";
-    // } else {
-    //     print_r($event);
-    // }
         $EEModel = new EventEditModel;
 
         $EEModel->event = $EEModel->getEventByID($eventID);
