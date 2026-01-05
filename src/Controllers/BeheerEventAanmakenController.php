@@ -11,6 +11,7 @@ use App\Models\UsersModel;
 use App\Models\EventEditModel;
 use App\Models\SectorModel;
 use App\Models\ActivityModel;
+use App\Models\RolModel;
 
 class BeheerEventAanmakenController extends Controller {
     public function index() {
@@ -103,8 +104,11 @@ class BeheerEventAanmakenController extends Controller {
     public function sendEventStep2()
     {
         $eventOrganizer = $_SESSION['GebruikersID'] ?? null;
-        // Check if eventOrganizer is set and is an integer
-        if (!isset($eventOrganizer) || !ctype_digit((string)$eventOrganizer)) {
+
+        $isbevoegd = RolModel::isBevoegd($eventOrganizer);
+
+       
+        if (!isset($eventOrganizer) || !ctype_digit((string)$eventOrganizer) || !$isbevoegd) {
             $this->render('beheer/home', ['error' => 'Organisator is niet geldig.']);
             return;
         }
@@ -133,14 +137,14 @@ class BeheerEventAanmakenController extends Controller {
 
         // Add activity validation
         
-        $result = $activityModel->sendActivity($activityModel);
+        $result = ActivityModel::sendActivity($activityModel);
 
 
         if ($result) {
             $this->redirect('/beheer/event-overzicht?'. $currentEventID .'');
             return; // Ensure to return after rendering
         } else {
-            $this->render('beheer/event-aanmaken-stap-2', ['error' => 'Er is een fout opgetreden bij het aanmaken van het evenement.']);
+            $this->render('beheer/event-aanmaken-stap-2', ['error' => $result]);
         }
         }
     }

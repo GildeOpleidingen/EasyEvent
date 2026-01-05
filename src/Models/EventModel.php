@@ -147,8 +147,8 @@ class EventModel
                     $errors[] = "De postcode moet bestaan uit 4 cijfers";
                 }
             }
-            if (!$title && !$description && !$location && !$dates) {
-                $event = new EventModel($title,$description,$location,$dates);
+            if (!$title && !$description && !$location) {
+                $event = new EventModel($title,$description,$location);
             }
         } 
 
