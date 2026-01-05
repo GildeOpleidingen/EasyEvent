@@ -3,7 +3,6 @@
 
 // content.style.display = "none";
 
-
 // setTimeout(() => {
 //     // loader.style.display = "none";
 //     content.style.display = "block";
