@@ -10,6 +10,8 @@ use App\Models\EventModel;
 use App\Models\UsersModel;
 use App\Models\EventEditModel;
 use App\Models\SectorModel;
+use App\Models\ActivityModel;
+use App\Models\RolModel;
 
 class BeheerEventAanmakenController extends Controller {
     public function index() {
@@ -35,13 +37,14 @@ class BeheerEventAanmakenController extends Controller {
         $Straatnaam = $_POST['Straatnaam'] ?? null;
         $Huisnummer = $_POST['Huisnummer'] ?? null;
         $Postcode = $_POST['Postcode'] ?? null;
-        $Sector = $_POST['Sector'] ?? [];
+        $Sector = $_POST['sector'] ?? [];
         $hoofdEvent = $_POST['hoofdEvent'] ?? null;
         $eventID = $_POST['eventID'] ?? null;
 
         $dates = $_POST['datum'] ?? [];
         $startTimes = $_POST['begin-tijd'] ?? [];
         $endTimes = $_POST['eind-tijd'] ?? [];
+
 
         // $hasAtLeastOneTime = !empty($dates) && !empty($startTimes) && !empty($endTimes);
 
@@ -65,7 +68,7 @@ class BeheerEventAanmakenController extends Controller {
             ];
         }
         $eventModel = new EventModel( $eventOrganizer, $eventName, $eventInfo, $Land, $Plaats, $Straatnaam,$Huisnummer, $Postcode, $Sector, $eventTimes);
-        // die();
+
         $errors = $eventModel->validateModel();
         // Sla de gegevens tijdelijk op in de sessie
         $_SESSION['register_data'] = [
@@ -93,44 +96,62 @@ class BeheerEventAanmakenController extends Controller {
             $this->redirect('/beheer/event-aanmaken-stap-2?eventId='. $eventModel->getEventID() .'');
             return; // Ensure to return after rendering
         } else {
-            $this->render('beheer/event-aanmaken', ['error' => 'Er is een fout opgetreden bij het aanmaken van het evenement.']);
+            $this->render('beheer/event-aanmaken', ['error' => $errors]);
         }
 
     }
     
     public function sendEventStep2()
     {
-        $currentEventID = $_GET['eventId'];
+        $eventOrganizer = $_SESSION['GebruikersID'] ?? null;
+
+        $isbevoegd = RolModel::isBevoegd($eventOrganizer);
+
+       
+        if (!isset($eventOrganizer) || !ctype_digit((string)$eventOrganizer) || !$isbevoegd) {
+            $this->render('beheer/home', ['error' => 'Organisator is niet geldig.']);
+            return;
+        }
+        $eventOrganizer = (int)$eventOrganizer;
+        $activiteitNamen = $_POST['activity-name'] ?? [];
+        $beginTijden = $_POST['activity-begintime'] ?? [];
+        $eindTijden = $_POST['activity-endtime'] ?? [];
+        $aantalPersonen = $_POST['activity-people'] ?? [];
+
+
+        $currentEventID = $_GET['eventId'] ?? null;
+
+        // Controleer of alle velden ingevuld zijn
+        if (empty($activiteitNamen) || empty($beginTijden) || empty($eindTijden) || empty($aantalPersonen)) {
+            var_dump($activiteitNamen);
+            var_dump($beginTijden);
+            var_dump($eindTijden);
+            var_dump($aantalPersonen);
+            var_dump($_POST);
+            $this->render('beheer/event-aanmaken-stap-2', ['error' => 'Alle velden zijn verplicht.']);
+            return;
+        }
+
+        for ($i=0; $i < sizeof($activiteitNamen); $i++) { 
+        $activityModel = new ActivityModel($activiteitNamen[$i], $beginTijden[$i], $eindTijden[$i], $aantalPersonen[$i]);
+
+        // Add activity validation
         
-        var_dump($currentEventID);
-        die;
+        $result = ActivityModel::sendActivity($activityModel);
+
+
+        if ($result) {
+            $this->redirect('/beheer/event-overzicht?'. $currentEventID .'');
+            return; // Ensure to return after rendering
+        } else {
+            $this->render('beheer/event-aanmaken-stap-2', ['error' => $result]);
+        }
+        }
     }
     
     public function editEvent() {
         $eventID = $_GET['eventID'] ?? null;
         
-    //     if (!is_numeric($eventID)) {
-    //         die('Invalid event ID.');
-    //     }
-        
-    //     $mysql = Conn::getInstance();
-    //     $db = $mysql->getPDO();
-        
-    // $query = "SELECT * FROM `event` WHERE `ID` = :eventID";
-    // $sqlstmt = $db->prepare($query);
-    // $sqlstmt->bindParam(':eventID', $eventID, PDO::PARAM_INT);
-
-    // if (!$sqlstmt->execute()) {
-    //     die('Query failed: ' . implode(' ', $sqlstmt->errorInfo()));
-    // }
-
-    // $event = $sqlstmt->fetch(PDO::FETCH_ASSOC);
-
-    // if (!$event) {
-    //     echo "No event found.";
-    // } else {
-    //     print_r($event);
-    // }
         $EEModel = new EventEditModel;
 
         $EEModel->event = $EEModel->getEventByID($eventID);

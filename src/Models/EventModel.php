@@ -162,14 +162,13 @@ class EventModel
 
     public function validateModel() {
         //event
-        $title;
-        $description;
+        $title = "";
+        $description = "";
         $date = [];
         $location = [];
-        $banner;
 
         // geen post gebruik eigenschappen van de class
-        if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+        if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location'])) {
             // checks for invalid input for title
             if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
                 $title = htmlspecialchars($_POST['title']);
@@ -202,17 +201,12 @@ class EventModel
                     $errors[] = "De postcode moet bestaan uit 4 cijfers";
                 }
             }
-            if (isset($_POST['banner'])) {
-                $img = file_get_contents($_POST['banner']);
-                $data = base64_encode($img);
-            }
-            if (!$title && !$description && !$location && !$date && !$banner) {
-                $event = new EventModel($title,$description,$location,$date,$banner);
+            if (!$title && !$description && !$location && !$date) {
+                $event = new EventModel($title,$description,$location);
             }
         } 
 
         if (isset($_POST["activityName1"]) && isset($_POST["activityTime1"]) && isset($_POST["activityPeople1"])){
-            $activityCount++;
             if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['activityTitle'])) {
                 $description = htmlspecialchars($_POST['activityTitle']);
             }
@@ -288,16 +282,12 @@ class EventModel
                     return "The sector insertion failed!";
                 }
             }
+            var_dump($event);
+            // die;
         }
         error_log("Event insertion failed: " . implode(", ", $stmtEvent->errorInfo()));
         // echo "Insertion into `event` table failed!";
         return "Insertion into `event` table failed!";
     }
-
-    public function sendActivity()
-    {
-        
-    }
-
 }
 

@@ -33,6 +33,28 @@ class RolModel extends DBModel
     {
         $this->id = $value;
     }
+
+    public static function isBevoegd($userid) {
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+
+        $sql = "SELECT 1 
+                FROM gebruiker_rol gr
+                JOIN rol r ON r.id = gr.rol_id
+                WHERE gr.gebruiker_id = :userid
+                AND r.rol IN ('Admin', 'Organisator')
+                LIMIT 1
+                ";
+
+        $stmt = $db->prepare($sql);
+
+        if (!$stmt->execute(['userid' => $userid])) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+
+        
+        return (bool) $stmt->fetchColumn();
+    }
     
     public static function getAllRoles()
     {
@@ -77,7 +99,7 @@ class RolModel extends DBModel
         return $rolID;
     }
 
-    public static function getRolesByUserId($id)
+    public static function getRolesByUserId($id): array
     {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();

@@ -308,7 +308,7 @@ class UserModel
 
         if ($requiredProperty == "eventID") {
             $userID = $userModel->getId();
-            $overeenkomst;
+            $overeenkomst = false;
             
             $db = Conn::getPDO();
             $stmt = $db->prepare("SELECT * FROM `event` WHERE organisator_id = :id");
