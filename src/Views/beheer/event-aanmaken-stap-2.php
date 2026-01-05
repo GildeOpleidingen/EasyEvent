@@ -88,35 +88,6 @@ use App\Models\EventsModel;
             document.getElementById("successMessage").style.display = "block";
         });
 
-        // document.getElementById("addDay").addEventListener("click", function() {
-        //     const container = document.getElementById("eventDatesContainer");
-        //     const newDay = document.createElement("div");
-        //     newDay.classList.add("mb-3", "row");
-        //     newDay.innerHTML = `
-        //         <div class="col-md-4">
-        //             <label for="activityName1" class="form-label">Naam <span class="verplicht">*</span></label>
-        //             <input type="text" class="form-control" id="activityName1" name="activity-name[]" placeholder="Activiteit Naam" required>
-        //             <div class="invalid-feedback">Voer een activiteit naam in.</div>
-        //         </div>
-        //         <div class="col-md-4">
-        //             <label for="activityTime1" class="form-label">Begintijd <span class="verplicht">*</span></label>
-        //             <input type="time" class="form-control" id="activityBeginTime1" name="activity-begintime[]" required>
-        //             <div class="invalid-feedback">Voer een activiteit begin tijd in.</div>
-        //         </div>
-        //         <div class="col-md-4">
-        //             <label for="activityTime1" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-        //             <input type="time" class="form-control" id="activityEndTime1" name="activity-endtime[]" required>
-        //             <div class="invalid-feedback">Voer een activiteit eind tijd in.</div>
-        //         </div>
-        //         <div class="col-md-4">
-        //             <label for="activityPeople1" class="form-label">Aantal personen <span class="verplicht">*</span></label>
-        //             <input type="number" class="form-control" id="activityPeople1" name="activity-people[]" placeholder="Aantal personen" required>
-        //             <div class="invalid-feedback">Voer het aantal personen in voor de activiteit</div>
-        //         </div>
-        //     `;
-        //     container.appendChild(newDay);
-        // });
-
         document.getElementById("eventDatesContainer").addEventListener("click", function(event) {
             if (event.target.classList.contains("remove-day") || event.target.closest(".remove-day")) {
                 event.target.closest(".row").remove();
