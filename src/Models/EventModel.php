@@ -17,12 +17,12 @@ class EventModel
     public string $Postcode;
     public int $eventOrganizer;
     public $eventSector = [];
-    public $eventTime = [];   //[[date, startTime,endTime],[date, startTime,endTime]]
+    public $eventTimes = [];   //[[dates, startTimes,endTimes],[dates, startTimes,endTimes]]
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $hoofdEventID;
 
-    public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', array $Sector = [], array $eventTime = []){
+    public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', array $Sector = [], array $eventTimes = []){
         $this->eventOrganizer = $eventOrganizer;
         $this->eventName = $eventName;
         $this->eventInfo = $eventInfo;
@@ -32,13 +32,7 @@ class EventModel
         $this->Huisnummer = $Huisnummer;
         $this->Postcode = $Postcode;
         $this->eventSector = $Sector;
-
-        if (!empty($eventTime) 
-            && isset($eventTime['date'], $eventTime['BeginTijd'], $eventTime['EindTijd']) 
-            && $eventTime['date'] !== '' && $eventTime['BeginTijd'] !== '' && $eventTime['EindTijd'] !== '') 
-            {
-            $this->eventTime[] = $eventTime;
-        }
+        $this->eventTimes = $eventTimes;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,10 +67,10 @@ class EventModel
     }
     public function addEventTime(array $timeSlot){
         if (!empty($timeSlot) 
-            && isset($timeSlot['date'], $timeSlot['BeginTijd'], $timeSlot['EindTijd']) 
-            && $timeSlot['date'] !== '' && $timeSlot['BeginTijd'] !== '' && $timeSlot['EindTijd'] !== '') 
+            && isset($timeSlot['dates'], $timeSlot['BeginTijd'], $timeSlot['EindTijd']) 
+            && $timeSlot['dates'] !== '' && $timeSlot['BeginTijd'] !== '' && $timeSlot['EindTijd'] !== '') 
             {
-            $this->eventTime[] = $timeSlot;
+            $this->eventTimes[] = $timeSlot;
         }
     }
     public function addEventSectorInfo(array $sectorInfo){
@@ -126,7 +120,7 @@ class EventModel
         return $this->eventOrganizer;
     }
     public function getEventTime(){
-        return $this->eventTime;
+        return $this->eventTimes;
     }
     public function getEventSectorInfo(){
         return $this->eventSectorInfo;
@@ -168,14 +162,13 @@ class EventModel
 
     public function validateModel() {
         //event
-        $title;
-        $description;
+        $title = "";
+        $description = "";
         $date = [];
         $location = [];
-        $banner;
 
         // geen post gebruik eigenschappen van de class
-        if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+        if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location'])) {
             // checks for invalid input for title
             if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
                 $title = htmlspecialchars($_POST['title']);
@@ -208,17 +201,12 @@ class EventModel
                     $errors[] = "De postcode moet bestaan uit 4 cijfers";
                 }
             }
-            if (isset($_POST['banner'])) {
-                $img = file_get_contents($_POST['banner']);
-                $data = base64_encode($img);
-            }
-            if (!$title && !$description && !$location && !$date && !$banner) {
-                $event = new EventModel($title,$description,$location,$date,$banner);
+            if (!$title && !$description && !$location && !$date) {
+                $event = new EventModel($title,$description,$location);
             }
         } 
 
         if (isset($_POST["activityName1"]) && isset($_POST["activityTime1"]) && isset($_POST["activityPeople1"])){
-            $activityCount++;
             if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['activityTitle'])) {
                 $description = htmlspecialchars($_POST['activityTitle']);
             }
@@ -253,24 +241,24 @@ class EventModel
             error_log("Event insertion successful: " . json_encode($event));
             // Retrieve the last inserted ID for the event
             $event->eventID = $db->lastInsertId();
-
             // Insert each time slot into the `event_tijd` table
             $sqlEventTime = "INSERT INTO `event_tijd` 
                              (event_id, land, plaatsnaam, straatnaam, huisnummer, postcode, datum, begin_tijd, eind_tijd) 
                              VALUES (:eventID, :Land, :Plaats, :Straatnaam, :Huisnummer, :Postcode, :date, :BeginTijd, :EindTijd)";
-
+ 
             $stmtEventTime = $db->prepare($sqlEventTime);
 
-            foreach ($event->eventTime as $i => $slot) {
+            foreach ($event->eventTimes as $slot) {
                 $stmtEventTime->bindParam(':eventID', $event->eventID);
                 $stmtEventTime->bindParam(':Land', $event->Land);
                 $stmtEventTime->bindParam(':Plaats', $event->Plaats);
                 $stmtEventTime->bindParam(':Straatnaam', $event->Straatnaam);
                 $stmtEventTime->bindParam(':Huisnummer', $event->Huisnummer);
                 $stmtEventTime->bindParam(':Postcode', $event->Postcode);
+
                 $stmtEventTime->bindParam(':date', $slot['date']);
-                $stmtEventTime->bindParam(':BeginTijd', $slot['BeginTijd']);
-                $stmtEventTime->bindParam(':EindTijd', $slot['EindTijd']);
+                $stmtEventTime->bindParam(':BeginTijd', $slot['BeginTime']);
+                $stmtEventTime->bindParam(':EindTijd', $slot['EndTime']);
 
                 if (!$stmtEventTime->execute()) {
                     // Rollback if the time slot insertion fails
@@ -294,10 +282,12 @@ class EventModel
                     return "The sector insertion failed!";
                 }
             }
+            var_dump($event);
+            // die;
         }
         error_log("Event insertion failed: " . implode(", ", $stmtEvent->errorInfo()));
         // echo "Insertion into `event` table failed!";
         return "Insertion into `event` table failed!";
     }
-
 }
+

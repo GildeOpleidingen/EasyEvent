@@ -191,10 +191,10 @@ class PlanningsModel extends DBModel
                 'EindTijd' => $row['eventEindTijd']
             ]);
 
-            $activity = new ActivityModel();
-            $activity->setNaam($row['activiteitNaam']);
-            $activity->setBeginTijd($row['activiteitBeginTijd']);
-            $activity->setEindTijd($row['activiteitEindTijd']);
+            $activity = new ActivityModel($row['activiteitNaam'], $row['activiteitBeginTijd'], $row['activiteitEindTijd']);
+            // $activity->setNaam($row['activiteitNaam']);
+            // $activity->setBeginTijd($row['activiteitBeginTijd']);
+            // $activity->setEindTijd($row['activiteitEindTijd']);
 
             $user = new UserModel([]);
             $user->setVoornaam($row['voornaam']);

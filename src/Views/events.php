@@ -1,3 +1,7 @@
+<?php 
+use App\Models\SectorModel;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +25,7 @@
 </head>
 
 <body>
-<div class="container-fluid vh-100">
+<div class="container py-4">
     <?php require_once("./parts/nav.php"); ?>
 
     <div class="row g-4">
@@ -30,10 +34,10 @@
         <div class="col-12">
             <div class="nav-buttons d-flex mb-3">
                 <button class="btn btn-primary">Alle</button>
-                <button class="btn btn-primary">Sport</button>
-                <button class="btn btn-primary">Cultuur</button>
-                <button class="btn btn-primary">School</button>
-                <button class="btn btn-primary">Gamen</button>
+
+                <?php foreach (SectorModel::getAllSectors() as $key => $sector) {
+                    echo '<button class="btn btn-primary">' . $sector->getSector() . '</button>';
+                } ?>
             </div>
         </div>
 

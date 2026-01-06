@@ -17,6 +17,14 @@
     <link rel="stylesheet" href="/css/beheer.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        .btn-as-link {
+        background: none;
+        border: none;
+        padding: 0;
+        }
+    </style>
 </head>
 <body>
     <?php $bevoegd = false; ?>
@@ -41,12 +49,12 @@
                         <h5>Bekijk evenementen</h5>
                     </div>
                 </a>
-                <a class="col-6 col-md-4 text-decoration-none" href="">
+                <button  class="col-6 col-md-4 text-decoration-none btn-as-link" href="" disabled>
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-people mb-2 fs-1"></i>
                         <h5>Bekijk verenigingen</h5>
                     </div>
-                </a>
+                </button>
                 <?php if ($bevoegd): ?>
                 <a class="col-6 col-md-4 text-decoration-none" href="/beheer/user-overzicht">
                     <div class="p-4 bg-light text-center shadow rounded">
@@ -62,12 +70,12 @@
                         <h5>Maak een nieuw evenement aan</h5>
                     </div>
                 </a>
-                <a class="col-6 col-md-4 text-decoration-none" href="#">
+                <button class="col-6 col-md-4 text-decoration-none btn-as-link" href="#" disabled>
                     <div class="p-4 bg-light text-center shadow rounded">
                         <i class="bi bi-plus-square mb-2 fs-1"></i>
                         <h5>Voeg een nieuwe vereniging toe</h5>
                     </div>
-                </a>
+                </button>
                 <?php if ($bevoegd): ?>
                 <a class="col-6 col-md-4 text-decoration-none" href="/beheer/user-aanmaken">
                     <div class="p-4 bg-light text-center shadow rounded">
