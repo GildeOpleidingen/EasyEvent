@@ -11,6 +11,7 @@ use App\Controllers\EventsController;
 use App\Controllers\EventInfoController;
 use App\Controllers\ProfielController;
 use App\Controllers\UserController;
+use App\Controllers\KindController;
 use App\Router;
 
 ini_set('display_errors', 1);
@@ -54,8 +55,8 @@ $router->post('/beheer/user-aanmaken', UserController::class, 'saveUser', true);
 $router->get('/beheer/user/delete', UserController::class, 'delete', true);
 $router->get('/beheer/event-bewerken', BeheerEventAanmakenController::class, 'editEvent', true, 'eventID');
 $router->get('/beheer/event/delete', EventsController::class, 'delete', true);
-$router->get('/add-child', ProfielController::class, 'addChildForm', true);
-$router->post('/add-child', ProfielController::class, 'addChild', true);
+$router->get('/add-child', KindController::class, 'index', true);
+$router->post('/add-child', KindController::class, "saveChild");
 
 
 $router->dispatch();
