@@ -2,25 +2,28 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\KindModel;
 use App\Controller;
 
 class ProfielController extends Controller
 {
     public function index()
     {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+
         if (!isset($_SESSION['gebruiker'])) {
-            return $this->render('login', ['error' => 'Je moet ingelogd zijn om je profiel te bekijken.']);
+            return $this->render('login', ['error' => 'Je moet ingelogd zijn om je profiel te kunnen bewerken.']);
         }
 
-        $gebruiker = unserialize($_SESSION['gebruiker']);
+        $gebruikerSession = unserialize($_SESSION['gebruiker']);
+        $gebruiker = UserModel::getById($gebruikerSession->getId());
 
-        $gebruiker = UserModel::getById($gebruiker->getId());
+        $kinderen = KindModel::getKinderenByOuder($gebruiker->getId());
 
-        if (!$gebruiker) {
-            return $this->render('login', ['error' => 'Gebruiker niet gevonden. Log opnieuw in.']);
-        }
-
-        return $this->render('profiel', ['gebruiker' => $gebruiker]);
+        return $this->render('profiel', [
+            'gebruiker' => $gebruiker,
+            'kinderen'  => $kinderen
+        ]);
     }
 
     public function updateTelefoon()
@@ -34,7 +37,7 @@ class ProfielController extends Controller
 
         return $this->render('profiel', [
             'gebruiker' => $gebruiker,
-            'success' => 'Telefoonnummer bijgewerkt'
+            'success' => 'Telefoonnummer bijgewerkt',
         ]);
     }
 

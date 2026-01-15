@@ -82,6 +82,39 @@ use App\Conn;
                                 </div>
                             </div>
                         </div>
+                        <hr class="mt-4">
+                        <div class="row mt-3">
+                            <div class="col-12 text-start">
+                                <h6 class="text-dark fw-bold mb-3 ms-2">
+                                    <i class="bi bi-people-fill me-2"></i>Mijn Kinderen
+                                </h6>
+
+                                <?php if (!empty($kinderen)): ?>
+                                    <div class="row g-2 ms-1 me-1"> <?php foreach ($kinderen as $kind): ?>
+                                            <div class="col-sm-6">
+                                                <div class="card border-0 bg-light py-2 px-3" style="border-radius: 12px;">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-person-circle text-primary me-2" style="font-size: 1.2rem;"></i>
+                                                        <div class="overflow-hidden">
+                                                            <p class="mb-0 fw-bold text-dark" style="font-size: 0.85rem; line-height: 1.2;">
+                                                                <?php echo htmlspecialchars($kind->voornaam . ' ' . $kind->achternaam); ?>
+                                                            </p>
+                                                            <small class="text-muted" style="font-size: 0.75rem;">
+                                                                <?php echo htmlspecialchars($kind->postcode); ?>
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="ms-2 alert alert-light border-0 py-2">
+                                        <p class="mb-0 text-muted small"><i class="bi bi-info-circle me-2"></i>Nog geen kinderen toegevoegd.</p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-between flex-wrap">
@@ -168,6 +201,8 @@ use App\Conn;
             </div>
         </div>
     </div>
+
+
 
     <script>
         function openModalPassword() {

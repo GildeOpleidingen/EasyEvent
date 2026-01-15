@@ -1,5 +1,5 @@
 <?php
-use App\Conn;
+$gebruiker = $gebruiker ?? (object)[];
 ?>
 
 <!DOCTYPE html>
@@ -47,18 +47,14 @@ use App\Conn;
 
                 <?php //?>
                 <?php if (isset($gebruiker)): ?>
-                <form action="/add-child" method="POST" class="w-75">
-                    <div class="form-floating mb=3">
+                    <form action="" method="POST" class="w-75 needs-validation" novalidate>
+                        <div class="form-floating mb=3">
                         <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam" required>
                         <label for="voornaam">Voornaam</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" id="achternaam" name="achternaam" class="form-control rounded-0" placeholder="Achternaam" required>
                         <label for="achternaam">Achternaam</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="date" id="geboortedatum" name="geboortedatum" class="form-control rounded-0" placeholder="Geboortedatum" required>
-                        <label for="geboortedatum">Geboortedatum</label>
                     </div>
 
                     <p class="text-muted text-center ms-6">Adresgegevens (standaard van jou, pas aan indien nodig)</p>
@@ -99,9 +95,56 @@ use App\Conn;
     </div>
 </div>
 
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Succes!</h5>
+            </div>
+            <div class="modal-body text-center">
+                <i class="bi bi-check-circle-fill" style="font-size: 3rem; color: green;"></i>
+                <p class="mt-3 fs-5">Kind is succesvol toegevoegd!</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <a href="/profiel" class="btn btn-primary">Terug naar profiel</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nog een kind toevoegen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="../../js/bootstrap.bundle.js"></script>
 <script src="../../js/script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../../js/animaties.js"></script>
+
+<script>
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
+<?php if (isset($childAdded) && $childAdded === true): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+            myModal.show();
+        });
+    </script>
+<?php endif; ?>
+?>
+
 </body>
 </html>
