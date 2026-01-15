@@ -26,7 +26,7 @@ class EventEditModel extends DBModel
         if (!$sqlstmt->execute()) {
             die('Query failed: ' . implode(' ', $sqlstmt->errorInfo()));
         }
-
+        
         return $sqlstmt->fetch(PDO::FETCH_ASSOC);
     }
 }
