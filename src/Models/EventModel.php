@@ -21,6 +21,7 @@ class EventModel
     public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
     public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
     public $hoofdEventID;
+    public bool $isIngeschreven = false; // inschrijf voor gebruiker
 
     public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', array $Sector = [], array $eventTimes = []){
         $this->eventOrganizer = $eventOrganizer;

@@ -11,6 +11,7 @@ use App\Controllers\EventsController;
 use App\Controllers\EventInfoController;
 use App\Controllers\ProfielController;
 use App\Controllers\UserController;
+use App\Controllers\InschrijfController;
 use App\Router;
 
 ini_set('display_errors', 1);
@@ -56,6 +57,7 @@ $router->get('/beheer/event-bewerken', BeheerEventAanmakenController::class, 'ed
 $router->get('/beheer/event/delete', EventsController::class, 'delete', true);
 $router->get('/add-child', ProfielController::class, 'addChildForm', true);
 $router->post('/add-child', ProfielController::class, 'addChild', true);
-
+$router->post('/inschrijven', InschrijfController::class, 'inschrijven', true);
+$router->get('/uitschrijven', InschrijfController::class, 'uitschrijven', true);
 
 $router->dispatch();
