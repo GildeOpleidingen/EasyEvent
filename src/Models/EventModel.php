@@ -10,30 +10,12 @@ class EventModel
     public int $eventID;
     public string $eventName;
     public string $eventInfo;
-    public string $Land;
-    public string $Plaats;
-    public string $Straatnaam;
-    public string $Huisnummer;
-    public string $Postcode;
     public int $eventOrganizer;
-    public $eventSector = [];
-    public $eventTimes = [];   //[[dates, startTimes,endTimes],[dates, startTimes,endTimes]]
-    public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
-    public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
-    public $hoofdEventID;
+    public array $eventSector = [];
+    public array $eventTimes = [];
+    public int $hoofdEventID;
 
-    public function __construct(int $eventOrganizer = 0, string $eventName = '', string $eventInfo = '', string $Land = '', string $Plaats = '', string $Straatnaam = '', string $Huisnummer = '', string $Postcode = '', array $Sector = [], array $eventTimes = []){
-        $this->eventOrganizer = $eventOrganizer;
-        $this->eventName = $eventName;
-        $this->eventInfo = $eventInfo;
-        $this->Land = $Land;
-        $this->Plaats = $Plaats;
-        $this->Straatnaam = $Straatnaam;
-        $this->Huisnummer = $Huisnummer;
-        $this->Postcode = $Postcode;
-        $this->eventSector = $Sector;
-        $this->eventTimes = $eventTimes;
-    }
+    public function __construct(){}
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Setters
@@ -43,47 +25,32 @@ class EventModel
     }
     public function setEventInfo(string $eventInfo){
         $this->eventInfo = $eventInfo;
-    }
-    public function setEventCountry(string $Land){
-        $this->Land = $Land;
-    }
-    public function setEventPlace(string $Plaats){
-        $this->Plaats = $Plaats;
-    }
-    public function setEventStreet(string $Straatnaam){
-        $this->Straatnaam = $Straatnaam;
-    }
-    public function setEventHouseNumber(string $Huisnummer){
-        $this->Huisnummer = $Huisnummer;
-    }
-    public function setEventPostcode(string $Postcode){
-        $this->Postcode = $Postcode;
-    }
-    public function setEventSector(string $Sector){
+    } function setEventSector(string $Sector){
         $this->eventSector[] = $Sector;
     }
     public function setEventOrganizer(int $eventOrganizer){
         $this->eventOrganizer = $eventOrganizer;
     }
-    public function addEventTime(array $timeSlot){
+    public function setEventTimes(array $eventTimes) {
+        $this->eventTimes = $eventTimes;
+    }
+    public function setHoofdEventID(int $hoofdEventID){
+        $this->hoofdEventID = $hoofdEventID;
+    }
+    public function setEventID(string $eventID){
+        $this->eventID = $eventID;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Adders
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function addEventTime(EventTijdModel $eventTijd){
         if (!empty($timeSlot) 
             && isset($timeSlot['dates'], $timeSlot['BeginTijd'], $timeSlot['EindTijd']) 
             && $timeSlot['dates'] !== '' && $timeSlot['BeginTijd'] !== '' && $timeSlot['EindTijd'] !== '') 
             {
             $this->eventTimes[] = $timeSlot;
         }
-    }
-    public function addEventSectorInfo(array $sectorInfo){
-        $this->eventSectorInfo[] = $sectorInfo;
-    }
-    public function addImage(array $image){
-        $this->images[] = $image;
-    }
-    public function addHoofdEventID(int $hoofdEventID){
-        $this->hoofdEventID = $hoofdEventID;
-    }
-    public function addEventID(string $eventID){
-        $this->eventID = $eventID;
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,35 +65,14 @@ class EventModel
     public function getEventInfo(){
         return $this->eventInfo;
     }
-    public function getEventCountry(){
-        return $this->Land;
-    }
-    public function getEventPlace(){
-        return $this->Plaats;
-    }
-    public function getEventStreet(){
-        return $this->Straatnaam;
-    }
-    public function getEventHouseNumber(){
-        return $this->Huisnummer;
-    }
-    public function getEventPostcode(){
-        return $this->Postcode;
-    }
     public function getEventSector(){
         return $this->eventSector;
     }
     public function getEventOrganizer(){
         return $this->eventOrganizer;
     }
-    public function getEventTime(){
+    public function getEventTimes(){ 
         return $this->eventTimes;
-    }
-    public function getEventSectorInfo(){
-        return $this->eventSectorInfo;
-    }
-    public function getImages(){
-        return $this->images;
     }
     public function getHoofdEventID(){
         return $this->hoofdEventID;
@@ -162,11 +108,10 @@ class EventModel
 
     public function validateModel() {
         //event
-        $title;
-        $description;
-        $date = [];
-        $location = [];
-        $banner;
+        $title = $this->getEventName();
+        $description = $this->getEventInfo();
+        $dates = $this->getEventTimes(); 
+        $location = "";
 
         // geen post gebruik eigenschappen van de class
         if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
@@ -202,17 +147,12 @@ class EventModel
                     $errors[] = "De postcode moet bestaan uit 4 cijfers";
                 }
             }
-            if (isset($_POST['banner'])) {
-                $img = file_get_contents($_POST['banner']);
-                $data = base64_encode($img);
-            }
-            if (!$title && !$description && !$location && !$date && !$banner) {
-                $event = new EventModel($title,$description,$location,$date,$banner);
+            if (!$title && !$description && !$location && !$dates) {
+                $event = new EventModel($title,$description,$location,$dates);
             }
         } 
 
         if (isset($_POST["activityName1"]) && isset($_POST["activityTime1"]) && isset($_POST["activityPeople1"])){
-            $activityCount++;
             if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['activityTitle'])) {
                 $description = htmlspecialchars($_POST['activityTitle']);
             }
@@ -254,13 +194,15 @@ class EventModel
  
             $stmtEventTime = $db->prepare($sqlEventTime);
 
-            foreach ($event->eventTimes as $slot) {
-                $stmtEventTime->bindParam(':eventID', $event->eventID);
-                $stmtEventTime->bindParam(':Land', $event->Land);
-                $stmtEventTime->bindParam(':Plaats', $event->Plaats);
-                $stmtEventTime->bindParam(':Straatnaam', $event->Straatnaam);
-                $stmtEventTime->bindParam(':Huisnummer', $event->Huisnummer);
-                $stmtEventTime->bindParam(':Postcode', $event->Postcode);
+            $eventTimesArray = $event->getEventTimes();
+
+            foreach ($eventTimesArray as $slot) {
+                $stmtEventTime->bindParam(':eventID', $slot->eventId);
+                $stmtEventTime->bindParam(':Land', $slot->Land);
+                $stmtEventTime->bindParam(':Plaats', $slot->Plaats);
+                $stmtEventTime->bindParam(':Straatnaam', $slot->Straatnaam);
+                $stmtEventTime->bindParam(':Huisnummer', $slot->Huisnummer);
+                $stmtEventTime->bindParam(':Postcode', $slot->Postcode);
 
                 $stmtEventTime->bindParam(':date', $slot['date']);
                 $stmtEventTime->bindParam(':BeginTijd', $slot['BeginTime']);
