@@ -93,8 +93,10 @@ use App\Models\InschrijfModel;
                                     <?php else: ?>
                                         <?php $inschrijfModel = $inschrijfModel ?? new \App\Models\InschrijfModel(); ?>
                                         <?php $eventTijden = $inschrijfModel->getEventTijden($event->getEventID()); ?>
+
                                         <form method="post" action="/inschrijven" class="d-flex w-100 align-items-center justify-content-between">
                                             <div class="d-flex gap-2 flex-wrap">
+
                                                 <?php foreach ($eventTijden as $tijd): ?>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox"
