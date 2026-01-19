@@ -60,31 +60,31 @@ use App\Conn;
                 <div class="card position-relative mt-5">
                     <div class="card-body text-start ms-5">
                         <img src="./images/output-onlinepngtools (5).png" alt="Profile Picture" class="img-fluid rounded-circle position-absolute profiel-foto" style="width: 150px; height: 150px; top: -75px; left: calc(50% - 75px);">
-                        <div class="mt-5 pt-5 row">
+                        <div class="mt-5 pt-5">
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-envelope-fill me-2"></i><span class="label">Email:</span> <?php echo $gebruiker->getEmail() ?></p>
-                                    <p><i class="bi bi-key-fill me-2"></i><span class="label">Wachtwoord:</span> ****** <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Wachtwoord wijzigen" onclick="openModalPassword();"></i></p>
+                                    <p class="flex-wrap"><i class="bi bi-envelope-fill me-2"></i><span class="label">Email:</span> <?php echo $gebruiker->getEmail() ?></p>
+                                    <p class="flex-wrap"><i class="bi bi-key-fill me-2"></i><span class="label">Wachtwoord:</span> ****** <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Wachtwoord wijzigen" onclick="openModalPassword();"></i></p>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <span class="ms-4"> <?php echo $gebruiker->getTelefoon() ?> </span> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></p>
+                                    <p class="flex-wrap d-inline-flex"><i class="bi bi-telephone-fill me-2"></i>Telefoonnummer: <span class="ms-4"> <div class="d-inline-flex align-items-center flex-wrap"> <?php echo $gebruiker->getTelefoon() ?> </span> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Telefoonnummer wijzigen" onclick="openModalPhone();"></i></div></p>
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col">
                                 <div class="contact-info">
-                                    <p><i class="bi bi-house-fill me-2"></i><span class="label">Postcode:</span> <?php echo $gebruiker->getPostcode() ?> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Adres wijzigen" onclick="openModalAddress();"></i></p>
-                                    <p><i class="bi bi-geo-alt-fill me-2"></i><span class="label">Plaatsnaam:</span> <?php echo $gebruiker->getPlaatsnaam() ?> </p>
-                                    <p><i class="bi bi-door-open-fill me-2"></i><span class="label">Huisnummer:</span> <?php echo $gebruiker->getHuisnummer() ?> </p>
+                                    <p class="flex-wrap"><i class="bi bi-house-fill me-2"></i><span class="label">Postcode:</span> <?php echo $gebruiker->getPostcode() ?> <i class="bi bi-pen-fill ms-3 icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Adres wijzigen" onclick="openModalAddress();"></i></p>
+                                    <p class="flex-wrap"><i class="bi bi-geo-alt-fill me-2"></i><span class="label">Plaatsnaam:</span> <?php echo $gebruiker->getPlaatsnaam() ?> </p>
+                                    <p class="flex-wrap"><i class="bi bi-door-open-fill me-2"></i><span class="label">Huisnummer:</span> <?php echo $gebruiker->getHuisnummer() ?> </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 d-flex justify-content-between">
+                <div class="mt-4 d-flex justify-content-between flex-wrap">
                     <a href="/events" class="btn btn-primary">Bekijk mijn Evenementen</a>
                     <a href="/add-child" class="btn btn-primary">Voeg kind toe</a>
                 </div>

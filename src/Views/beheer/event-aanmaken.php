@@ -4,6 +4,10 @@ use App\Models\SectorModel;
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+$bewerken = false;
+
+if (isset($event)) {$bewerken = true;}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,8 +32,14 @@ error_reporting(E_ALL);
 <body>
 <div class="container-fluid vh-100 d-flex flex-column">
         <?php require_once('./parts/nav.php'); ?>
+
+        <?php 
+        $newModel = new SectorModel;
+        $allSectors = $newModel->getAllSectors();
+        ?>
+
         <div class="container my-4 pb-4">
-            <h1 class="text-center mb-4">Event Aanmaken</h1>
+            <h1 class="text-center mb-4"> <?= ($bewerken) ? "Event Bewerken" : "Event Aanmaken"; ?> </h1>
 
             <div class="progress mb-4 fixed-top rounded-0">
                 <div class="progress-bar rounded-0" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
@@ -41,17 +51,18 @@ error_reporting(E_ALL);
             <form id="formEventDetails" class="needs-validation" novalidate action="<?php $_PHP_SELF ?>" method="POST">
                 <div class="mb-3">
                     <label for="eventTitle" class="form-label">Titel <span class="verplicht">*</span></label>
-                    <input type="text" class="form-control" id="eventTitle" name="eventNaam" placeholder="Event titel" required>
+                    <input type="text" class="form-control" id="eventTitle" name="eventNaam" placeholder="Event titel" <?= ($bewerken) ? "value='" . $event['naam'] . "'" : '' ?> required>
                     <div class="invalid-feedback">Voer een titel in.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="eventDescription" class="form-label">Beschrijving <span class="verplicht">*</span></label>
-                    <textarea class="form-control" id="eventDescription" name="info" rows="5" placeholder="Beschrijf het event" required></textarea>
+                    <textarea class="form-control" id="eventDescription" name="info" rows="5" placeholder="Beschrijf het event" required><?= ($bewerken) ? $event['beschrijving'] : '' ?></textarea>
                     <div class="invalid-feedback">Voer een beschrijving in.</div>
                 </div>
 
                 <div class="mb-3">
+                    <input type="text" id="checkbox_required" required hidden>
                     <label class="form-label">Sector <span class="verplicht">*</span></label>
                     <div id="sector" class="form-check-group">
                         <?php foreach(SectorModel::getAllSectors() as $key => $sector): ?>
@@ -197,6 +208,7 @@ endTime.addEventListener('input', validateTimes);
     <script src="/js/form-validatie.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>
+    <script src="/js/checkbox-validation.js"></script>
 
     <script>
         document.getElementById("addDay").addEventListener("click", function() {
