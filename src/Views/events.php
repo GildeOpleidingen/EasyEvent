@@ -1,5 +1,7 @@
 <?php 
 use App\Models\SectorModel;
+use App\Models\InschrijfModel;
+
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +36,15 @@ use App\Models\SectorModel;
         <div class="col-12">
             <div class="nav-buttons d-flex mb-3">
                 <button class="btn btn-primary">Alle</button>
+                <?php
+                if (isset($_SESSION['gebruiker']) && isset($events)) {
+                    $user = unserialize($_SESSION['gebruiker']);
+                    $gebruikerId = $user->getId();
+
+                    $inschrijfModel = new InschrijfModel();
+                    $events = $inschrijfModel->markeerInschrijvingen($events, $gebruikerId);
+                }
+                ?>
 
                 <?php foreach (SectorModel::getAllSectors() as $key => $sector) {
                     echo '<button class="btn btn-primary">' . $sector->getSector() . '</button>';
@@ -51,7 +62,9 @@ use App\Models\SectorModel;
             
             <?php if (!empty($events)): ?>
                 <div class="accordion" id="eventsAccordion">
-                    <?php foreach ($events as $index => $event): ?>
+                    <?php
+                    $a = 0;
+                    foreach ($events as $index => $event):?>
                         <div class="accordion-item ev-item">
                             <h2 class="accordion-header" id="heading<?= $index ?>">
                                 <button class="accordion-button collapsed"
@@ -63,16 +76,54 @@ use App\Models\SectorModel;
                                     <?= htmlspecialchars($event->getEventName()) ?>
                                 </button>
                             </h2>
-
                             <div id="collapse<?= $index ?>"
-                                 class="accordion-collapse collapse"
+                                 class="ccordion-collapse collapse"
                                  data-bs-parent="#eventsAccordion">
-                                <div class="accordion-body">
+                                <div class="accordion-body d-flex flex-column">
                                     <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
                                 </div>
+
+
+
+                                <div class="accordion-body">
+                                    <?php if ($event->isIngeschreven): ?>
+                                        <a href="/uitschrijven?event_id=<?= $event->getEventID() ?>" class="btn btn-danger ms-auto">
+                                            Uitschrijven
+                                        </a>
+                                    <?php else: ?>
+                                        <?php $inschrijfModel = $inschrijfModel ?? new \App\Models\InschrijfModel(); ?>
+                                        <?php $eventTijden = $inschrijfModel->getEventTijden($event->getEventID()); ?>
+
+                                        <form method="post" action="/inschrijven" class="d-flex w-100 align-items-center justify-content-between">
+                                            <div class="d-flex gap-2 flex-wrap">
+
+                                                <?php foreach ($eventTijden as $tijd): ?>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               name="event_tijd_ids[]"
+                                                               value="<?= $tijd['id'] ?>"
+                                                               id="tijd-<?= $event->getEventID() ?>-<?= $tijd['id'] ?>">
+                                                        <label class="form-check-label" for="tijd-<?= $event->getEventID() ?>-<?= $tijd['id'] ?>">
+                                                            <?= date('d-m-Y', strtotime($tijd['datum'])) ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                            <div class="ms-3">
+                                                <input type="hidden" name="event_id" value="<?= $event->getEventID() ?>">
+                                                <button type="submit" class="btn btn-primary">Inschrijven</button>
+                                            </div>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
+
+
+
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php
+                    $a++;
+                    endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>
