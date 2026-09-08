@@ -14,6 +14,17 @@ nu verander je de eigenaar zodat je dadelijk mag clonen als je dit niet doet kri
 sudo chown -R $USER:$USER /var/www/easyevents
 ```
 
+# apache
+In dit project staat een .htaccess file.
+Hierdoor moet je aan de configuratie van de website de volgende configuratie toevoegen.
+
+    <Directory /var/www/EasyEvent>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+Het pad moet je aanpassen naar het pad waar de .htaccess file staat. Hiermee zeg je tegen apache dat die specifieke website regels moet opvolgen van de .htaccess
+
 # Maak een clone vanuit Gitlab
 ```Let op dat je op gilde 1.09 zit anders mag je geen verbinding maken met git server op school!
 git clone git@gitlab.gdcs.gildedevops.it:evenement/evenementen-app.git /var/www/easyevents/.
