@@ -23,7 +23,13 @@ Hierdoor moet je aan de configuratie van de website de volgende configuratie toe
         Require all granted
     </Directory>
 
+
 Het pad moet je aanpassen naar het pad waar de .htaccess file staat. Hiermee zeg je tegen apache dat die specifieke website regels moet opvolgen van de .htaccess
+
+# mod rewrite
+voer dit uit om mod rewrite aan te zetten 
+
+    sudo a2enmod rewrite
 
 # Maak een clone vanuit Gitlab
 ```Let op dat je op gilde 1.09 zit anders mag je geen verbinding maken met git server op school!
