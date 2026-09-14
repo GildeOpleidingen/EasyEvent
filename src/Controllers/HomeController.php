@@ -9,7 +9,7 @@ class HomeController extends Controller
     public function index()
     {
         
-        if (isset($_SESSION['Gebruikersnaam'])) {
+        if (isset($_SESSION['Gebruikeremail'])) {
             header('Location: /events');
             exit();
         }
