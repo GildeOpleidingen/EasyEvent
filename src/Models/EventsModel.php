@@ -28,14 +28,14 @@ class EventsModel extends DBModel
         $db = $mysql->getPDO();
 
         $sql = "SELECT 
-                    event.ID, event.EventNaam AS eventName, 
-                    event.Info AS eventInfo, 
-                    GROUP_CONCAT(`event-tijd`.Datum SEPARATOR ',') AS eventDate,
-                    event.HoofdEvent AS hoofdEventID
+                    event.id, event.naam AS eventName, 
+                    event.beschrijving AS eventInfo, 
+                    GROUP_CONCAT(`event_tijd`.datum SEPARATOR ',') AS eventDate,
+                    event.hoofd_event AS hoofdEventID
                 FROM 
                     event 
-                LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID
-                GROUP BY event.ID";
+                LEFT OUTER JOIN `event_tijd` ON event.id=`event_tijd`.event_id
+                GROUP BY event.id";
 
         $stmt = $db->prepare($sql);
 
@@ -62,11 +62,11 @@ class EventsModel extends DBModel
                 '',
                 '',
                 '',
-                '',
+                [],
                 $eventDates,
                 ''
             );
-            $event->addEventID($row['ID']);
+            $event->addEventID($row['id']);
             $event->hoofdEventID = $row['hoofdEventID'];
             $events[] = $event;
         }
@@ -78,20 +78,29 @@ class EventsModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
     
-        $sql = "SELECT event.ID, event.Eventnaam AS eventName, 
-                    event.Info AS eventInfo, 
-                    `event-tijd`.Datum AS eventDate,
-                    event.HoofdEvent AS hoofdEventID,
-                    event.Organisator AS organisator,
-                    `event-tijd`.Land AS Land,
-                    `event-tijd`.Plaats AS Plaats,
-                    `event-tijd`.Huisnummer AS Huisnummer,
-                    `event-tijd`.Postcode AS Postcode,
-                    `event-tijd`.Straatnaam AS Straatnaam,
-                    `event-tijd`.Sector AS Sector,
-                    event.Banner AS Banner
-                FROM event 
-                LEFT OUTER JOIN `event-tijd` ON event.ID=`event-tijd`.Event_ID
+        $sql = "SELECT e.id, 
+                    e.naam           AS eventName, 
+                    e.beschrijving   AS eventInfo, 
+                    et.datum         AS eventDate,
+                    e.hoofd_event    AS hoofdEventID,
+                    e.organisator_id AS organisator,
+                    et.land          AS Land,
+                    et.plaatsnaam    AS Plaats,
+                    et.straatnaam    AS Straatnaam,
+                    et.huisnummer    AS Huisnummer,
+                    et.postcode      AS Postcode,
+                    sagg.sector_ids  AS SectorIDs
+                FROM event e
+                LEFT JOIN `event_tijd` et 
+                    ON e.id = et.event_id
+                LEFT JOIN (
+                    SELECT  
+                        event_id,
+                        GROUP_CONCAT(DISTINCT sector_id ORDER BY sector_id SEPARATOR ', ') AS sector_ids
+                    FROM sector_event
+                    GROUP BY event_id
+                ) sagg
+                    ON sagg.event_id = e.id;
                 ";
         $stmt = $db->prepare($sql);
 
@@ -110,11 +119,10 @@ class EventsModel extends DBModel
                 $row['Straatnaam'] ?? 'Unknown',
                 $row['Huisnummer'] ?? 'Unknown',
                 $row['Postcode'] ?? 'Unknown',
-                $row['Sector'] ?? 'Unknown',
+                $row['Sector'] ?? [],
                 [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
-                $row['Banner'] ?? ''
             );
-            $event->eventID = $row['ID'];
+            $event->eventID = $row['id'];
             $event->hoofdEventID = $row['hoofdEventID'];
             $events[] = $event;
         }

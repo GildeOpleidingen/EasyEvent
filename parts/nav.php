@@ -3,7 +3,7 @@
 
 
 <?php 
-if (isset($_SESSION['Gebruikersnaam'])) {
+if (isset($_SESSION['Gebruikersemail'])) {
     $gebruiker = unserialize($_SESSION['gebruiker']);
     $roles = $gebruiker->getRoles();
 }
@@ -12,16 +12,17 @@ else {
 }
 ?>
 <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a href="/home" class="navbar-brand ms-5">
-            <img src="../../images/logo.png" alt="EasyEvents Logo" width="125" height="125">
+    <div class="container">
+        <a href="/home" class="navbar-brand">
+            <img src="../../images/logo.png" alt="EasyEvents Logo" width="150" height="150">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
-                <?php if ($roles):?>
+                <?php if (isset($roles)):?>
                 <?php foreach ($roles as $role): ?>
                     <?php if ($role->getName() == "Admin" || $role->getName() == "Organisator") {$bevoegd = true;} ?>
                 <?php endforeach; ?>
@@ -33,21 +34,26 @@ else {
                 <li class="nav-item">
                     <a href="/events" class="nav-link active">Evenementen</a>
                 </li>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['Gebruikersemail'])): ?>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" 
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         Profiel
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="../src/Views/profiel.php">Profiel Bekijken</a></li>
+                        <li><a class="dropdown-item" href="/profiel">Profiel Bekijken</a></li>
                         <!-- <li><a class="dropdown-item" href="/settings">Instellingen</a></li> -->
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" href="/logout">Uitloggen</a></li>
                     </ul>
                 </li>
                 <?php else: ?>
-                    <li class="nav-item">
-                        <a href="./login" class="nav-link"><button class="btn btn-primary">LOGIN</button></a>
-                    </li>
+                <li class="nav-item">
+                    <a href="./login" class="nav-link"><button class="btn btn-primary">LOGIN</button></a>
+                </li>
                 <?php endif; ?>
             </ul>
         </div>
