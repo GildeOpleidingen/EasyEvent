@@ -2,13 +2,37 @@
 Composer installeren in WSL.
 PHP 8.4 versie is nodig.
 
-```bash
-sudo apt install mysql-server
-sudo apt install apache2
-sudo apt-get install php-mbstring	
-sudo apt install php-xml
-sudo apt-get install php-gd	
-sudo a2enmod rewrite
+hier vraag je de ssh key op en kopieer je ALLES wat je terug krijgt, verander naam voor de naam in de folder die .ssh heeft aangemaakt
+cat /home/Naam/.ssh/id_ed25519.pub
+dan kan je dit kopieren in gitlab in easyevents bij ssh key toevoegen.
+
+eerst maak je de folder aan MITS JE DEZE FOLDER NOG NIET HEBT
+sudo mkdir /var/www/easyevents
+
+nu verander je de eigenaar zodat je dadelijk mag clonen als je dit niet doet krijg je een error
+sudo chown -R $USER:$USER /var/www/easyevents
+```
+
+# apache
+In dit project staat een .htaccess file.
+Hierdoor moet je aan de configuratie van de website de volgende configuratie toevoegen.
+
+    <Directory /var/www/EasyEvent>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+Het pad moet je aanpassen naar het pad waar de .htaccess file staat. Hiermee zeg je tegen apache dat die specifieke website regels moet opvolgen van de .htaccess
+
+# Maak een clone vanuit Gitlab
+```Let op dat je op gilde 1.09 zit anders mag je geen verbinding maken met git server op school!
+git clone git@gitlab.gdcs.gildedevops.it:evenement/evenementen-app.git /var/www/easyevents/.
+```
+
+# Database fixes
+```diff
+- HIGH PRIORITY!
+>>>>>>> 1bfb8db6e8c0b0f978740f3ab0493006fb1269ac
 ```
 
 

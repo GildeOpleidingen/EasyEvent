@@ -36,7 +36,7 @@ use App\Conn;
             <div class="row">
                 <div class="col-lg-6 d-flex align-items-center justify-content-center">
                     <img src="../../images/logo.png" alt="Easy Events logo" class="logo-img">
-                </div>
+                </div> 
                 <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center">
                     <h1 class="text-center text-uppercase ms-6">Login</h1>
                     <p class="text-center ms-6">met je emailadres en wachtwoord</p>
