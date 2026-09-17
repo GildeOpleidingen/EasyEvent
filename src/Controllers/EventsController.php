@@ -17,11 +17,11 @@ class EventsController extends Controller
 
     public function index()
     {
-        $user = unserialize($_SESSION['gebruiker']);
-        
+    
+        $user = isset($_SESSION['gebruiker']) ? unserialize($_SESSION['gebruiker']) : null;
+
         $eventModel = new EventsModel();
-        
-        $eventModel->roles = $user->getRoles();
+        $eventModel->roles = $user ? $user->getRoles() : [];
         
         $events = $eventModel->generateEvents();
         $eventModel->setEvents($events);
