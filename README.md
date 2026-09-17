@@ -2,7 +2,6 @@
 Composer installeren in WSL.
 PHP 8.4 versie is nodig.
 
-<<<<<<< HEAD
 hier vraag je de ssh key op en kopieer je ALLES wat je terug krijgt, verander naam voor de naam in de folder die .ssh heeft aangemaakt
 cat /home/Naam/.ssh/id_ed25519.pub
 dan kan je dit kopieren in gitlab in easyevents bij ssh key toevoegen.
@@ -33,7 +32,6 @@ git clone git@gitlab.gdcs.gildedevops.it:evenement/evenementen-app.git /var/www/
 # Database fixes
 ```diff
 - HIGH PRIORITY!
-=======
 ```bash
 sudo apt install mysql-server
 sudo apt install apache2
@@ -41,7 +39,6 @@ sudo apt-get install php-mbstring
 sudo apt install php-xml
 sudo apt-get install php-gd	
 sudo a2enmod rewrite
->>>>>>> origin/develop
 ```
 
 
