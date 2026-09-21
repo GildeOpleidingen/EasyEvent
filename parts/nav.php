@@ -8,7 +8,7 @@ if (isset($_SESSION['Gebruikersemail'])) {
     $roles = $gebruiker->getRoles();
 }
 else {
-    $roles = "";
+    $roles = [];
 }
 ?>
 <nav class="navbar navbar-expand-lg">
