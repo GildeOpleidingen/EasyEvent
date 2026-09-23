@@ -50,7 +50,7 @@ class SingleEventModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT * FROM `organisatie`";
+        $sql = "SELECT * FROM vereniging";
 
         $stmt = $db->prepare($sql);
 
@@ -60,7 +60,7 @@ class SingleEventModel extends DBModel
 
         $organisations = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $organisation = new OrganisationModel($row['ID'], $row['Organtisatie']);
+            $organisation = new OrganisationModel($row['id'], $row['naam']);
             $organisations[] = $organisation;
         }
 
@@ -71,20 +71,20 @@ class SingleEventModel extends DBModel
     {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
-        $sql = "SELECT kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
-                                    kpl_activiteit_event_tijd.event_tijd_ID,
-                                    kpl_activiteit_event_tijd.BeginTijd,
-                                    kpl_activiteit_event_tijd.EindTijd,
-                                    kpl_activiteit_event_tijd.VrijwilligerAantal,
-                                    kpl_activiteit_event_tijd.BegeleiderAantal,
-                                    `activiteit`.ID as `ActiviteitID`,
-                                    `activiteit`.Naam,
-                                    NULL as Gebruiker_ID,
-                                    NULL as Organisatie_ID,
-                                    NULL as Rol_ID FROM `kpl_activiteit_event_tijd`
-                                    LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
-                                    LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
-                                    WHERE`event-tijd`.Event_ID=:eventid";
+        $sql = "SELECT aet.id as aet_ID,
+                       aet.event_tijd_id,
+                       aet.begin_tijd,
+                       aet.eind_tijd,
+                       a.id as Activiteit_ID,
+                       a.naam,
+                       a.locatie,
+                       NULL as Gebruiker_ID,
+                       NULL as Organisatie_ID,
+                       NULL as Rol_ID
+                       FROM `activiteit_event_tijd` aet
+                       LEFT JOIN `event_tijd` et ON aet.event_tijd_id = et.id
+                       LEFT JOIN `activiteit` a ON aet.activiteit_id = a.id
+                       WHERE et.event_id = :eventid";
 
         $stmt = $db->prepare($sql);
 
@@ -95,14 +95,14 @@ class SingleEventModel extends DBModel
         $activities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $activity = new ActivityModel();
-            $activity->setActiviteitEventTijdId($row['kpl_activiteit_event_tijd_ID']);
-            $activity->setActiviteitId($row['ActiviteitID']);
-            $activity->setEventTijdId($row['event_tijd_ID']);
-            $activity->setNaam($row['Naam']);
+            $activity->setActiviteitEventTijdId($row['aet_ID']);
+            $activity->setActiviteitId($row['Activiteit_ID']);
+            $activity->setEventTijdId($row['event_tijd_id']);
+            $activity->setNaam($row['naam']);
             $activity->setBeginTijd($row['BeginTijd']);
             $activity->setEindTijd($row['EindTijd']);
-            $activity->setMaximumVrijwilligers($row['VrijwilligerAantal']);
-            $activity->setMaximumBegeleiders($row['BegeleiderAantal']);
+            // $activity->setMaximumVrijwilligers($row['VrijwilligerAantal']);
+            // $activity->setMaximumBegeleiders($row['BegeleiderAantal']);
             $activities[] = $activity;
         }
         return $activities;
@@ -112,23 +112,23 @@ class SingleEventModel extends DBModel
     {
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
-        $sql = "SELECT kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
-                                kpl_activiteit_event_tijd.event_tijd_ID,
-                                kpl_activiteit_event_tijd.VrijwilligerAantal,
-                                kpl_activiteit_event_tijd.BegeleiderAantal,
-                                `planning`.BeginTijd,
-                                `planning`.EindTijd,
-                                `activiteit`.ID as `ActiviteitID`,
-                                `activiteit`.Naam,
-                                `planning`.`ID`,
-                                `planning`.`Gebruiker_ID`,
-                                `planning`.`Organisatie_ID`,
-                                `planning`.`Rol_ID`
-                                FROM `kpl_activiteit_event_tijd`
-                                LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
-                                LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
-                                RIGHT JOIN `planning` ON kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID  = `planning`.activiteit_event_tijd_ID 
-                                WHERE`event-tijd`.Event_ID=:eventid AND `planning`.Gebruiker_ID=:userid";
+        $sql = "SELECT aet.id as aet_ID,
+                aet.event_tijd_id as et_ID,
+                -- aet.VrijwilligerAantal,
+                -- aet.BegeleiderAantal,
+                p.begin_tijd,
+                p.eind_tijd,
+                a.id as Activiteit_ID,
+                a.Naam,
+                p.id as Planning_ID,
+                p.gebruiker_id,
+                p.vereniging_id,
+                p.rol_id as Rol_ID
+                FROM activiteit_event_tijd aet
+                LEFT JOIN event_tijd et ON aet.event_tijd_id = et.id
+                LEFT JOIN activiteit a ON aet.activiteit_ID = a.id
+                RIGHT JOIN planning p ON aet.activiteit_event_tijd_id = p.activiteit_event_tijd_id 
+                WHERE et.event_id = :eventid AND p.gebruiker_id = :userid";
 
         $stmt = $db->prepare($sql);
 
@@ -139,18 +139,18 @@ class SingleEventModel extends DBModel
         $activities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $activity = new ActivityModel();
-            $activity->setActiviteitEventTijdId($row['kpl_activiteit_event_tijd_ID']);
-            $activity->setActiviteitId($row['ActiviteitID']);
-            $activity->setEventTijdId($row['event_tijd_ID']);
-            $activity->setNaam($row['Naam']);
-            $activity->setBeginTijd($row['BeginTijd']);
+            $activity->setActiviteitEventTijdId($row['aet_id']);
+            $activity->setActiviteitId($row['Activiteit_ID']);
+            $activity->setEventTijdId($row['et_id']);
+            $activity->setNaam($row['naam']);
+            $activity->setBeginTijd($row['begin_tijd']);
             $activity->setEindTijd($row['EindTijd']);
-            $activity->setMaximumVrijwilligers($row['VrijwilligerAantal']);
-            $activity->setMaximumBegeleiders($row['BegeleiderAantal']);
-            $activity->setGebruikerID($row['Gebruiker_ID']);
-            $activity->setOrganisationID($row['Organisatie_ID']);
+            // $activity->setMaximumVrijwilligers($row['VrijwilligerAantal']);
+            // $activity->setMaximumBegeleiders($row['BegeleiderAantal']);
+            $activity->setGebruikerID($row['gebruiker_id']);
+            $activity->setOrganisationID($row['vereniging_id']);
             $activity->setRolID($row['Rol_ID']);
-            $activity->setPlannedID($row['ID']);
+            $activity->setPlannedID($row['Planning_ID']);
             $activities[] = $activity;
         }
         return $activities;
@@ -161,46 +161,63 @@ class SingleEventModel extends DBModel
         $mysql = Conn::getInstance();
         $db = $mysql->getPDO();
 
-        $sql = "SELECT t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.ID, t.BeginTijd, t.EindTijd, t.VrijwilligerAantal, t.BegeleiderAantal, t.ActiviteitID, t.Naam, t.Gebruiker_ID, t.Organisatie_ID, t.Rol_ID
-                FROM (SELECT    kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
-                                kpl_activiteit_event_tijd.event_tijd_ID,
-                                `planning`.`ID`,
-                                `planning`.BeginTijd,
-                                `planning`.EindTijd,
-                                kpl_activiteit_event_tijd.VrijwilligerAantal,
-                                kpl_activiteit_event_tijd.BegeleiderAantal,
-                                `activiteit`.ID as `ActiviteitID`,
-                                `activiteit`.Naam,
-                                `planning`.`Gebruiker_ID`,
-                                `planning`.`Organisatie_ID`,
-                                `planning`.`Rol_ID`
-                                FROM `kpl_activiteit_event_tijd`
-                                LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
-                                LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
-                                RIGHT JOIN `planning` ON kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID  = `planning`.activiteit_event_tijd_ID 
-                                WHERE`event-tijd`.Event_ID=:eventid AND `planning`.Gebruiker_ID=:userid
+        $sql = "SELECT aet.id AS aet_id,
+                       aet.event_tijd_id AS aet_et_id,
+                       p.id AS planning_id,
+                       aet.begin_tijd,
+                       aet.eind_tijd,
+                       a.id AS activiteit_id,
+                       a.naam,
+                       p.gebruiker_id,
+                       p.vereniging_id,
+                       p.rol_id
+                FROM activiteit_event_tijd as aet
+                JOIN event_tijd AS et ON aet.event_tijd_id = et.id
+                JOIN activiteit AS a ON aet.activiteit_id = a.id
+                LEFT JOIN planning as p ON p.activiteit_event_tijd_id = aet.id AND p.gebruiker_id = :userid
+                WHERE et.event_id = :eventid
+        "
+
+        $sql = "SELECT t.aet_ID, t.event_tijd_id, t.id, t.begin_tijd, t.eind_tijd, t.activiteit_id, t.naam, t.gebruiker_id, t.vereniging_id, t.rol_id
+                FROM (SELECT    aet.id as aet_ID,
+                                aet.event_tijd_id,
+                                p.id as Planning_ID,
+                                p.begin_tijd,
+                                p.eind_tijd,
+                                -- aet.VrijwilligerAantal,
+                                -- aet.BegeleiderAantal,
+                                a.id as Activiteit_ID,
+                                a.naam,
+                                p.gebruiker_id,
+                                p.vereniging_id,
+                                p.rol_id
+                                FROM activiteit_event_tijd aet
+                                LEFT JOIN event_tijd et ON aet.event_tijd_id = et.id
+                                LEFT JOIN activiteit a ON aet.activiteit_id = a.id
+                                RIGHT JOIN planning p ON aet.activiteit_event_tijd_id  = p.activiteit_event_tijd_id
+                                WHERE et.event_id = :eventid AND p.gebruiker_id = :userid
 
                     UNION
 
-                    SELECT kpl_activiteit_event_tijd.kpl_activiteit_event_tijd_ID,
-                                    kpl_activiteit_event_tijd.event_tijd_ID,
+                    SELECT aet.activiteit_event_tijd_id,
+                                    aet.event_tijd_id,
                                     null as ID,
-                                    kpl_activiteit_event_tijd.BeginTijd,
-                                    kpl_activiteit_event_tijd.EindTijd,
-                                    kpl_activiteit_event_tijd.VrijwilligerAantal,
-                                    kpl_activiteit_event_tijd.BegeleiderAantal,
-                                    `activiteit`.ID as `ActiviteitID`,
-                                    `activiteit`.Naam,
+                                    aet.begin_tijd,
+                                    aet.eind_tijd,
+                                    -- aet.VrijwilligerAantal,
+                                    -- aet.BegeleiderAantal,
+                                    a.id as Activiteit_ID,
+                                    a.naam,
                                     NULL as Gebruiker_ID,
                                     NULL as Organisatie_ID,
                                     NULL as Rol_ID
-                                    FROM `kpl_activiteit_event_tijd`
-                                    LEFT JOIN `event-tijd` ON kpl_activiteit_event_tijd.event_tijd_ID = `event-tijd`.ID
-                                    LEFT JOIN `activiteit` ON kpl_activiteit_event_tijd.activiteit_ID = `activiteit`.ID
-                                    WHERE`event-tijd`.Event_ID=:eventid
+                                    FROM `activiteit_event_tijd` aet
+                                    LEFT JOIN `event-tijd` et ON aet.event_tijd_id = et.id
+                                    LEFT JOIN `activiteit` a ON aet.activiteit_id = a.id
+                                    WHERE et.event_id = :eventid
 
                     ) as t
-                 GROUP BY t.kpl_activiteit_event_tijd_ID, t.event_tijd_ID, t.ID, t.BeginTijd, t.EindTijd, t.VrijwilligerAantal, t.BegeleiderAantal, t.ActiviteitID, t.Naam, t.Gebruiker_ID, t.Organisatie_ID, t.Rol_ID";
+                 GROUP BY t.activiteit_event_tijd_id, t.event_tijd_id, t.id, t.begin_tijd, t.eind_tijd, t.activiteit_id, t.naam, t.gebruiker_id, t.organisatie_id, t.rol_id";
 
         $stmt = $db->prepare($sql);
 
@@ -212,7 +229,7 @@ class SingleEventModel extends DBModel
         $plannedActivities = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $activity = new ActivityModel();
-            $activity->setActiviteitEventTijdId($row['kpl_activiteit_event_tijd_ID']);
+            $activity->setActiviteitEventTijdId($row['activiteit_event_tijd_ID']);
             $activity->setActiviteitId($row['ActiviteitID']);
             $activity->setEventTijdId($row['event_tijd_ID']);
             $activity->setNaam($row['Naam']);

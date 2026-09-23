@@ -15,9 +15,14 @@ document.getElementById('addActivity').addEventListener('click', () => {
                 <div class="invalid-feedback">Voer een activiteit naam in.</div>
             </div>
             <div class="col-md-4">
-                <label for="activityTime${activityCount}" class="form-label">Tijd <span class="verplicht">*</span></label>
-                <input type="time" class="form-control" id="activityTime${activityCount}" name="activity-time[]" required>
-                <div class="invalid-feedback">Voer een activiteit tijd in.</div>
+                <label for="activityBeginTime${activityCount}" class="form-label">Begintijd <span class="verplicht">*</span></label>
+                <input type="time" class="form-control" id="activityBeginTime${activityCount}" name="activity-begintime[]" required>
+                <div class="invalid-feedback">Voer een activiteit begin tijd in.</div>
+            </div>
+            <div class="col-md-4">
+                <label for="activityEndTime${activityCount}" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+                <input type="time" class="form-control" id="activityEndTime${activityCount}" name="activity-endtime[]" required>
+                <div class="invalid-feedback">Voer een activiteit eind tijd in.</div>
             </div>
             <div class="col-md-4">
                 <label for="activityPeople${activityCount}" class="form-label">Aantal personen <span class="verplicht">*</span></label>

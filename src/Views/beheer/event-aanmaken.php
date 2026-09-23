@@ -1,8 +1,13 @@
 <?php
 use App\Models\EventsModel;
+use App\Models\SectorModel;
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+$bewerken = false;
+
+if (isset($event)) {$bewerken = true;}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,9 +31,15 @@ error_reporting(E_ALL);
 </head>
 <body>
 <div class="container-fluid vh-100 d-flex flex-column">
-        <?php require_once('./parts/nav.html'); ?>
+        <?php require_once('./parts/nav.php'); ?>
+
+        <?php 
+        $newModel = new SectorModel;
+        $allSectors = $newModel->getAllSectors();
+        ?>
+
         <div class="container my-4 pb-4">
-            <h1 class="text-center mb-4">Event Aanmaken</h1>
+            <h1 class="text-center mb-4"> <?= ($bewerken) ? "Event Bewerken" : "Event Aanmaken"; ?> </h1>
 
             <div class="progress mb-4 fixed-top rounded-0">
                 <div class="progress-bar rounded-0" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
@@ -39,27 +50,40 @@ error_reporting(E_ALL);
             <!-- Form 1: Event Details -->
             <form id="formEventDetails" class="needs-validation" novalidate action="<?php $_PHP_SELF ?>" method="POST">
                 <div class="mb-3">
-                    <label for="eventName" class="form-label">Titel <span class="verplicht">*</span></label>
-                    <input type="text" class="form-control" id="eventTitle" name="eventNaam" placeholder="Event titel" required>
+                    <label for="eventTitle" class="form-label">Titel <span class="verplicht">*</span></label>
+                    <input type="text" class="form-control" id="eventTitle" name="eventNaam" placeholder="Event titel" <?= ($bewerken) ? "value='" . $event['naam'] . "'" : '' ?> required>
                     <div class="invalid-feedback">Voer een titel in.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="eventDescription" class="form-label">Beschrijving <span class="verplicht">*</span></label>
-                    <textarea class="form-control" id="eventDescription" name="info" rows="5" placeholder="Beschrijf het event" required></textarea>
+                    <textarea class="form-control" id="eventDescription" name="info" rows="5" placeholder="Beschrijf het event" required><?= ($bewerken) ? $event['beschrijving'] : '' ?></textarea>
                     <div class="invalid-feedback">Voer een beschrijving in.</div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="eventSector" class="form-label">Sector <span class="verplicht">*</span></label>
-                    <select class="form-control" id="eventSector" name="Sector" required>
-                        <option value="" disabled selected>Selecteer een sector</option>
-                        <option value="Sport">Sport</option>
-                        <option value="Cultuur">Cultuur</option>
-                        <option value="School">School</option>
-                        <option value="Gamen">Gamen</option>
-                    </select>
-                    <div class="invalid-feedback">Selecteer een sector.</div>
+                    <input type="text" id="checkbox_required" required hidden>
+                    <label class="form-label">Sector <span class="verplicht">*</span></label>
+                    <div id="sector" class="form-check-group">
+                        <?php foreach(SectorModel::getAllSectors() as $key => $sector): ?>
+                            <div class="form-check">
+                                <input 
+                                    class="form-check-input" 
+                                    type="checkbox" 
+                                    id="sector_<?= $sector->getID() ?>" 
+                                    name="sector[]" 
+                                    value="<?= $sector->getID() ?>" 
+                                >
+                                <label 
+                                    class="form-check-label" 
+                                    for="sector_<?= $sector->getID() ?>"
+                                >
+                                    <?= htmlspecialchars($sector->getSector()) ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="invalid-feedback">Selecteer minstens één sector.</div>
                 </div>
 
                 <div class="mb-3 row">
@@ -74,14 +98,14 @@ error_reporting(E_ALL);
                         <div class="invalid-feedback">Voer een locatie in.</div>
                     </div>
                     <div class="col-md-6">
-                        <label for="Placename" class="form-label">Plaatsnaam <span class="verplicht">*</span></label>
+                        <label for="eventPlacename" class="form-label">Plaatsnaam <span class="verplicht">*</span></label>
                         <input type="text" class="form-control" id="eventPlacename" name="Plaats" placeholder="Amsterdam" required>
                         <div class="invalid-feedback">Voer een locatie in.</div>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-md-7">
-                        <label for="Streetname" class="form-label">Straatnaam</label>
+                        <label for="eventStreetname" class="form-label">Straatnaam</label>
                         <input type="text" class="form-control" id="eventStreetname" name="Straatnaam" placeholder="Kalverstraat">
                         <div class="invalid-feedback">Voer een locatie in.</div>
                     </div>
@@ -91,7 +115,7 @@ error_reporting(E_ALL);
                         <div class="invalid-feedback">Voer een geldig postcode in.</div>
                     </div>
                     <div class="col-md-2">
-                        <label for="Homenumber" class="form-label">Huisnummer</label>
+                        <label for="eventHomenumber" class="form-label">Huisnummer</label>
                         <input type="text" class="form-control" id="eventHomenumber" name="Huisnummer" placeholder="1">
                         <div class="invalid-feedback">Voer een locatie in.</div>
                     </div>
@@ -100,29 +124,60 @@ error_reporting(E_ALL);
                 <div class="mb-3 row" id="eventDatesContainer">
                     <div class="col-md-4">
                         <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                        <input type="date" class="form-control" id="eventDate" name="datum[]" required>
+                        <input 
+  type="date" 
+  class="form-control" 
+  id="eventDate" 
+  name="datum[]" 
+  required
+>
+<script>
+  const dateInput = document.getElementById('eventDate');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.min = today;
+</script>
                         <div class="invalid-feedback">Selecteer een datum.</div>
                     </div>
 
-                    <div class="col-md-4">
-                        <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" id="eventBeginTime" name="begin-tijd[]" required>
-                        <div class="invalid-feedback">Voer een begintijd in.</div>
-                    </div>
+<div class="col-md-4">
+    <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
+    <input type="time" class="form-control" id="eventBeginTime" name="begin-tijd[]" required>
+    <div class="invalid-feedback">Voer een begintijd in.</div>
+</div>
 
-                    <div class="col-md-4 d-flex align-items-end">
-                        <div class="flex-grow-1">
-                            <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                            <input type="time" class="form-control" id="eventEndTime" name="eind-tijd[]" required>
-                            <div class="invalid-feedback">Voer een eindtijd in.</div>
-                        </div>
-                    </div>
+<div class="col-md-4 d-flex align-items-end">
+    <div class="flex-grow-1">
+        <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
+        <input type="time" class="form-control" id="eventEndTime" name="eind-tijd[]" required>
+        <div class="invalid-feedback">Eindtijd moet na begintijd zijn.</div>
+    </div>
+</div>
+<!-- Validatie voor tijd -->
+<script>
+const beginTime = document.getElementById('eventBeginTime');
+const endTime = document.getElementById('eventEndTime');
+
+function validateTimes() {
+    if (beginTime.value && endTime.value) {
+        if (endTime.value <= beginTime.value) {
+            endTime.setCustomValidity('Eindtijd moet na begintijd zijn.');
+        } else {
+            endTime.setCustomValidity('');
+        }
+    } else {
+        endTime.setCustomValidity('');
+    }
+}
+
+beginTime.addEventListener('input', validateTimes);
+endTime.addEventListener('input', validateTimes);
+</script>
                 </div>
                 <button type="button" class="btn btn-primary mb-3" id="addDay">
                     <i class="bi bi-plus text-white"></i>
                 </button>
 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="eventBanner" class="form-label">Banner <span class="verplicht">*</span></label>
                     <input type="file" class="form-control" id="eventBanner" name="banner" accept="image/png" onchange="previewImage(event)" required>
                     <div class="invalid-feedback">Kies een Banner.</div>
@@ -130,7 +185,7 @@ error_reporting(E_ALL);
 
                 <div class="mb-3">
                     <img id="imagePreview" src="#" alt="Afbeelding Preview" class="img-fluid" style="display: none; max-height: 200px; object-fit: cover;">
-                </div>
+                </div> -->
 
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
@@ -153,7 +208,7 @@ error_reporting(E_ALL);
     <script src="/js/form-validatie.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>
-    <script src="/js/activiteit-toevoegen.js"></script>
+    <script src="/js/checkbox-validation.js"></script>
 
     <script>
         document.getElementById("addDay").addEventListener("click", function() {
@@ -163,18 +218,18 @@ error_reporting(E_ALL);
             newDay.innerHTML = `
                 <div class="col-md-4">
                     <label for="eventDate" class="form-label">Datum <span class="verplicht">*</span></label>
-                    <input type="date" class="form-control" name="date[]" required>
+                    <input type="date" class="form-control" name="datum[]" required>
                     <div class="invalid-feedback">Selecteer een datum.</div>
                 </div>
                 <div class="col-md-4">
                     <label for="eventBeginTime" class="form-label">Begintijd <span class="verplicht">*</span></label>
-                    <input type="time" class="form-control" name="begin-time[]" required>
+                    <input type="time" class="form-control" name="begin-tijd[]" required>
                     <div class="invalid-feedback">Voer een begintijd in.</div>
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
                     <div class="flex-grow-1">
                         <label for="eventEndTime" class="form-label">Eindtijd <span class="verplicht">*</span></label>
-                        <input type="time" class="form-control" name="end-time[]" required>
+                        <input type="time" class="form-control" name="eind-tijd[]" required>
                         <div class="invalid-feedback">Voer een eindtijd in.</div>
                     </div>
                     <button class="btn btn-danger ms-2 remove-day"><i class="bi bi-trash text-white"></i></button>
@@ -198,7 +253,6 @@ $title;
 $description;
 $date = [];
 $location = [];
-$banner;
 
 //subevent
 $subEventCount = 0;
@@ -213,7 +267,7 @@ $activityTime = [];
 $activityPeople = [];
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location']) && isset($_POST['banner'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['location'])) {
     if (preg_match("/[éèêüåäöçñØ,.\-\':;!?\/\\\[\]()&@*#+\-=£€\$¥|~]/u",$_POST['title'])) {
         $title = htmlspecialchars($_POST['title']);
     }
@@ -243,12 +297,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['title']) && isset($_PO
             $errors[] = "De postcode moet bestaan uit 4 cijfers";
         }
     }
-    if (isset($_POST['banner'])) {
-        $img = file_get_contents($_POST['banner']);
-        $data = base64_encode($img);
-    }
-    if (!$title && !$description && !$location && !$date && !$banner) {
-        $event = new EventsModel($title,$description,$location,$date,$banner);
+    if (!$title && !$description && !$location && !$date) {
+        $event = new EventsModel($title,$description,$location,$date);
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["subEventTitle1"]) && isset($_POST["subEventDescription1"]) && isset($_POST["subEventDate1"])){
