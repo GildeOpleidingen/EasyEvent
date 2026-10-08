@@ -1,5 +1,30 @@
 <?php
-use App\Conn;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $voornaam = $_POST['voornaam'];
+    $achternaam = $_POST['achternaam'];
+    $geboortedatum = $_POST['geboortedatum'];
+    $postcode = $_POST['postcode'];
+    $plaatsnaam = $_POST['plaatsnaam'];
+    $huisnummer = $_POST['huisnummer'];
+
+    $gebruiker = unserialize($_SESSION['gebruiker']);
+    $user_id = $gebruiker->getId();
+
+    $stmt = \App\Conn::getPDO()->prepare(
+        "INSERT INTO kinderen (voornaam, achternaam, geboortedatum, postcode, plaatsnaam, huisnummer, user_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?)"
+    );
+
+    $stmt->execute([
+        $voornaam,
+        $achternaam,
+        $geboortedatum,
+        $postcode,
+        $plaatsnaam,
+        $huisnummer,
+        $user_id
+    ]);
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +73,7 @@ use App\Conn;
                 <?php //?>
                 <?php if (isset($gebruiker)): ?>
                 <form action="/add-child" method="POST" class="w-75">
-                    <div class="form-floating mb=3">
+                    <div class="form-floating mb-3">
                         <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam" required>
                         <label for="voornaam">Voornaam</label>
                     </div>

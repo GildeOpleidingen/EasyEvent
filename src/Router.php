@@ -16,9 +16,9 @@ class Router
         $this->addRoute($route, $controller, $action, "GET", $isLoggedIn, $requiredProperty);
     }
 
-    public function post($route, $controller, $action)
+    public function post($route, $controller, $action, $isLoggedIn = false, $requiredProperty = '')
     {
-        $this->addRoute($route, $controller, $action, "POST");
+        $this->addRoute($route, $controller, $action, "POST", $isLoggedIn, $requiredProperty);
     }
 
     public function dispatch()
