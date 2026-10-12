@@ -15,15 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
          VALUES (?, ?, ?, ?, ?, ?, ?)"
     );
 
-    $stmt->execute([
-        $voornaam,
-        $achternaam,
-        $geboortedatum,
-        $postcode,
-        $plaatsnaam,
-        $huisnummer,
-        $user_id
-    ]);
+    $stmt->execute([$voornaam, $achternaam, $geboortedatum, $postcode, $plaatsnaam, $huisnummer, $user_id]);
 }
 ?>
 
