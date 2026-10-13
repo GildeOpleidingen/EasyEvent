@@ -19,6 +19,12 @@
     padding: 5px 10px;
     border-radius: 5px;
 }
+
+.nav-buttons .btn.active {
+    background: #f0250a;
+    color: white;
+}
+
 .event-item::before {
     content: '';
     position: absolute;

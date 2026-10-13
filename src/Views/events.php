@@ -35,7 +35,7 @@ use App\Models\InschrijfModel;
         <!-- Category Buttons -->
         <div class="col-12">
             <div class="nav-buttons d-flex mb-3">
-                <button class="btn btn-primary">Alle</button>
+                <button type="button" class="btn btn-primary active" data-sector-filter="all" aria-pressed="true">Alle</button>
                 <?php
                 if (isset($_SESSION['gebruiker']) && isset($events)) {
                     $user = unserialize($_SESSION['gebruiker']);
@@ -46,9 +46,12 @@ use App\Models\InschrijfModel;
                 }
                 ?>
 
-                <?php foreach (SectorModel::getAllSectors() as $key => $sector) {
-                    echo '<button class="btn btn-primary">' . $sector->getSector() . '</button>';
-                } ?>
+                <?php foreach (SectorModel::getAllSectors() as $sector): ?>
+                    <button type="button" class="btn btn-primary" data-sector-filter="
+                    <?= (int)$sector->getId() ?>" aria-pressed="false">
+                        <?= htmlspecialchars($sector->getSector()) ?>
+                    </button>
+                <?php endforeach; ?>
             </div>
         </div>
 
@@ -57,15 +60,15 @@ use App\Models\InschrijfModel;
             <input type="text"
                    id="search-input-top"
                    class="form-control rounded-2 mb-3"
-                   placeholder="Search events..."
-                   onkeyup="filterEvents();">
+                     placeholder="Search events..."
+                     >
             
             <?php if (!empty($events)): ?>
                 <div class="accordion" id="eventsAccordion">
                     <?php
-                    $a = 0;
                     foreach ($events as $index => $event):?>
-                        <div class="accordion-item ev-item">
+                        <div class="accordion-item ev-item" data-sector-ids="
+                        <?= htmlspecialchars(implode(',', array_map('intval', $event->getEventSector())), ENT_QUOTES, 'UTF-8') ?>">
                             <h2 class="accordion-header" id="heading<?= $index ?>">
                                 <button class="accordion-button collapsed"
                                         type="button"
@@ -122,7 +125,6 @@ use App\Models\InschrijfModel;
                             </div>
                         </div>
                     <?php
-                    $a++;
                     endforeach; ?>
                 </div>
             <?php endif; ?>
@@ -164,25 +166,9 @@ use App\Models\InschrijfModel;
 <script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous"></script>
 <script src="../../js/animaties.js"></script>
-<script src="../../js/searchbar.js"></script>
 <script src="../../js/tabs.js"></script>
 <script src="../../js/calendar.js"></script>
-
-<script>
-    function filterEvents() {
-        const query = document.getElementById("search-input-top").value.toLowerCase();
-        const events = document.querySelectorAll(".ev-item");
-
-        events.forEach(event => {
-            const title = event.querySelector(".accordion-button").innerText.toLowerCase();
-            const description = event.querySelector("p").innerText.toLowerCase();
-
-            event.style.display = (title.includes(query) || description.includes(query))
-                ? "block"
-                : "none";
-        });
-    }
-</script>
+<script src="../../js/searchbar.js?v=<?= filemtime(__DIR__ . '/../../js/searchbar.js') ?>"></script>
 
 </body>
 </html>
