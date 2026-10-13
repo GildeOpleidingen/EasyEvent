@@ -19,6 +19,12 @@
     padding: 5px 10px;
     border-radius: 5px;
 }
+
+.nav-buttons .btn.active {
+    background: #f0250a;
+    color: white;
+}
+
 .event-item::before {
     content: '';
     position: absolute;
@@ -72,7 +78,7 @@
 
 .calendar-grid {
     margin-top: 20px;
-    width: 315px;
+    width: 325px;
 }
 
 .calendar table th {
@@ -89,7 +95,7 @@
 }
 
 .calendar table {
-    width: 100%;
+    width: 315px;
     margin-top: 20px;
     table-layout: fixed;
 }
