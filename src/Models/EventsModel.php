@@ -119,7 +119,7 @@ class EventsModel extends DBModel
                 $row['Straatnaam'] ?? 'Unknown',
                 $row['Huisnummer'] ?? 'Unknown',
                 $row['Postcode'] ?? 'Unknown',
-                $row['Sector'] ?? [],
+                isset($row['SectorIDs']) ? array_map('intval', explode(',', $row['SectorIDs'])) : [],
                 [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
             );
             $event->eventID = $row['id'];

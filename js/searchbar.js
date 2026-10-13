@@ -14,6 +14,9 @@
       return Array.from(document.querySelectorAll(".ev-item"));
     }
 
+    const buttons = document.querySelectorAll("[data-sector-filter]");
+    let selectedSector = "all";
+
     function filterEventsHandler() {
       try {
         const q = input.value.trim().toLowerCase();
@@ -41,7 +44,11 @@
             : "";
           const desc = descEl ? (descEl.textContent || "").toLowerCase() : "";
 
-          const match = q === "" || title.includes(q) || desc.includes(q);
+          const sectors = (item.dataset.sectorIds || "")
+            .split(",")
+            .map((sector) => sector.trim());
+          const matchesSector = selectedSector === "all" || sectors.includes(selectedSector);
+          const match = matchesSector && (q === "" || title.includes(q) || desc.includes(q));
 
           if (match) {
             item.classList.remove("d-none");
@@ -70,6 +77,17 @@
 
     input.addEventListener("input", filterEventsHandler);
     window.filterEvents = filterEventsHandler;
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        selectedSector = button.dataset.sectorFilter.trim();
+        buttons.forEach((filterButton) => {
+        filterButton.classList.toggle("active", filterButton === button);
+        filterButton.setAttribute("aria-pressed", filterButton === button);
+        });
+        filterEventsHandler();
+      });
+    });
 
     console.log("[searchbar] ready — items:", getItems().length);
   });
