@@ -12,6 +12,7 @@ use App\Controllers\EventInfoController;
 use App\Controllers\ProfielController;
 use App\Controllers\UserController;
 use App\Controllers\InschrijfController;
+use App\Controllers\VolunteerController;
 use App\Router;
 
 ini_set('display_errors', 1);
@@ -35,6 +36,7 @@ $router->get('/register', RegisterController::class, 'index');
 $router->post('/register', RegisterController::class, 'register');
 $router->post('/verify-code', RegisterController::class, 'verifyCode');
 $router->get('/events', EventsController::class, 'index'); 
+$router->get('/vrijwilligers', VolunteerController::class, 'index');
 $router->get('/event-info', EventInfoController::class, 'index');
 $router->post('/event-info', EventInfoController::class, 'update');
 $router->get('/beheer/event-aanmaken', BeheerEventAanmakenController::class, 'index', true);
