@@ -94,20 +94,59 @@ error_reporting(E_ALL);
                     <div class="invalid-feedback">Selecteer minstens één rol.</div>
                 </div>
 
-                <?php
-                    $kleding = new kledingModel();
-                    $allKleding = $kleding->getAllKledingMaten();
-                ?>
-                <div class="mb-3">
-                    <label for="kledingmaat" class="form-label">Kledingmaat</label>
-                    <select class="form-control" id="kledingmaat" name="kledingmaat[]" multiple>
-                        <option value="" disabled selected>Selecteer een kledingmaat</option>
-                        <?php foreach($allKleding as $key => $kledingmaat): ?>?>
-                            <option value="<?=$kledingmaat->getID() ?>"><?=$kledingmaat->getKledingmaat() ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <div class="invalid-feedback">Selecteer een kledingmaat.</div>
-                </div>
+<?php
+    $kleding = new kledingModel();
+    $allKleding = $kleding->getAllKledingMaten();
+?>
+
+<div class="mb-3">
+    <label class="form-label">Kledingmaat</label>
+
+    <div>
+        <button type="button" class="btn btn-secondary" id="geenKledingmaat">
+            Geen kledingmaat
+        </button>
+
+        <button type="button" class="btn btn-secondary" id="welKledingmaat">
+            Kledingmaten
+        </button>
+    </div>
+
+    <div id="kledingmaatOptions" class="mt-2" style="display: none;">
+        <div class="d-flex gap-2">
+
+            <!-- Maat -->
+            <select class="form-control" name="kledingmaat">
+                <option value="">Kies maat</option>
+                <option value="XXS">XXS</option>
+                <option value="XS">XS</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+            </select>
+
+            <!-- Gender -->
+            <select class="form-control" name="gender">
+                <option value="">Kies gender</option>
+                <option value="Dames">Dames</option>
+                <option value="Heren">Heren</option>
+            </select>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("geenKledingmaat").addEventListener("click", function () {
+        document.getElementById("kledingmaatOptions").style.display = "none";
+    });
+
+    document.getElementById("welKledingmaat").addEventListener("click", function () {
+        document.getElementById("kledingmaatOptions").style.display = "block";
+    });
+</script>
             
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
