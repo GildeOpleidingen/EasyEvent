@@ -6,6 +6,7 @@ use App;
 use Dotenv\Dotenv;
 use PDO;
 use PDOException;
+use App\Conn;
 
 
 class DBModel
@@ -16,6 +17,7 @@ class DBModel
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../../', '.env');
         $dotenv->load();
+                $this->db = Conn::getPDO();
 
 $host = $_ENV['DB_HOST'];
 $dbname = $_ENV['DB_NAME'];

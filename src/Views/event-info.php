@@ -30,6 +30,7 @@
         <?php if (isset($success)): ?>
             <div class="alert alert-danger"><?php echo $success; ?></div>
         <?php endif; ?>
+        
 
         <div class="flex-grow-1 position-relative d-flex align-items-center justify-content-center rounded-4 mb-4 bg-dark" 
             style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>'); background-size: cover; background-position: center;">
@@ -127,6 +128,12 @@
                             <?php endif; ?>
                         </div>
                 <?php endif; ?>
+                <a
+    href="/vrijwilligers?eventID=<?= (int)$event->getEventID() ?>"
+    class="btn btn-success w-100"
+>
+    Inschrijven als vrijwilliger
+</a>
             </div>
         </div>
     </div>
