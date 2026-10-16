@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $geboortedatum = $_POST['geboortedatum'] ?? '';
     $email = trim($_POST['email'] ?? '');
 
+<<<<<<< HEAD
     if ($gebruiker === null || $voornaam === '' || $achternaam === '' || $geboortedatum === '' || $email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Vul alle velden correct in en geef een geldig e-mailadres op.';
     } else {
@@ -26,6 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$voornaam, $achternaam, $geboortedatum, $email, $ouder_id]);
         $success = 'Kind is toegevoegd.';
     }
+=======
+    $stmt->execute([$voornaam, $achternaam, $geboortedatum, $postcode, $plaatsnaam, $huisnummer, $user_id]);
+>>>>>>> f5c11bf (commit om git te fixen)
 }
 ?>
 
