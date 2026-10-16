@@ -1,19 +1,31 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $voornaam = $_POST['voornaam'];
-    $achternaam = $_POST['achternaam'];
-    $geboortedatum = $_POST['geboortedatum'];
-    $email = $_POST['email'];
+$gebruiker = null;
+$error = null;
+$success = null;
 
+if (isset($_SESSION['gebruiker'])) {
     $gebruiker = unserialize($_SESSION['gebruiker']);
-    $ouder_id = $gebruiker->getId();
+}
 
-    $stmt = \App\Conn::getPDO()->prepare(
-        "INSERT INTO gebruiker (voornaam, achternaam, geboortedatum, email, ouder_id)
-         VALUES (?, ?, ?, ?, ?)"
-    );
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $voornaam = trim($_POST['voornaam'] ?? '');
+    $achternaam = trim($_POST['achternaam'] ?? '');
+    $geboortedatum = $_POST['geboortedatum'] ?? '';
+    $email = trim($_POST['email'] ?? '');
 
-    $stmt->execute([$voornaam, $achternaam, $geboortedatum, $email, $ouder_id]);
+    if ($gebruiker === null || $voornaam === '' || $achternaam === '' || $geboortedatum === '' || $email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Vul alle velden correct in en geef een geldig e-mailadres op.';
+    } else {
+        $ouder_id = $gebruiker->getId();
+
+        $stmt = \App\Conn::getPDO()->prepare(
+            "INSERT INTO gebruiker (voornaam, achternaam, geboortedatum, email, ouder_id)
+             VALUES (?, ?, ?, ?, ?)"
+        );
+
+        $stmt->execute([$voornaam, $achternaam, $geboortedatum, $email, $ouder_id]);
+        $success = 'Kind is toegevoegd.';
+    }
 }
 ?>
 
