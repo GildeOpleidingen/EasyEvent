@@ -1,5 +1,36 @@
 <?php
-use App\Conn;
+$gebruiker = null;
+$error = null;
+$success = null;
+
+if (isset($_SESSION['gebruiker'])) {
+    $gebruiker = unserialize($_SESSION['gebruiker']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $voornaam = trim($_POST['voornaam'] ?? '');
+    $achternaam = trim($_POST['achternaam'] ?? '');
+    $geboortedatum = $_POST['geboortedatum'] ?? '';
+    $email = trim($_POST['email'] ?? '');
+
+<<<<<<< HEAD
+    if ($gebruiker === null || $voornaam === '' || $achternaam === '' || $geboortedatum === '' || $email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Vul alle velden correct in en geef een geldig e-mailadres op.';
+    } else {
+        $ouder_id = $gebruiker->getId();
+
+        $stmt = \App\Conn::getPDO()->prepare(
+            "INSERT INTO gebruiker (voornaam, achternaam, geboortedatum, email, ouder_id)
+             VALUES (?, ?, ?, ?, ?)"
+        );
+
+        $stmt->execute([$voornaam, $achternaam, $geboortedatum, $email, $ouder_id]);
+        $success = 'Kind is toegevoegd.';
+    }
+=======
+    $stmt->execute([$voornaam, $achternaam, $geboortedatum, $postcode, $plaatsnaam, $huisnummer, $user_id]);
+>>>>>>> f5c11bf (commit om git te fixen)
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +79,7 @@ use App\Conn;
                 <?php //?>
                 <?php if (isset($gebruiker)): ?>
                 <form action="/add-child" method="POST" class="w-75">
-                    <div class="form-floating mb=3">
+                    <div class="form-floating mb-3">
                         <input type="text" id="voornaam" name="voornaam" class="form-control rounded-0" placeholder="Voornaam" required>
                         <label for="voornaam">Voornaam</label>
                     </div>
@@ -60,32 +91,9 @@ use App\Conn;
                         <input type="date" id="geboortedatum" name="geboortedatum" class="form-control rounded-0" placeholder="Geboortedatum" required>
                         <label for="geboortedatum">Geboortedatum</label>
                     </div>
-
-                    <p class="text-muted text-center ms-6">Adresgegevens (standaard van jou, pas aan indien nodig)</p>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <?php //?>
-                                <input type="text" id="postcode" name="postcode" class="form-control rounded-0" placeholder="Postcode"
-                                       value="<?php echo htmlspecialchars($gebruiker->getPostcode() ?? ''); ?>" required>
-                                <label for="postcode">Postcode</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <?php //?>
-                                <input type="text" id="plaatsnaam" name="plaatsnaam" class="form-control rounded-0" placeholder="Plaatsnaam"
-                                       value="<?php echo htmlspecialchars($gebruiker->getPlaatsnaam() ?? ''); ?>" required>
-                                <label for="plaatsnaam">Plaatsnaam</label>
-                            </div>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <?php //?>
-                            <input type="text" id="huisnummer" name="huisnummer" class="form-control rounded-0" placeholder="Huisnummer"
-                                   value="<?php echo htmlspecialchars($gebruiker->getHuisnummer() ?? ''); ?>" required>
-                            <label for="huisnummer">Huisnummer</label>
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" id="email" name="email" class="form-control rounded-0" placeholder="Email" required>
+                        <label for="email">Email</label>
                     </div>
                     <button class="btn btn-primary w-100 login-btn mt-3" type="submit">Kind Toevoegen</button>
                 </form>
