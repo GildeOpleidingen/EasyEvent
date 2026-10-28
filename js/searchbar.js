@@ -10,16 +10,39 @@
       return;
     }
 
+    const url = new URL(window.location.href);
+    input.value = url.searchParams.get("search") || "";
+
     function getItems() {
       return Array.from(document.querySelectorAll(".ev-item"));
     }
 
     const buttons = document.querySelectorAll("[data-sector-filter]");
-    let selectedSector = "all";
+    let selectedSector = url.searchParams.get("sector") || "all";
+    if (![...buttons].some((button) => button.dataset.sectorFilter.trim() === selectedSector)) {
+      selectedSector = "all";
+    }
+
+    buttons.forEach((button) => {
+      const selected = button.dataset.sectorFilter.trim() === selectedSector;
+      button.classList.toggle("active", selected);
+      button.setAttribute("aria-pressed", selected);
+    });
 
     function filterEventsHandler() {
       try {
         const q = input.value.trim().toLowerCase();
+        if (selectedSector === "all") {
+          url.searchParams.delete("sector");
+        } else {
+          url.searchParams.set("sector", selectedSector);
+        }
+        if (q) {
+          url.searchParams.set("search", q);
+        } else {
+          url.searchParams.delete("search");
+        }
+        window.history.replaceState(window.history.state, "", url);
 
         const items = getItems();
         if (items.length === 0) {
@@ -77,6 +100,7 @@
 
     input.addEventListener("input", filterEventsHandler);
     window.filterEvents = filterEventsHandler;
+    filterEventsHandler();
 
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
