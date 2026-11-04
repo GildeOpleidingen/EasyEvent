@@ -28,7 +28,8 @@ class EventsModel extends DBModel
         $db = $mysql->getPDO();
 
         $sql = "SELECT 
-                    event.id, event.naam AS eventName, 
+                    event.id, 
+                    event.naam AS eventName, 
                     event.beschrijving AS eventInfo, 
                     GROUP_CONCAT(`event_tijd`.datum SEPARATOR ',') AS eventDate,
                     event.hoofd_event AS hoofdEventID
@@ -53,20 +54,10 @@ class EventsModel extends DBModel
                     $eventDates[] = ['date' => $date, 'startTime' => null, 'endTime' => null];
                 }
             }
-            $event = new EventModel(
-                 0,
-                $row['eventName'],
-                $row['eventInfo'],
-                '',
-                '',
-                '',
-                '',
-                '',
-                [],
-                $eventDates,
-                ''
-            );
-            $event->addEventID($row['id']);
+            $event = new EventModel();
+            $event->setEventID($row['id']);
+            $event->setEventName($row['eventName']);
+            $event->setEventInfo($row['eventInfo']);
             $event->hoofdEventID = $row['hoofdEventID'];
             $events[] = $event;
         }
@@ -123,7 +114,7 @@ class EventsModel extends DBModel
                 [['date' => $row['eventDate'], 'startTime' => null, 'endTime' => null]], 
             );
             $event->eventID = $row['id'];
-            $event->hoofdEventID = $row['hoofdEventID'];
+            $event->hoofdEventID = (int) $row['hoofdEventID'];
             $events[] = $event;
         }
     

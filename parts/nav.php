@@ -23,7 +23,7 @@ else {
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
                 <?php if (isset($roles)):?>
-                                    <li class="nav-item">
+                <li class="nav-item">
                     <a href="/vrijwilligers" class="nav-link active">Vrijwilligers</a>
                 </li>
                 <?php foreach ($roles as $role): ?>
