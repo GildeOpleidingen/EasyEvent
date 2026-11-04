@@ -1,5 +1,7 @@
 <?php 
 use App\Models\SectorModel;
+use App\Models\InschrijfModel;
+
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +20,7 @@ use App\Models\SectorModel;
     <!-- CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/events.css">
+    <link rel="stylesheet" href="/css/events.css?v=<?= filemtime(__DIR__ . '/../../css/events.css') ?>">
     <link rel="stylesheet" href="/css/nav.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -33,11 +35,23 @@ use App\Models\SectorModel;
         <!-- Category Buttons -->
         <div class="col-12">
             <div class="nav-buttons d-flex mb-3">
-                <button class="btn btn-primary">Alle</button>
+                <button type="button" class="btn btn-primary active" data-sector-filter="all" aria-pressed="true">Alle</button>
+                <?php
+                if (isset($_SESSION['gebruiker']) && isset($events)) {
+                    $user = unserialize($_SESSION['gebruiker']);
+                    $gebruikerId = $user->getId();
 
-                <?php foreach (SectorModel::getAllSectors() as $key => $sector) {
-                    echo '<button class="btn btn-primary">' . $sector->getSector() . '</button>';
-                } ?>
+                    $inschrijfModel = new InschrijfModel();
+                    $events = $inschrijfModel->markeerInschrijvingen($events, $gebruikerId);
+                }
+                ?>
+
+                <?php foreach (SectorModel::getAllSectors() as $sector): ?>
+                    <button type="button" class="btn btn-primary" data-sector-filter="
+                    <?= (int)$sector->getId() ?>" aria-pressed="false">
+                        <?= htmlspecialchars($sector->getSector()) ?>
+                    </button>
+                <?php endforeach; ?>
             </div>
         </div>
 
@@ -46,13 +60,15 @@ use App\Models\SectorModel;
             <input type="text"
                    id="search-input-top"
                    class="form-control rounded-2 mb-3"
-                   placeholder="Search events..."
-                   onkeyup="filterEvents();">
+                     placeholder="Search events..."
+                     >
             
             <?php if (!empty($events)): ?>
                 <div class="accordion" id="eventsAccordion">
-                    <?php foreach ($events as $index => $event): ?>
-                        <div class="accordion-item ev-item">
+                    <?php
+                    foreach ($events as $index => $event):?>
+                        <div class="accordion-item ev-item" data-sector-ids="
+                        <?= htmlspecialchars(implode(',', array_map('intval', $event->getEventSector())), ENT_QUOTES, 'UTF-8') ?>">
                             <h2 class="accordion-header" id="heading<?= $index ?>">
                                 <button class="accordion-button collapsed"
                                         type="button"
@@ -63,16 +79,53 @@ use App\Models\SectorModel;
                                     <?= htmlspecialchars($event->getEventName()) ?>
                                 </button>
                             </h2>
-
                             <div id="collapse<?= $index ?>"
-                                 class="accordion-collapse collapse"
+                                 class="ccordion-collapse collapse"
                                  data-bs-parent="#eventsAccordion">
-                                <div class="accordion-body">
+                                <div class="accordion-body d-flex flex-column">
                                     <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
                                 </div>
+
+
+
+                                <div class="accordion-body">
+                                    <?php if ($event->isIngeschreven): ?>
+                                        <a href="/uitschrijven?event_id=<?= $event->getEventID() ?>" class="btn btn-danger ms-auto">
+                                            Uitschrijven
+                                        </a>
+                                    <?php else: ?>
+                                        <?php $inschrijfModel = $inschrijfModel ?? new \App\Models\InschrijfModel(); ?>
+                                        <?php $eventTijden = $inschrijfModel->getEventTijden($event->getEventID()); ?>
+
+                                        <form method="post" action="/inschrijven" class="d-flex w-100 align-items-center justify-content-between">
+                                            <div class="d-flex gap-2 flex-wrap">
+
+                                                <?php foreach ($eventTijden as $tijd): ?>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               name="event_tijd_ids[]"
+                                                               value="<?= $tijd['id'] ?>"
+                                                               id="tijd-<?= $event->getEventID() ?>-<?= $tijd['id'] ?>">
+                                                        <label class="form-check-label" for="tijd-<?= $event->getEventID() ?>-<?= $tijd['id'] ?>">
+                                                            <?= date('d-m-Y', strtotime($tijd['datum'])) ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                            <div class="ms-3">
+                                                <input type="hidden" name="event_id" value="<?= $event->getEventID() ?>">
+                                                <button type="submit" class="btn btn-primary">Inschrijven</button>
+                                            </div>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
+
+
+
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php
+                    endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -113,25 +166,9 @@ use App\Models\SectorModel;
 <script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous"></script>
 <script src="../../js/animaties.js"></script>
-<script src="../../js/searchbar.js"></script>
 <script src="../../js/tabs.js"></script>
 <script src="../../js/calendar.js"></script>
-
-<script>
-    function filterEvents() {
-        const query = document.getElementById("search-input-top").value.toLowerCase();
-        const events = document.querySelectorAll(".ev-item");
-
-        events.forEach(event => {
-            const title = event.querySelector(".accordion-button").innerText.toLowerCase();
-            const description = event.querySelector("p").innerText.toLowerCase();
-
-            event.style.display = (title.includes(query) || description.includes(query))
-                ? "block"
-                : "none";
-        });
-    }
-</script>
+<script src="../../js/searchbar.js?v=<?= filemtime(__DIR__ . '/../../js/searchbar.js') ?>"></script>
 
 </body>
 </html>

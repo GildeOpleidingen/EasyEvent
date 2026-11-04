@@ -22,7 +22,7 @@
 <body>
     <div class="container-fluid vh-100 d-flex flex-column">
         <?php require_once("./parts/nav.php"); ?>
-        
+        <?php session_start(); ?>
         <?php if (isset($error)): ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php endif; ?>
@@ -30,6 +30,7 @@
         <?php if (isset($success)): ?>
             <div class="alert alert-danger"><?php echo $success; ?></div>
         <?php endif; ?>
+        
 
         <div class="flex-grow-1 position-relative d-flex align-items-center justify-content-center rounded-4 mb-4 bg-dark" 
             style="background-image: url('../../images/<?= htmlspecialchars($event->getEventBanner()) ?>'); background-size: cover; background-position: center;">
@@ -92,7 +93,7 @@
                             <?php endif; ?>
 
                             <?php if (!empty($activities)): ?>
-                                Kies de activiteit waarin je aan wil deelnemen.
+                                Kies de activiteit waarin je aan wil d eelnemen.
                                 <?php foreach ($activities as $activity): ?>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="activity<?= htmlspecialchars($activity->getID()) ?>" name="activities[<?= htmlspecialchars($activity->getID()) ?>][checked]" <?php if ($activity->hasUser()) : ?> checked="checked"<?php endif; ?> value="<?= htmlspecialchars($activity->getID()) ?>">
@@ -127,6 +128,12 @@
                             <?php endif; ?>
                         </div>
                 <?php endif; ?>
+                <a
+    href="/vrijwilligers?eventID=<?= (int)$event->getEventID() ?>"
+    class="btn btn-success w-100"
+>
+    Inschrijven als vrijwilliger
+</a>
             </div>
         </div>
     </div>

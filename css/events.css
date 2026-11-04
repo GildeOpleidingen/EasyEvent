@@ -1,4 +1,3 @@
-
 .event-item {
     position: relative;
     background-size: cover;
@@ -19,6 +18,13 @@
     padding: 5px 10px;
     border-radius: 5px;
 }
+
+.nav-buttons .btn.btn-primary.active,
+.nav-buttons .btn.btn-primary.active:hover {
+    background: #f0250a !important;
+    color: white;
+}
+
 .event-item::before {
     content: '';
     position: absolute;

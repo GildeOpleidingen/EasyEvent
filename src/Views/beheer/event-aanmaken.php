@@ -41,6 +41,10 @@ if (isset($event)) {$bewerken = true;}
         <div class="container my-4 pb-4">
             <h1 class="text-center mb-4"> <?= ($bewerken) ? "Event Bewerken" : "Event Aanmaken"; ?> </h1>
 
+            <?php if (!empty($error)): ?>
+                <div class="alert alert-danger" role="alert"><?= htmlspecialchars($error) ?></div>
+            <?php endif; ?>
+
             <div class="progress mb-4 fixed-top rounded-0">
                 <div class="progress-bar rounded-0" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
                     Stap 1 van de 2
@@ -48,7 +52,7 @@ if (isset($event)) {$bewerken = true;}
             </div>
             
             <!-- Form 1: Event Details -->
-            <form id="formEventDetails" class="needs-validation" novalidate action="<?php $_PHP_SELF ?>" method="POST">
+            <form id="formEventDetails" class="needs-validation" novalidate action="<?= $bewerken ? '/beheer/event-bewerken?eventID=' . (int)$event['id'] : '/beheer/event-aanmaken' ?>" method="POST">
                 <div class="mb-3">
                     <label for="eventTitle" class="form-label">Titel <span class="verplicht">*</span></label>
                     <input type="text" class="form-control" id="eventTitle" name="eventNaam" placeholder="Event titel" <?= ($bewerken) ? "value='" . $event['naam'] . "'" : '' ?> required>

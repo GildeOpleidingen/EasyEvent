@@ -10,8 +10,6 @@ class EventEditModel extends DBModel
     public $event;
 
     public static function getEventByID($eventID) {
-        $eventID = $_GET['eventID'] ?? null;
-        
         if (!is_numeric($eventID)) {
             die('Invalid event ID.');
         }
@@ -28,5 +26,22 @@ class EventEditModel extends DBModel
         }
         
         return $sqlstmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function updateEvent($eventID, $eventName, $eventInfo) {
+        if (!is_numeric($eventID)) {
+            return false;
+        }
+
+        $mysql = Conn::getInstance();
+        $db = $mysql->getPDO();
+
+        $query = 'UPDATE `event` SET `naam` = :eventName, `beschrijving` = :eventInfo WHERE `id` = :eventID';
+        $sqlstmt = $db->prepare($query);
+        $sqlstmt->bindParam(':eventName', $eventName);
+        $sqlstmt->bindParam(':eventInfo', $eventInfo);
+        $sqlstmt->bindValue(':eventID', (int)$eventID, PDO::PARAM_INT);
+
+        return $sqlstmt->execute();
     }
 }

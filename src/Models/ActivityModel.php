@@ -73,35 +73,31 @@ class ActivityModel extends DBModel
         $activity->event_tijd_id = $stmtET->fetchColumn();
 
         
-            $sqlActivity = "INSERT INTO activiteit (naam) VALUES (:activityName)";
+        $sqlActivity = "INSERT INTO activiteit (naam) VALUES (:activityName)";
 
-            $stmtActivity = $db->prepare($sqlActivity);
-            $stmtActivity->bindParam(':activityName', $activity->naam);
+        $stmtActivity = $db->prepare($sqlActivity);
+        $stmtActivity->bindParam(':activityName', $activity->naam);
 
-            if ($stmtActivity->execute()) {
-                $activity->activiteit_id = $db->lastInsertId();
+        if ($stmtActivity->execute()) {
+            $activity->activiteit_id = $db->lastInsertId();
 
-                $sqlActivityTime = "INSERT INTO `activiteit_event_tijd`
-                                    (activiteit_id, event_tijd_id, begin_tijd, eind_tijd, aantal_personen)
-                                    VALUES (:ActivityID, :EventTijdID, :BeginTijd, :EindTijd, :AantalPersonen)";
-                
-                $stmtActivityTime = $db->prepare($sqlActivityTime);
+            $sqlActivityTime = "INSERT INTO `activiteit_event_tijd`
+                                (activiteit_id, event_tijd_id, begin_tijd, eind_tijd, aantal_personen)
+                                VALUES (:ActivityID, :EventTijdID, :BeginTijd, :EindTijd, :AantalPersonen)";
+            
+            $stmtActivityTime = $db->prepare($sqlActivityTime);
 
-                $stmtActivityTime->bindParam(':ActivityID', $activity->activiteit_id);
-                $stmtActivityTime->bindParam(':EventTijdID', $activity->event_tijd_id);
-                $stmtActivityTime->bindParam(':BeginTijd', $activity->beginTijd);
-                $stmtActivityTime->bindParam(':EindTijd', $activity->eindTijd);
-                $stmtActivityTime->bindParam(':AantalPersonen', $activity->maximum_vrijwilligers);
+            $stmtActivityTime->bindParam(':ActivityID', $activity->activiteit_id);
+            $stmtActivityTime->bindParam(':EventTijdID', $activity->event_tijd_id);
+            $stmtActivityTime->bindParam(':BeginTijd', $activity->beginTijd);
+            $stmtActivityTime->bindParam(':EindTijd', $activity->eindTijd);
+            $stmtActivityTime->bindParam(':AantalPersonen', $activity->maximum_vrijwilligers);
 
-                if (!$stmtActivityTime->execute()) {
-                    return "Something went wrong please try again!";
-                }
+            if (!$stmtActivityTime->execute()) {
+                return "Something went wrong please try again!";
             }
-
-
+        }
     }
-        
-
     public static function getActiviteitByID(int $activiteitId): array {
         $mysql = Conn::getInstance();
         $pdo = $mysql->getPDO();

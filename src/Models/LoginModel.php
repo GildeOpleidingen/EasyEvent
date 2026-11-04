@@ -4,6 +4,7 @@ namespace App\Models;
 
 use PDO;
 use PDOException;
+use Exception;
 require_once __DIR__ . '/../../functions/rate_limiting.php';
 class LoginModel extends DBModel
 {

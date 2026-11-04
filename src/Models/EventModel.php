@@ -11,9 +11,12 @@ class EventModel
     public string $eventName;
     public string $eventInfo;
     public int $eventOrganizer;
-    public array $eventSector = [];
-    public array $eventTimes = [];
-    public int $hoofdEventID;
+    public $eventSector = [];
+    public $eventTimes = [];   //[[dates, startTimes,endTimes],[dates, startTimes,endTimes]]
+    public $eventSectorInfo = []; //[[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers],[sectorName,sectorStarttime,sectorEndTime,Vrijwilligers]]
+    public $images = [];  //[[imageName,imageDescription],[imageName,imageDescription]]
+    public $hoofdEventID;
+    public bool $isIngeschreven = false; // inschrijf voor gebruiker
 
     public function __construct(){}
 
@@ -25,7 +28,14 @@ class EventModel
     }
     public function setEventInfo(string $eventInfo){
         $this->eventInfo = $eventInfo;
-    } function setEventSector(string $Sector){
+    }
+    public function setEventDescription(string $eventDescription){
+        $this->eventDescription = $eventDescription;
+    }
+    public function setEventLocation(string $eventLocation){
+        $this->eventLocation = $eventLocation;
+    }
+    public function setEventSector(string $Sector){
         $this->eventSector[] = $Sector;
     }
     public function setEventOrganizer(int $eventOrganizer){
@@ -147,8 +157,11 @@ class EventModel
                     $errors[] = "De postcode moet bestaan uit 4 cijfers";
                 }
             }
-            if (!$title && !$description && !$location) {
-                $event = new EventModel($title,$description,$location);
+            if (!$title && !$description && !$location && !$date) {
+                $event = new EventModel();
+                $event->setEventName($title);
+                $event->setEventDescription($description);
+                $event->setEventLocation($location);
             }
         } 
 
