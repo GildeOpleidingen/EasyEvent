@@ -4,6 +4,10 @@ const calendarMonthYearElement = document.getElementById("calendar-month-year");
 let currentDate = new Date();
 
 function loadCalendar(date) {
+    if (!calendarDaysElement || !calendarMonthYearElement) {
+        return;
+    }
+
     const year = date.getFullYear();
     const month = date.getMonth();
     const today = new Date();
@@ -27,8 +31,19 @@ function loadCalendar(date) {
     for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
         const isToday = today.toDateString() === date.toDateString();
+        const dateKey = `${year}-${String(month + 1).padStart(2, "0")}`
+            + `-${String(day).padStart(2, "0")}`;
+        const hasEvents = document.querySelector(`.ev-item[data-event-date="${dateKey}"]`);
+        const isSelected = window.selectedEventDate === dateKey;
+        const classes = ["text-white", "calendar-day"];
 
-        dayHTML += `<td><div class="text-white calendar-day${isToday ? ' today' : ''}">${day}</div></td>`;
+        if (isToday) classes.push("today");
+        if (hasEvents) classes.push("has-events");
+        if (isSelected) classes.push("active");
+
+        dayHTML += `<td><button type="button"
+            class="${classes.join(" ")}" ${hasEvents ? "" : "disabled"}
+            aria-pressed="${isSelected}" data-event-date="${dateKey}">${day}</button></td>`;
 
         if ((firstDayIndex + day) % 7 === 0) {
             dayHTML += "</tr><tr>";
@@ -50,5 +65,24 @@ function nextMonth() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    if (!calendarDaysElement || !calendarMonthYearElement) {
+        return;
+    }
+
+    window.selectedEventDate = null;
+
+    calendarDaysElement.addEventListener("click", (event) => {
+        const dayButton = event.target.closest(".calendar-day.has-events");
+        if (!dayButton) {
+            return;
+        }
+
+        window.selectedEventDate = window.selectedEventDate === dayButton.dataset.eventDate
+            ? null
+            : dayButton.dataset.eventDate;
+        window.filterEvents?.();
+        loadCalendar(currentDate);
+    });
+
     loadCalendar(currentDate);
 });

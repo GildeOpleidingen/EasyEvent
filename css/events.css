@@ -114,4 +114,19 @@
     width: 35px;
     height: 35px;
     margin: 0 auto;
+    border: 0;
+}
+
+.calendar-day.today {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+.calendar-day.has-events {
+    background-color: #ff6f00;
+    cursor: pointer;
+}
+
+.calendar-day.has-events.active {
+    background-color: #FF3D21;
 }
