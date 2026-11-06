@@ -13,6 +13,32 @@
     const url = new URL(window.location.href);
     input.value = url.searchParams.get("search") || "";
 
+    if (input.dataset.searchTarget === "users") {
+      const userRows = Array.from(document.querySelectorAll(".user-item"));
+
+      function filterUsersHandler() {
+        const q = input.value.trim().toLowerCase();
+        if (q) {
+          url.searchParams.set("search", q);
+        } else {
+          url.searchParams.delete("search");
+        }
+        window.history.replaceState(window.history.state, "", url);
+
+        userRows.forEach((row) => {
+          const fullName = [
+            row.cells[0]?.textContent.trim() || "",
+            row.cells[1]?.textContent.trim() || "",
+          ].join(" ").toLowerCase();
+          row.classList.toggle("d-none", !fullName.includes(q));
+        });
+      }
+
+      input.addEventListener("input", filterUsersHandler);
+      filterUsersHandler();
+      return;
+    }
+
     function getItems() {
       return Array.from(document.querySelectorAll(".ev-item"));
     }
@@ -49,6 +75,10 @@
           console.warn("[searchbar] no .ev-item elements found in DOM.");
         }
 
+        const today = new Date();
+        const todayKey = `${today.getFullYear()}`
+          + `-${String(today.getMonth() + 1).padStart(2, "0")}`
+          + `-${String(today.getDate()).padStart(2, "0")}`;
         items.forEach((item) => {
           const titleEl =
             item.querySelector(".accordion-button") ||
@@ -71,7 +101,11 @@
             .split(",")
             .map((sector) => sector.trim());
           const matchesSector = selectedSector === "all" || sectors.includes(selectedSector);
-          const match = matchesSector && (q === "" || title.includes(q) || desc.includes(q));
+          const matchesDate = window.selectedEventDate
+            ? item.dataset.eventDate === window.selectedEventDate
+            : item.dataset.eventDate >= todayKey;
+          const matchesSearch = q === "" || title.includes(q) || desc.includes(q);
+          const match = matchesSector && matchesDate && matchesSearch;
 
           if (match) {
             item.classList.remove("d-none");
