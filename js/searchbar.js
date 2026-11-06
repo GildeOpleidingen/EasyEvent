@@ -147,6 +147,17 @@
       });
     });
 
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        selectedSector = button.dataset.sectorFilter.trim();
+        buttons.forEach((filterButton) => {
+        filterButton.classList.toggle("active", filterButton === button);
+        filterButton.setAttribute("aria-pressed", filterButton === button);
+        });
+        filterEventsHandler();
+      });
+    });
+
     console.log("[searchbar] ready — items:", getItems().length);
   });
 })();
