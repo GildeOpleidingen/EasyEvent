@@ -47,8 +47,7 @@ use App\Models\InschrijfModel;
                 ?>
 
                 <?php foreach (SectorModel::getAllSectors() as $sector): ?>
-                    <button type="button" class="btn btn-primary" data-sector-filter="
-                    <?= (int)$sector->getId() ?>" aria-pressed="false">
+                    <button type="button" class="btn btn-primary" data-sector-filter="<?= (int)$sector->getId() ?>" aria-pressed="false">
                         <?= htmlspecialchars($sector->getSector()) ?>
                     </button>
                 <?php endforeach; ?>
@@ -67,13 +66,9 @@ use App\Models\InschrijfModel;
                 <div class="accordion" id="eventsAccordion">
                     <?php
                     foreach ($events as $index => $event):?>
-                        <?php $eventTimes = $event->getEventTime(); ?>
+                        <?php $eventTimes = $event->getEventTimes(); ?>
                         <div class="accordion-item ev-item"
-                             data-sector-ids="<?= htmlspecialchars(
-                                 implode(',', array_map('intval', $event->getEventSector())),
-                                 ENT_QUOTES,
-                                 'UTF-8'
-                             ) ?>"
+                             data-sector-ids="<?= htmlspecialchars($event->getEventSectorAsString()) ?>"
                              data-event-date="<?= htmlspecialchars(
                                  substr($eventTimes[0]['date'] ?? '', 0, 10),
                                  ENT_QUOTES,
@@ -90,17 +85,13 @@ use App\Models\InschrijfModel;
                                 </button>
                             </h2>
                             <div id="collapse<?= $index ?>"
-                                 class="ccordion-collapse collapse"
+                                 class="accordion-collapse collapse"
                                  data-bs-parent="#eventsAccordion">
                                 <div class="accordion-body d-flex flex-column">
                                     <p><?= htmlspecialchars($event->getEventInfo()) ?></p>
-                                </div>
-
-
-
-                                <div class="accordion-body">
-                                    <?php if ($event->isIngeschreven): ?>
-                                        <a href="/uitschrijven?event_id=<?= $event->getEventID() ?>" class="btn btn-danger ms-auto">
+                                    <?php if ($event->getIngeschreven()): ?>
+                                        // TODO maak hier een POST FORM van.
+                                        <a href="/uitschrijven?event_id=<?= htmlspecialchars($event->getEventID()) ?>" class="btn btn-danger ms-auto">
                                             Uitschrijven
                                         </a>
                                     <?php else: ?>
@@ -115,27 +106,23 @@ use App\Models\InschrijfModel;
                                                         <input class="form-check-input" type="checkbox"
                                                                name="event_tijd_ids[]"
                                                                value="<?= $tijd['id'] ?>"
-                                                               id="tijd-<?= $event->getEventID() ?>-<?= $tijd['id'] ?>">
-                                                        <label class="form-check-label" for="tijd-<?= $event->getEventID() ?>-<?= $tijd['id'] ?>">
+                                                               id="tijd-<?= htmlspecialchars($event->getEventID()) ?>-<?= htmlspecialchars($tijd['id']) ?>">
+                                                        <label class="form-check-label" for="tijd-<?= htmlspecialchars($event->getEventID()) ?>-<?= htmlspecialchars($tijd['id']) ?>">
                                                             <?= date('d-m-Y', strtotime($tijd['datum'])) ?>
                                                         </label>
                                                     </div>
                                                 <?php endforeach; ?>
                                             </div>
                                             <div class="ms-3">
-                                                <input type="hidden" name="event_id" value="<?= $event->getEventID() ?>">
+                                                <input type="hidden" name="event_id" value="<?= htmlspecialchars($event->getEventID()) ?>">
                                                 <button type="submit" class="btn btn-primary">Inschrijven</button>
                                             </div>
                                         </form>
                                     <?php endif; ?>
                                 </div>
-
-
-
                             </div>
                         </div>
-                    <?php
-                    endforeach; ?>
+                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -171,14 +158,13 @@ use App\Models\InschrijfModel;
 </div>
 
 <!-- JS -->
-<script src="../../js/bootstrap.bundle.js"></script>
-<script src="../../js/script.js"></script>
+<script src="/js/bootstrap.bundle.js"></script>
+<script src="/js/script.js"></script>
 <script src="https://kit.fontawesome.com/a70ad4540c.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous"></script>
-<script src="../../js/animaties.js"></script>
-<script src="../../js/tabs.js"></script>
-<script src="../../js/calendar.js?v=<?= filemtime(__DIR__ . '/../../js/calendar.js') ?>"></script>
-<script src="../../js/searchbar.js?v=<?= filemtime(__DIR__ . '/../../js/searchbar.js') ?>"></script>
+<script src="/js/animaties.js"></script>
+<script src="/js/calendar.js?v=<?= filemtime(__DIR__ . '/../../js/calendar.js') ?>"></script>
+<script src="/js/searchbar.js?v=<?= filemtime(__DIR__ . '/../../js/searchbar.js') ?>"></script>
 
 </body>
 </html>

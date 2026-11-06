@@ -35,8 +35,12 @@ class EventModel
     public function setEventLocation(string $eventLocation){
         $this->eventLocation = $eventLocation;
     }
-    public function setEventSector(string $Sector){
-        $this->eventSector[] = $Sector;
+    public function setEventSector(?string $Sector){
+        if ($Sector === null || $Sector === '') {
+            $this->eventSector = [];
+            return;
+        }
+        $this->eventSector[] =  array_map('intval', explode(',', $Sector));
     }
     public function setEventOrganizer(int $eventOrganizer){
         $this->eventOrganizer = $eventOrganizer;
@@ -78,6 +82,9 @@ class EventModel
     public function getEventSector(){
         return $this->eventSector;
     }
+    public function getEventSectorAsString(){
+        return implode(',', array_map('intval', $this->eventSector));
+    }
     public function getEventOrganizer(){
         return $this->eventOrganizer;
     }
@@ -86,6 +93,9 @@ class EventModel
     }
     public function getHoofdEventID(){
         return $this->hoofdEventID;
+    }
+    public function getIngeschreven(){
+        return $this->isIngeschreven;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
