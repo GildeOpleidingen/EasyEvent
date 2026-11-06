@@ -50,12 +50,14 @@ $router->post('/profiel/updateAdresGegevens', ProfielController::class, 'updateA
 $router->post('/profiel/updateWachtwoord', ProfielController::class, 'updateWachtwoord', true);
 $router->post('/profiel/logout', LoginController::class, 'logout');
 $router->get('/beheer/event', EventsController::class, 'adminIndex', true);
+$router->get('/beheer/event/activiteiten', PlanningController::class, 'activiteitIndex', true);
 $router->get('/beheer/event/planning', PlanningController::class, 'index', true);
 $router->get('/beheer/user-overzicht', UserController::class, 'index', true);
 $router->get('/beheer/user-aanmaken', UserController::class, 'add', true);
 $router->post('/beheer/user-aanmaken', UserController::class, 'saveUser', true);
 $router->get('/beheer/user/delete', UserController::class, 'delete', true);
 $router->get('/beheer/event-bewerken', BeheerEventAanmakenController::class, 'editEvent', true, 'eventID');
+$router->post('/beheer/event-bewerken', BeheerEventAanmakenController::class, 'updateEvent', true, 'eventID');
 $router->get('/beheer/event/delete', EventsController::class, 'delete', true);
 $router->get('/add-child', ProfielController::class, 'addChildForm', true);
 $router->post('/add-child', ProfielController::class, 'addChild', true);

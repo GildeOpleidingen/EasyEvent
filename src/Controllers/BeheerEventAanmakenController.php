@@ -158,4 +158,38 @@ class BeheerEventAanmakenController extends Controller {
 
         $this->render("beheer/event-aanmaken", (array)$EEModel);
     }
+
+    public function updateEvent() {
+        $eventID = $_GET['eventID'] ?? $_POST['eventID'] ?? null;
+        if (!is_numeric($eventID)) {
+            $this->redirect('/beheer/event');
+            return;
+        }
+
+        $event = EventEditModel::getEventByID($eventID);
+        if (!$event) {
+            $this->redirect('/beheer/event');
+            return;
+        }
+
+        $eventName = trim($_POST['eventNaam'] ?? '');
+        $eventInfo = trim($_POST['info'] ?? '');
+        if ($eventName === '' || $eventInfo === '') {
+            $this->render('beheer/event-aanmaken', [
+                'event' => $event,
+                'error' => 'Titel en beschrijving zijn verplicht.'
+            ]);
+            return;
+        }
+
+        if (!EventEditModel::updateEvent($eventID, $eventName, $eventInfo)) {
+            $this->render('beheer/event-aanmaken', [
+                'event' => $event,
+                'error' => 'Het evenement kon niet worden bijgewerkt.'
+            ]);
+            return;
+        }
+
+        $this->redirect('/beheer/event-aanmaken-stap-2?eventId=' . (int)$eventID);
+    }
 }

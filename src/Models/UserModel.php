@@ -17,6 +17,7 @@ class UserModel
     private $roles;
     private $plaatsnaam;
     private $huisnummer;
+    private $user_id;
     private $wachtwoord;
     private $profielfoto;
 
@@ -43,6 +44,7 @@ class UserModel
         $this->roles = isset($data['id']) ? RolModel::getRolesByUserId($data['id']) : [];
         $this->plaatsnaam = $data['plaatsnaam'] ?? null;
         $this->huisnummer = $data['huisnummer'] ?? null;
+        $this->user_id = $data['user_id'] ?? null;
     }
 
     public function getId() { return $this->id; }
@@ -53,6 +55,7 @@ class UserModel
     public function getPostcode() { return $this->postcode; }
     public function getPlaatsnaam() { return $this->plaatsnaam; }
     public function getHuisnummer() { return $this->huisnummer; }
+    public function getUser_id() { return $this->id; }
     public function getKledingmaat() { return $this->kledingmaat; }
     public function getIsGeverifieerd() { return $this->is_geverifieerd; }
     public function getRoles() { return $this->roles; }
@@ -66,6 +69,7 @@ class UserModel
     public function setPostcode($value) {$this->postcode = $value;}
 
     public function setHuisnummer($value) {$this->huisnummer = $value;}
+    public function setUser_id($value) {$this->id = $value;}
     public function setPlaatsnaam($value) {$this->plaatsnaam = $value;}
     public function setProfielfoto($value) {$this->profielfoto = $value;}
     public function setIsGeverifieerd($value) {$this->is_geverifieerd = $value;}

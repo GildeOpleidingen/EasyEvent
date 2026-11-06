@@ -27,6 +27,12 @@ error_reporting(E_ALL);
         <?php require_once('./parts/nav.php'); ?>
         <div class="container my-4 pb-4">
             <h1 class="text-center mb-4">Gebruikers overzicht</h1>
+            <input type="search"
+                   id="search-input-top"
+                   data-search-target="users"
+                   class="form-control rounded-2 mb-3"
+                   placeholder="Zoek gebruikers..."
+                   aria-label="Zoek gebruikers">
 
             <!-- Form 1: User Details -->
             <form id="formUserDetails" novalidate action="<?php $_PHP_SELF ?>" method="POST">
@@ -51,7 +57,7 @@ error_reporting(E_ALL);
                     <tbody>
 
                     <?php foreach($allUsers as $key => $value): ?>
-                        <tr>
+                        <tr class="user-item">
                             <td>
                                 <?=$value->getVoornaam() ?>
                             </td>
@@ -91,6 +97,7 @@ error_reporting(E_ALL);
     <script src="/js/image-preview.js"></script>
     <script src="/js/animaties.js"></script>
     <script src="/js/activiteit-toevoegen.js"></script>
+    <script src="/js/searchbar.js?v=<?= filemtime(__DIR__ . '/../../../js/searchbar.js') ?>"></script>
 </body>
 </html>
 

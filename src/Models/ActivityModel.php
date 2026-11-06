@@ -73,32 +73,76 @@ class ActivityModel extends DBModel
         $activity->event_tijd_id = $stmtET->fetchColumn();
 
         
-            $sqlActivity = "INSERT INTO activiteit (naam) VALUES (:activityName)";
+        $sqlActivity = "INSERT INTO activiteit (naam) VALUES (:activityName)";
 
-            $stmtActivity = $db->prepare($sqlActivity);
-            $stmtActivity->bindParam(':activityName', $activity->naam);
+        $stmtActivity = $db->prepare($sqlActivity);
+        $stmtActivity->bindParam(':activityName', $activity->naam);
 
-            if ($stmtActivity->execute()) {
-                $activity->activiteit_id = $db->lastInsertId();
+        if ($stmtActivity->execute()) {
+            $activity->activiteit_id = $db->lastInsertId();
 
-                $sqlActivityTime = "INSERT INTO `activiteit_event_tijd`
-                                    (activiteit_id, event_tijd_id, begin_tijd, eind_tijd, aantal_personen)
-                                    VALUES (:ActivityID, :EventTijdID, :BeginTijd, :EindTijd, :AantalPersonen)";
-                
-                $stmtActivityTime = $db->prepare($sqlActivityTime);
+            $sqlActivityTime = "INSERT INTO `activiteit_event_tijd`
+                                (activiteit_id, event_tijd_id, begin_tijd, eind_tijd, aantal_personen)
+                                VALUES (:ActivityID, :EventTijdID, :BeginTijd, :EindTijd, :AantalPersonen)";
+            
+            $stmtActivityTime = $db->prepare($sqlActivityTime);
 
-                $stmtActivityTime->bindParam(':ActivityID', $activity->activiteit_id);
-                $stmtActivityTime->bindParam(':EventTijdID', $activity->event_tijd_id);
-                $stmtActivityTime->bindParam(':BeginTijd', $activity->beginTijd);
-                $stmtActivityTime->bindParam(':EindTijd', $activity->eindTijd);
-                $stmtActivityTime->bindParam(':AantalPersonen', $activity->maximum_vrijwilligers);
+            $stmtActivityTime->bindParam(':ActivityID', $activity->activiteit_id);
+            $stmtActivityTime->bindParam(':EventTijdID', $activity->event_tijd_id);
+            $stmtActivityTime->bindParam(':BeginTijd', $activity->beginTijd);
+            $stmtActivityTime->bindParam(':EindTijd', $activity->eindTijd);
+            $stmtActivityTime->bindParam(':AantalPersonen', $activity->maximum_vrijwilligers);
 
-                if (!$stmtActivityTime->execute()) {
-                    return "Something went wrong please try again!";
-                }
+            if (!$stmtActivityTime->execute()) {
+                return "Something went wrong please try again!";
             }
+        }
+    }
+    public static function getActiviteitByID(int $activiteitId): array {
+        $mysql = Conn::getInstance();
+        $pdo = $mysql->getPDO();
+        $sql = "SELECT  a.naam,
+                        a.id,
+                        aet.begin_tijd,
+                        aet.eind_tijd
+                FROM activiteit a
+                LEFT JOIN activiteit_event_tijd aet on aet.activiteit_id = a.id
+                WHERE a.id = :activiteitid
+                ORDER BY a.naam
+        ";
 
+        $stmt = $pdo->prepare($sql);
+        
+        if (!$stmt->execute(['activiteitid' => $activiteitId])) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
 
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public static function getActiviteitenByEventId(int $eventId): array 
+    {
+        $mysql = Conn::getInstance();
+        $pdo = $mysql->getPDO();
+        $sql = "SELECT a.naam           as activiteitNaam,
+                       a.id             as activiteitID,
+                       aet.begin_tijd   as activiteitBeginTijd,
+                       aet.eind_tijd    as activiteitEindTijd
+                FROM `activiteit_event_tijd` aet
+                JOIN `event_tijd` et on et.id = aet.event_tijd_id
+                JOIN activiteit a on a.id = aet.activiteit_id
+                JOIN `event` e on e.id = et.event_id
+                WHERE e.id = :eventid
+                ORDER by a.naam
+                ";
+
+        $stmt = $pdo->prepare($sql);
+
+        if (!$stmt->execute(['eventid' => $eventId])) {
+            die('Query failed: ' . implode(' ', $stmt->errorInfo()));
+        }
+
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

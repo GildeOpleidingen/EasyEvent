@@ -20,7 +20,7 @@ use App\Models\InschrijfModel;
     <!-- CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/events.css">
+    <link rel="stylesheet" href="/css/events.css?v=<?= filemtime(__DIR__ . '/../../css/events.css') ?>">
     <link rel="stylesheet" href="/css/nav.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -67,8 +67,18 @@ use App\Models\InschrijfModel;
                 <div class="accordion" id="eventsAccordion">
                     <?php
                     foreach ($events as $index => $event):?>
-                        <div class="accordion-item ev-item" data-sector-ids="
-                        <?= htmlspecialchars(implode(',', array_map('intval', $event->getEventSector())), ENT_QUOTES, 'UTF-8') ?>">
+                        <?php $eventTimes = $event->getEventTime(); ?>
+                        <div class="accordion-item ev-item"
+                             data-sector-ids="<?= htmlspecialchars(
+                                 implode(',', array_map('intval', $event->getEventSector())),
+                                 ENT_QUOTES,
+                                 'UTF-8'
+                             ) ?>"
+                             data-event-date="<?= htmlspecialchars(
+                                 substr($eventTimes[0]['date'] ?? '', 0, 10),
+                                 ENT_QUOTES,
+                                 'UTF-8'
+                             ) ?>">
                             <h2 class="accordion-header" id="heading<?= $index ?>">
                                 <button class="accordion-button collapsed"
                                         type="button"
@@ -167,7 +177,7 @@ use App\Models\InschrijfModel;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous"></script>
 <script src="../../js/animaties.js"></script>
 <script src="../../js/tabs.js"></script>
-<script src="../../js/calendar.js"></script>
+<script src="../../js/calendar.js?v=<?= filemtime(__DIR__ . '/../../js/calendar.js') ?>"></script>
 <script src="../../js/searchbar.js?v=<?= filemtime(__DIR__ . '/../../js/searchbar.js') ?>"></script>
 
 </body>
